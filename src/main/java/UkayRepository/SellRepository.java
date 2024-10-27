@@ -1,6 +1,6 @@
-package ProductRepository;
+package UkayRepository;
 
-import ProductEntity.SellEntity;
+import UkayEntity.SellEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

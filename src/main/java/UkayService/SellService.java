@@ -1,7 +1,7 @@
-package ProductService;
+package UkayService;
 
-import ProductEntity.SellEntity;
-import ProductRepository.SellRepository;
+import UkayEntity.SellEntity;
+import UkayRepository.SellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

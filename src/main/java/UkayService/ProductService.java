@@ -1,9 +1,9 @@
-package ProductService;
+package UkayService;
 
-import ProductRepository.ProductRepository;
+import UkayRepository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ProductEntity.ProductEntity;
+import UkayEntity.ProductEntity;
 //import org.hibernate.mapping.List;
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package ProductController;
+package UkayController;
 
-import ProductEntity.ProductEntity;
-import ProductService.ProductService;
+import UkayEntity.ProductEntity;
+import UkayService.ProductService;
 //import org.hibernate.mapping.List;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

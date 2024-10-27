@@ -1,13 +1,10 @@
-package ProductController;
+package UkayController;
 
 
-import ProductEntity.SellEntity;
-import ProductService.SellService;
+import UkayEntity.SellEntity;
+import UkayService.SellService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class SellController {
 
     //Create of CRUD
     @PostMapping("/postSell")
-    public SellEntity postSellRecord(SellEntity sell){
+    public SellEntity postSellRecord(@RequestBody SellEntity sell){
         return sser.postSellRecord(sell);
     }
 
