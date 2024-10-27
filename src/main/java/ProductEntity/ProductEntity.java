@@ -19,7 +19,7 @@ public class ProductEntity {
     private String productDescription;
     private boolean isAvailable;
 
-    public ProductEntity(){ //andribayot1
+    public ProductEntity(){
         super();
     }
 
