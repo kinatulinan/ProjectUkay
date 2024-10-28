@@ -15,7 +15,7 @@ public class ProductEntity {
     private String productName;
     private String productType;
     private String productDetails;
-    private double productPrice;
+    private float productPrice;
     private String productDescription;
     private boolean isAvailable;
 
@@ -25,7 +25,7 @@ public class ProductEntity {
 
 
 
-    public ProductEntity(int productId, String productName, String productType, String productDetails, double productPrice, String productDescription, boolean isAvailable){
+    public ProductEntity(int productId, String productName, String productType, String productDetails, float productPrice, String productDescription, boolean isAvailable){
         super();
         this.productId = productId;
         this.productName = productName;
@@ -69,11 +69,11 @@ public class ProductEntity {
         this.productDetails = productDetails;
     }
 
-    public double getProductPrice() {
+    public float getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(double productPrice) {
+    public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
 
