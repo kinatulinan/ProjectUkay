@@ -44,4 +44,60 @@
 
 .homeDetails{
     color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px;
+}
+
+/* Parent container */
+.Sell-Data{
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the form items horizontally */
+  width: 100%; /* Set to 100% of the parent container */
+}
+
+/* Child items */
+.Sell-Data {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+.button-Submit {
+  width: 50px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-Submit:hover {
+  background-color: #45a049;
+}
+
+.form-Design {
+  border-radius: 5px;
+  background-color: #1976d2;
+  padding: 20px;
+}
+
+.label-adjust{
+  margin-right: 300px;
+  
+  color: white;
+}
+
+.sell-Title{
+  color: white;
+}
+
+.delete-button{
+  color: red;
 }

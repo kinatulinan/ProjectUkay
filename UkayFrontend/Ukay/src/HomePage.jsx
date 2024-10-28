@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 import { Box, Typography, Button, Grid, Container } from '@mui/material';
 import img1 from './assets/img1.png';
 import img1Hover from './assets/img1-hover.png'; // Add hover image
@@ -8,6 +9,8 @@ import img3 from './assets/img3.png';
 import img3Hover from './assets/img3-hover.png';
 import img4 from './assets/img4.png';
 import img4Hover from './assets/img4-hover.png';
+
+
 
 const saleSections = [
   {
@@ -50,7 +53,7 @@ function WinterWarmUp() {
           color: 'white'
         }}
       >
-        <Typography className='homeDetails' variant="h2" fontWeight="bold">U-KAY PRODUCTS</Typography>
+        <Typography className='homeDetails' variant="h2" fontWeight="bold">WELCOME TO U-KAY</Typography>
         <Typography className='homeDetails' variant="body1">Thrift with us</Typography>
         <Button variant="contained" sx={{ mt: 2, backgroundColor: 'white', color: 'black' }}>Shop the Sale</Button>
       </Box>

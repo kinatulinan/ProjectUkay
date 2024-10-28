@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,16 +13,15 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
 
-
-const pages = ['Products', 'Sell A Product'];
-const settings = ['Register', 'Cart',  'Logout'];
+const pages = ['Product Listing', 'Sell A Product'];
+const settings = ['Login','Register', 'Cart', 'Logout'];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate(); // Initialize the navigation hook
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,11 +38,27 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handlePageClick = (page) => {
+    if (page === 'Sell A Product') {
+      navigate('/sell'); // Redirect to the Sell A Product page
+    } else if (page === 'Product Listing') {
+      navigate('/products'); // Redirect to the Products page
+    }
+    handleCloseNavMenu();
+  };
+
+  const handleSettingClick = (setting) => {
+    if (setting === 'Cart') {
+      navigate('/cart'); // Redirect to the Cart page
+    } 
+    handleCloseUserMenu();
+  };
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <CheckroomIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -58,7 +74,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            Welcome to U-Kay
+            U-Kay
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -89,7 +105,7 @@ function ResponsiveAppBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageClick(page)}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -118,7 +134,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlePageClick(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -148,7 +164,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}
@@ -159,4 +175,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;
