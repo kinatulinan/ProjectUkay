@@ -11,7 +11,7 @@ public class LoginUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String loginId;
+    private int loginId;
 
     private String username;
     private String password;
@@ -21,17 +21,17 @@ public class LoginUserEntity {
     }
 
 
-    public LoginUserEntity(String loginId, String username, String password) {
+    public LoginUserEntity(int loginId, String username, String password) {
         this.loginId = loginId;
         this.username = username;
         this.password = password;
     }
 
-    public String getLoginId() {
+    public int getLoginId() {
         return loginId;
     }
 
-    public void setLoginId(String loginId) {
+    public void setLoginId(int loginId) {
         this.loginId = loginId;
     }
 

@@ -1,8 +1,11 @@
 package com.Product.Ukay.UkayEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
+
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +14,10 @@ public class ProductEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cartId")
     private CartEntity cart;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sellId")
+    private SellEntity sell;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 //    private List<CartEntity> cart;
@@ -93,4 +100,8 @@ public class ProductEntity {
     public void setCart(CartEntity cart) {
         this.cart = cart;
     }
+
+
+
+
 }

@@ -1,9 +1,9 @@
 package com.Product.Ukay.UkayEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class SellEntity {
@@ -15,6 +15,10 @@ public class SellEntity {
     private String sellProductName;
     private String sellProductType;
     private double sellProductPrice;
+
+    @OneToMany(mappedBy = "sell", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    private List<ProductEntity> products;
 
 
     public SellEntity(){
@@ -59,4 +63,6 @@ public class SellEntity {
     public void setSellProductPrice(double sellProductPrice) {
         this.sellProductPrice = sellProductPrice;
     }
+
+
 }

@@ -17,30 +17,34 @@ public class ProductController {
     ProductService pserv;
 
 
+
     @GetMapping("/print")
     public String print(){
 
         return "Test product entity";
     }
 
-    @PostMapping("/postProducts")
+    //edited
+    @PostMapping("/post") //edited
     public ProductEntity postProducts(@RequestBody ProductEntity product){
         return pserv.postProducts(product);
     }
 
-    //asasd
 
-    @GetMapping("/showAllProducts")
+
+    @GetMapping("/get")
     public List<ProductEntity> showAllProducts(){
         return pserv.showAllProducts();
     }
 
-    @PutMapping("/editProductDetails")
-    public ProductEntity editProductDetails(@RequestParam int productId, @RequestBody ProductEntity newProductDetails){
+
+    @PutMapping("/update/{productId}")
+    public ProductEntity editProductDetails(@PathVariable  int productId, @RequestBody ProductEntity newProductDetails){
         return pserv.editProductDetails(productId, newProductDetails);
     }
 
-    @DeleteMapping("/deleteProduct/{productId}")
+
+    @DeleteMapping("/delete/{productId}")
     public String deleteProduct(@PathVariable int productId){
         return pserv.deleteProduct(productId);
     }
