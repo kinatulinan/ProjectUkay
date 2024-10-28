@@ -25,11 +25,6 @@ public class ProductEntity {
 
 
 
-
-
-
-
-
     public ProductEntity(int productId, String productName, String productType, String productDetails, double productPrice, String productDescription, boolean isAvailable){
         super();
         this.productId = productId;
