@@ -24,12 +24,6 @@ public class OrderService {
         return orepo.save(order);
     }
 
-    public OrderEntity postOrders(OrderEntity order){
-        float total = order.getQuantity() * order.getPrice();
-        order.setTotal(total);
-        return orepo.save(order);
-    }
-
     public List<OrderEntity> showAllOrders(){
         return orepo.findAll();
     }

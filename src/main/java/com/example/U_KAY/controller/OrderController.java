@@ -14,9 +14,9 @@ public class OrderController {
     @Autowired
     OrderService oserv;
 
-    @PostMapping("/postOrders")
-    public OrderEntity postOrders(@RequestBody OrderEntity order){
-        return oserv.postOrders(order);
+    @PostMapping("/placeOrder")
+    public OrderEntity placeOrder(@RequestBody OrderEntity order){
+        return oserv.placeOrder(order);
     }
 
     @GetMapping("/showAllOrders")
