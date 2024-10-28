@@ -1,0 +1,59 @@
+package com.example.U_KAY.service;
+
+import com.example.U_KAY.entity.ProductEntity;
+import com.example.U_KAY.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.naming.NameNotFoundException;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@Service
+public class ProductService {
+    @Autowired
+    ProductRepository prepo;
+
+    public ProductService(){
+        super();
+    }
+
+    public ProductEntity postProducts(ProductEntity product){
+        return prepo.save(product);
+    }
+
+    public List<ProductEntity> showAllProducts(){
+        return prepo.findAll();
+    }
+
+    @SuppressWarnings("finally")
+    public ProductEntity editProductDetails(int productId, ProductEntity newProductDetails){
+        ProductEntity product = new ProductEntity();
+        try{
+            product = prepo.findById(productId).get();
+
+            product.setProduct_name(newProductDetails.getProduct_name());
+            product.setProduct_type(newProductDetails.getProduct_type());
+            product.setProduct_details(newProductDetails.getProduct_details());
+            product.setProduct_price(newProductDetails.getProduct_price());
+            product.setProduct_description(newProductDetails.getProduct_description());
+            product.setAvailable(newProductDetails.isAvailable());
+        } catch(NoSuchElementException nex){
+            throw new NameNotFoundException("Product " + productId + " not found");
+        } finally {
+            return prepo.save(product);
+        }
+    }
+
+    public String deleteProduct(int productId){
+        String msg = "";
+        if(prepo.existsById(productId)){
+            prepo.deleteById(productId);
+            msg = "Product Deleted!";
+        } else{
+            msg = productId + " NOT FOUND!";
+        }
+        return msg;
+    }
+
+}
