@@ -7,39 +7,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/product")
-public class ProductController {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RestController
+@RequestMapping(method = RequestMethod.GET, path = "/api/product")
+public class ProductController {
     @Autowired
     ProductService pserv;
 
-    @GetMapping("/print")
-    public String print(){
-        return "Test Product Entity";
+    @PostMapping("/postProducts")
+    public ProductEntity postProducts(@RequestBody ProductEntity product){
+        return pserv.postProducts(product);
     }
 
-    @PostMapping("/postProduct")
-    public ProductEntity postProductRecord(@RequestBody ProductEntity product){
-        return pserv.postProductRecord(product);
+    @GetMapping("/showAllProducts")
+    public List<ProductEntity> showAllProducts(){
+        return pserv.showAllProducts();
     }
 
-    @GetMapping("/getProduct")
-    public List<ProductEntity> getAllProducts(){
-        return pserv.getAllProducts();
-    }
-
-    @PutMapping("/updateProduct")
-    public ProductEntity updateProductRecords(@RequestParam int productId, @RequestBody ProductEntity newProductRecords){
-        return pserv.updateProductRecords(productId, newProductRecords);
+    @PutMapping("/editProductDetails")
+    public ProductEntity editProductDetails(@RequestParam int productId, @RequestBody ProductEntity newProductDetails){
+        return pserv.editProductDetails(productId, newProductDetails);
     }
 
     @DeleteMapping("/deleteProduct/{productId}")
     public String deleteProduct(@PathVariable int productId){
-
         return pserv.deleteProduct(productId);
     }
-
-
-
 }

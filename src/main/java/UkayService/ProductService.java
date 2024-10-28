@@ -10,51 +10,55 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javax.naming.NameNotFoundException;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class ProductService {
-
     @Autowired
     ProductRepository prepo;
 
     public ProductService(){
         super();
     }
-    //Create of CRUD
-    public ProductEntity postProductRecord(ProductEntity product){
+
+    public ProductEntity postProducts(ProductEntity product){
         return prepo.save(product);
     }
 
-    //Read of CRUD
-    public List<ProductEntity> getAllProducts(){
+    public List<ProductEntity> showAllProducts(){
         return prepo.findAll();
     }
 
+    @SuppressWarnings("finally")
+    public ProductEntity editProductDetails(int productId, ProductEntity newProductDetails){
+        ProductEntity product = new ProductEntity();
+        try{
+            product = prepo.findById(productId).get();
 
-    // Update of CRUD
-    public ProductEntity updateProductRecords(int productId, ProductEntity newProductRecords) {
-        ProductEntity product = prepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product with ID " + productId + " not found"));
-
-        product.setProductName(newProductRecords.getProductName());
-        product.setProductType(newProductRecords.getProductType());
-        product.setProductDetails(newProductRecords.getProductDetails());
-        product.setProductPrice(newProductRecords.getProductPrice());
-        product.setAvailable(newProductRecords.isAvailable());
-
-        return prepo.save(product);
+            product.setProduct_name(newProductDetails.getProduct_name());
+            product.setProduct_type(newProductDetails.getProduct_type());
+            product.setProduct_details(newProductDetails.getProduct_details());
+            product.setProduct_price(newProductDetails.getProduct_price());
+            product.setProduct_description(newProductDetails.getProduct_description());
+            product.setAvailable(newProductDetails.isAvailable());
+        } catch(NoSuchElementException nex){
+            throw new NameNotFoundException("Product " + productId + " not found");
+        } finally {
+            return prepo.save(product);
+        }
     }
 
-    public String deleteProduct(int productId) {
-        String msg;
-        if (prepo.findById(productId).isPresent()) {
-            prepo.deleteById(productId); // Use productId instead of null
-            msg = "Product deleted!";
-        } else {
-            msg = "Product with ID " + productId + " not found!";
+    public String deleteProduct(int productId){
+        String msg = "";
+        if(prepo.existsById(productId)){
+            prepo.deleteById(productId);
+            msg = "Product Deleted!";
+        } else{
+            msg = productId + " NOT FOUND!";
         }
         return msg;
     }
 
 }
-
-

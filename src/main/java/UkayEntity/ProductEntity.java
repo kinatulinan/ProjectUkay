@@ -1,40 +1,37 @@
 package UkayEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class ProductEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    private String productName;
-    private String productType;
-    private String productDetails;
-    private float productPrice;
-    private String productDescription;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cartId")
+    private CartEntity cart;
+
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+//    private List<CartEntity> cart;
+
+    private String product_name;
+    private String product_type;
+    private String product_details;
+    private float product_price;
+    private String product_description;
     private boolean isAvailable;
 
-    public ProductEntity(){
-        super();
-    }
+    public ProductEntity(){ super();}
 
-
-
-    public ProductEntity(int productId, String productName, String productType, String productDetails, float productPrice, String productDescription, boolean isAvailable){
-        super();
+    public ProductEntity(int productId, String product_name, String product_type, String product_details, float product_price, String product_description, boolean isAvailable) {
         this.productId = productId;
-        this.productName = productName;
-        this.productType = productType;
-        this.productDetails = productDetails;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
+        this.product_name = product_name;
+        this.product_type = product_type;
+        this.product_details = product_details;
+        this.product_price = product_price;
+        this.product_description = product_description;
         this.isAvailable = isAvailable;
-
     }
 
     public int getProductId() {
@@ -45,44 +42,44 @@ public class ProductEntity {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProduct_name() {
+        return product_name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
     }
 
-    public String getProductType() {
-        return productType;
+    public String getProduct_type() {
+        return product_type;
     }
 
-    public void setProductType(String productType) {
-        this.productType = productType;
+    public void setProduct_type(String product_type) {
+        this.product_type = product_type;
     }
 
-    public String getProductDetails() {
-        return productDetails;
+    public String getProduct_details() {
+        return product_details;
     }
 
-    public void setProductDetails(String productDetails) {
-        this.productDetails = productDetails;
+    public void setProduct_details(String product_details) {
+        this.product_details = product_details;
     }
 
-    public float getProductPrice() {
-        return productPrice;
+    public float getProduct_price() {
+        return product_price;
     }
 
-    public void setProductPrice(float productPrice) {
-        this.productPrice = productPrice;
+    public void setProduct_price(float product_price) {
+        this.product_price = product_price;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public String getProduct_description() {
+        return product_description;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public void setProduct_description(String product_description) {
+        this.product_description = product_description;
     }
 
     public boolean isAvailable() {
@@ -91,5 +88,9 @@ public class ProductEntity {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    public void setCart(CartEntity cart) {
+        this.cart = cart;
     }
 }
