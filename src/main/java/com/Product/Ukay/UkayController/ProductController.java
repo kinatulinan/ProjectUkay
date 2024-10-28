@@ -28,6 +28,8 @@ public class ProductController {
         return pserv.postProducts(product);
     }
 
+    //asasd
+
     @GetMapping("/showAllProducts")
     public List<ProductEntity> showAllProducts(){
         return pserv.showAllProducts();
