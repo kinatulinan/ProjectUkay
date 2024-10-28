@@ -17,7 +17,6 @@ public class SellEntity {
     private double sellProductPrice;
 
     @OneToMany(mappedBy = "sell", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
     private List<ProductEntity> products;
 
 

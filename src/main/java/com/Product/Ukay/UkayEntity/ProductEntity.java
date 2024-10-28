@@ -101,7 +101,15 @@ public class ProductEntity {
         this.cart = cart;
     }
 
+    public SellEntity getSell() {
+        return sell;
+    }
 
+    public void setSell(SellEntity sell) {
+        this.sell = sell;
+    }
 
-
+    public CartEntity getCart() {
+        return cart;
+    }
 }

@@ -18,10 +18,12 @@ public class ProductService {
         super();
     }
 
+    //Create
     public ProductEntity postProducts(ProductEntity product){
         return prepo.save(product);
     }
 
+    //Read
     public List<ProductEntity> showAllProducts(){
         return prepo.findAll();
     }
