@@ -15,6 +15,7 @@ public class BuyEntity {
 
 
     //jyjy
+    //KimmerUpdate
     private String buyProductName;
     private String buyProductType;
     private double buyProductPrice;
