@@ -13,6 +13,8 @@ public class BuyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int buyId;
 
+
+    //jyjy
     private String buyProductName;
     private String buyProductType;
     private double buyProductPrice;
