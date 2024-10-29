@@ -9,6 +9,9 @@ function CartPage() {
       
 
       <h1>SHaina Test</h1>
+
+
+      <h1>Richelle test</h1>
       {/* Display cart items here */}
     </div>
   );
