@@ -13,20 +13,13 @@ public class OrderController {
     @Autowired
     OrderService oserv;
 
-    @GetMapping("/test")
-    public String print(){
-        return "Test Order Entity";
-    }
-
-    @PostMapping("/postOrders")
-    public OrderEntity postOrders(@RequestBody OrderEntity order){
-
-        return oserv.postOrders(order);
+    @PostMapping("/placeOrder")
+    public OrderEntity placeOrder(@RequestBody OrderEntity order){
+        return oserv.placeOrder(order);
     }
 
     @GetMapping("/showAllOrders")
     public List<OrderEntity> showAllOrders(){
-
         return oserv.showAllOrders();
     }
 
