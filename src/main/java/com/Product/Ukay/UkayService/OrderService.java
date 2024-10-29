@@ -24,40 +24,41 @@ public class OrderService {
         return orepo.save(order);
     }
 
-    public OrderEntity postOrders(OrderEntity order){
-
-        return orepo.save(order);
-    }
-
     public List<OrderEntity> showAllOrders(){
-
         return orepo.findAll();
     }
 
-    @SuppressWarnings("fiinally")
-    public OrderEntity editOrderDetails(int orderId, OrderEntity newOrderDetails){
-        OrderEntity order = new OrderEntity();
-        try{
-            order = orepo.findById(orderId).get();
+    @SuppressWarnings("finally")
+    public OrderEntity editOrderDetails(int orderId, OrderEntity newOrderDetails) {
+        OrderEntity order = null;
+        try {
+            order = orepo.findById(orderId).orElseThrow(() -> new NoSuchElementException("Order not found"));
 
             order.setOrder_date(newOrderDetails.getOrder_date());
             order.setQuantity(newOrderDetails.getQuantity());
             order.setPrice(newOrderDetails.getPrice());
-            order.setTotal(newOrderDetails.getTotal());
-        } catch(NoSuchElementException nex){
+
+            float total = newOrderDetails.getQuantity() * newOrderDetails.getPrice();
+            order.setTotal(total);
+        } catch (NoSuchElementException nex) {
             throw new NameNotFoundException("Order " + orderId + " not found");
-        } finally{
-            return orepo.save(order);
+        } finally {
+            if (order != null) {
+                return orepo.save(order);
+            } else {
+                return null;
+            }
         }
     }
 
-    public String deleteOrder(int orderId){
-        String msg;
-        if(orepo.findById(orderId) != null){
-            orepo.deleteById(null);
+    public String deleteOrder(int orderId) {
+        String msg = "";
+        if (orepo.existsById(orderId)) {
+            orepo.deleteById(orderId);
             msg = "Order deleted!";
-        } else
+        } else {
             msg = orderId + " NOT found!";
+        }
         return msg;
     }
 }

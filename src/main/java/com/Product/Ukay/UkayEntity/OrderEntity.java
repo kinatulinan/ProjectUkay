@@ -57,5 +57,4 @@ public class OrderEntity {
     public void setTotal(float total) {
         this.total = total;
     }
-
 }
