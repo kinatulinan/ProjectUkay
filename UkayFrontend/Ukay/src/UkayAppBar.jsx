@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,11 +15,11 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 
-const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login','Register', 'Cart', 'Logout'];
+const pages = ['Product Listing', 'Sell A Product', 'Cart'];
+const settings = ['Login','Register', 'Cart', 'Orders', 'Logout'];
 
 function ResponsiveAppBar() {
-  const navigate = useNavigate(); // Initialize the navigation hook
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -40,17 +40,21 @@ function ResponsiveAppBar() {
 
   const handlePageClick = (page) => {
     if (page === 'Sell A Product') {
-      navigate('/sell'); // Redirect to the Sell A Product page
+      navigate('/sell');
     } else if (page === 'Product Listing') {
-      navigate('/products'); // Redirect to the Products page
+      navigate('/products');
+    } else if (page === 'Cart'){
+      navigate('/cart')
     }
     handleCloseNavMenu();
   };
 
   const handleSettingClick = (setting) => {
     if (setting === 'Cart') {
-      navigate('/cart'); // Redirect to the Cart page
-    } 
+      navigate('/cart');
+    } else if(setting === 'Orders'){
+      navigate('/orderlist')
+    }
     handleCloseUserMenu();
   };
 

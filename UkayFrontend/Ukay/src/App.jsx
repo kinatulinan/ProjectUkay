@@ -6,16 +6,15 @@ import HomePage from './HomePage';
 import ProductsPage from './ProductsPage';
 import SellProductPage from './SellProductPage';
 import CartPage from './CartPage';
+import OrderForm from './OrderForm';
+import OrderList from './OrderList';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-
-  // Function to add a product to the cart
   const handleAddToCart = (product) => {
     setCartItems((prevItems) => [...prevItems, product]);
   };
 
-  // Function to remove an item from the cart
   const handleRemoveItem = (index) => {
     setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
@@ -33,6 +32,8 @@ function App() {
           path="/cart" 
           element={<CartPage cartItems={cartItems} onRemoveItem={handleRemoveItem} />} 
         />
+        <Route path="/order" element={<OrderForm />} />
+        <Route path="/orderlist" element={<OrderList />} />
       </Routes>
     </Router>
   );
