@@ -12,6 +12,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid'; // Import Grid
 
 import './App.css';
 
@@ -70,33 +71,36 @@ export default function ProductsPage({ onAddToCart }) {
   };
 
   return (
-    <div className="products-grid">
-      {products.map((product) => (
-        <Card key={product.sellId} sx={{ maxWidth: 345 }}>
-          <CardMedia
-            sx={{ height: 150 }}
-            image={'/path/to/your/image.jpg' || 'placeholder.jpg'} // Replace with a relevant image URL
-            title={product.sellProductName}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {product.sellProductName}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Type: {product.sellProductType}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Price: ${product.sellProductPrice}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => onAddToCart(product)}>Add to Cart</Button>
-            <Button size="small" onClick={() => handleUpdateClick(product)}>Update</Button>
-            <Button size="small" onClick={() => handleDelete(product.sellId)}>Delete</Button>
-             {/* Add to Cart button */}
-          </CardActions>
-        </Card>
-      ))}
+    <div className="products-grid" style={{ padding: '20px' }}>
+      <Grid container spacing={3}>
+        {products.map((product) => (
+          <Grid item xs={12} sm={6} md={4} key={product.sellId}>
+            <Card sx={{ maxWidth: 345 }}>
+              <CardMedia
+                sx={{ height: 150 }}
+                image={'/path/to/your/image.jpg' || 'placeholder.jpg'} // Replace with a relevant image URL
+                title={product.sellProductName}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {product.sellProductName}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Type: {product.sellProductType}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Price: ${product.sellProductPrice}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => onAddToCart(product)}>Add to Cart</Button>
+                <Button size="small" onClick={() => handleUpdateClick(product)}>Update</Button>
+                <Button size="small" onClick={() => handleDelete(product.sellId)}>Delete</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
       {/* Update Dialog */}
       <Dialog open={open} onClose={() => setOpen(false)}>
