@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import axios from 'axios';
 
+
 function SellProductPage() {
   const [formData, setFormData] = useState({
     sellProductName: '',
@@ -23,6 +24,7 @@ function SellProductPage() {
       console.error('Error adding product:', error);
     }
   };
+
 
   return (
     <div className='form-Design'>
@@ -47,6 +49,7 @@ function SellProductPage() {
           value={formData.sellProductType}
           onChange={handleInputChange}
         />
+
 
         <label className='label-adjust' htmlFor='sellProductPrice'>Product Price</label>
         <input
