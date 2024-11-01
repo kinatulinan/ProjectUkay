@@ -15,8 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import './App.css';
 
-export default function ProductsPage() {
-  const navigate = useNavigate();
+export default function ProductsPage({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [open, setOpen] = useState(false);
@@ -31,7 +30,6 @@ export default function ProductsPage() {
         console.error('Error fetching products:', error);
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -92,8 +90,10 @@ export default function ProductsPage() {
             </Typography>
           </CardContent>
           <CardActions>
+            <Button size="small" onClick={() => onAddToCart(product)}>Add to Cart</Button>
             <Button size="small" onClick={() => handleUpdateClick(product)}>Update</Button>
             <Button size="small" onClick={() => handleDelete(product.sellId)}>Delete</Button>
+             {/* Add to Cart button */}
           </CardActions>
         </Card>
       ))}
