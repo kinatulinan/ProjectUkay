@@ -75,7 +75,7 @@ export default function ProductsPage({ onAddToCart }) {
       <Grid container spacing={3}>
         {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.sellId}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 1000 }}>
               <CardMedia
                 sx={{ height: 150 }}
                 image={'/path/to/your/image.jpg' || 'placeholder.jpg'} // Replace with a relevant image URL
