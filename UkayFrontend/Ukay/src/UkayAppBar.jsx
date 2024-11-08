@@ -51,11 +51,17 @@ function ResponsiveAppBar() {
   };
 
   const handleSettingClick = (setting) => {
+    // Navigate to LoginPage when 'Login' is clicked
     if (setting === 'Login') {
-      navigate('/login');
-    } else if (setting === 'Register') {
-      navigate('/register');
-    } else if (setting === 'Order') {
+      navigate('/login'); // Redirect to LoginPage
+    } 
+    // Navigate to RegisterPage when 'Register' is clicked
+    else if (setting === 'Register') {
+      navigate('/register'); // Redirect to RegisterPage
+    }
+    else if (setting === 'Cart') {
+      navigate('/cart');
+    } else if(setting === 'Orders'){
       navigate('/orderlist');
     }
     handleCloseUserMenu();

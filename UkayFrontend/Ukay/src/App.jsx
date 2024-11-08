@@ -8,6 +8,8 @@ import SellProductPage from './SellProductPage';
 import CartPage from './CartPage';
 import OrderList from './OrderList';
 import OrderForm from './OrderForm';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -34,7 +36,9 @@ function App() {
         />
         <Route path="/order" element={<OrderForm />} />
         <Route path="/orderlist" element={<OrderList />} />
-      
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
       </Routes>
     </Router>
   );
