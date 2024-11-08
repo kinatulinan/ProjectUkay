@@ -8,15 +8,16 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const pages = ['Product Listing', 'Sell A Product', 'Cart'];
-const settings = ['Login','Register', 'Cart', 'Orders', 'Logout'];
+const settings = ['Login', 'Register', 'Order'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -50,10 +51,12 @@ function ResponsiveAppBar() {
   };
 
   const handleSettingClick = (setting) => {
-    if (setting === 'Cart') {
-      navigate('/cart');
-    } else if(setting === 'Orders'){
-      navigate('/orderlist')
+    if (setting === 'Login') {
+      navigate('/login');
+    } else if (setting === 'Register') {
+      navigate('/register');
+    } else if (setting === 'Order') {
+      navigate('/orderlist');
     }
     handleCloseUserMenu();
   };
@@ -71,7 +74,7 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              fontFamily: 'Papyrus',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
@@ -80,7 +83,7 @@ function ResponsiveAppBar() {
           >
             U-Kay
           </Typography>
-
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -92,6 +95,7 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
+            
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -125,7 +129,7 @@ function ResponsiveAppBar() {
               mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: 'Verdana',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
@@ -146,9 +150,12 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Tooltip title="Account settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: 'white' }}>
+                <AccountCircleIcon />
+                <></>
+                <></>
+                <ShoppingCartIcon/>
               </IconButton>
             </Tooltip>
             <Menu
