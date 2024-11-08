@@ -1,59 +1,43 @@
 package com.Product.Ukay.UkayService;
 
-import com.Product.Ukay.UkayEntity.UserEntity;
-import com.Product.Ukay.UkayRepository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Product.Ukay.UkayEntity.AccountEntity;
+import com.Product.Ukay.UkayEntity.UserEntity;
+import com.Product.Ukay.UkayRepository.AccountRepository;
+import com.Product.Ukay.UkayRepository.UserRepository;
+
 @Service
 public class UserService {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    UserRepository urepo;
+    private AccountRepository accountRepository;
 
-    public UserService(){
-        super();
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 
-
-    //Create
-    public UserEntity postUserRecord(UserEntity user){
-        return urepo.save(user);
+    public boolean isUsernameOrEmailTaken(String username, String email) {
+        return userRepository.existsByUsername(username) || userRepository.existsByEmailadd(email);
     }
 
-    //Read of CRUD
-    public List<UserEntity> getAllUsers(){
-        return urepo.findAll();
-    }
-
-    // Update of CRUD
-    public UserEntity updateUserRecords(int userId, UserEntity newUserRecords) {
-        UserEntity user = urepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User with ID " + userId + " not found"));
-
-        user.setfName(newUserRecords.getfName());
-        user.setmName(newUserRecords.getmName());
-        user.setlName(newUserRecords.getlName());
-        user.setBirthDate(newUserRecords.getBirthDate());
-        user.setAddress(newUserRecords.getAddress());
-        user.setEmailAddress(newUserRecords.getEmailAddress());
-        user.setPhoneNumber(newUserRecords.getPhoneNumber());
-        user.setUsername(newUserRecords.getUsername());
-        user.setPassword(newUserRecords.getPassword());
-
-        return urepo.save(user);
-    }
-
-    public String deleteUser(int userId) {
-        String msg;
-        if (urepo.findById(userId).isPresent()) {
-            urepo.deleteById(userId); // Use productId instead of null
-            msg = "Product deleted!";
-        } else {
-            msg = "Product with ID " + userId + " not found!";
+    public UserEntity saveUser(UserEntity user, String username, String password) throws Exception {
+        if (accountRepository.existsByUsername(username)) {
+            throw new Exception("Username already exists");
         }
-        return msg;
+
+        AccountEntity account = new AccountEntity();
+        account.setUsername(username);
+        account.setPassword(password);
+
+        user.setAccount(account);
+
+        return userRepository.save(user);
     }
 }

@@ -1,11 +1,12 @@
-package com.Product.Ukay.UkayEntity;
+package com.Product.Ukay.Dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
-public class UserEntity {
+public class UserDto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int user_id;
@@ -13,17 +14,14 @@ public class UserEntity {
     private String fname;
     private String mname;
     private String lname;
-
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
     private LocalDate birthdate;
-
     private String address;
     private String emailadd;
     private String mobile;
     private String username;
     private String password;
 
-    public UserEntity(int user_id, String fname, String mname, String lname, LocalDate birthdate, String address, String emailadd, String mobile, String username, String password) {
+    public UserDto(int user_id, String fname, String mname, String lname, LocalDate birthdate, String address, String emailadd, String mobile, String username, String password) {
         this.user_id = user_id;
         this.fname = fname;
         this.mname = mname;
@@ -36,20 +34,15 @@ public class UserEntity {
         this.password = password;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
-    private AccountEntity account;
-
-    public AccountEntity getAccount() {
-        return account;
+    public UserDto() {
     }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public UserEntity(){
-
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getFname() {
@@ -59,8 +52,6 @@ public class UserEntity {
     public void setFname(String fname) {
         this.fname = fname;
     }
-
-
 
     public String getMname() {
         return mname;
@@ -126,17 +117,9 @@ public class UserEntity {
         this.password = password;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "UserDto{" +
                 "user_id=" + user_id +
                 ", fname='" + fname + '\'' +
                 ", mname='" + mname + '\'' +

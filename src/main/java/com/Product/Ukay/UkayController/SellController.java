@@ -1,7 +1,7 @@
 package com.Product.Ukay.UkayController;
 
 
-import com.Product.Ukay.UkayEntity.ProductEntity;
+//import com.Product.Ukay.UkayEntity.ProductEntity;
 import com.Product.Ukay.UkayEntity.SellEntity;
 import com.Product.Ukay.UkayService.SellService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,6 @@ public class SellController {
     public String testEndpoint() {
         return "SellController is working";
     }
-
-
 
     //Create of CRUD
     @PostMapping("/post")

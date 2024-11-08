@@ -1,44 +1,55 @@
 package com.Product.Ukay.UkayController;
 
-
-import com.Product.Ukay.UkayEntity.UserEntity;
-import com.Product.Ukay.UkayService.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Product.Ukay.Dto.UserDto;
+import com.Product.Ukay.UkayEntity.UserEntity;
+import com.Product.Ukay.UkayService.AccountService;
+import com.Product.Ukay.UkayService.UserService;
+import com.Product.Ukay.response.LoginResponse;
+
 @RestController
-@RequestMapping("/api/user")
+@CrossOrigin
+@RequestMapping("api/register")
 public class UserController {
 
     @Autowired
-    UserService userv;
+    private AccountService accountService;
+
+    @Autowired
+    private UserService userService;
 
 
-    @GetMapping("/print")
-    public String print(){
-        return "Test user entity";
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "Server is running";
     }
 
-    @PostMapping("/postUser")
-    public UserEntity postUserRecord(@RequestBody UserEntity user){
-        return userv.postUserRecord(user);
+    @PostMapping(path = "/save")
+    public String saveAccount (@RequestBody UserDto userDto){
+        String user_id = accountService.addAccount(userDto);
+        return user_id;
     }
 
-    @GetMapping("/getUser")
-    public List<UserEntity> getAllUsers(){
-        return userv.getAllUsers();
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> loginUser (@RequestBody UserDto userDto) {
+        LoginResponse loginResponse = accountService.loginUser(userDto);
+        return ResponseEntity.ok(loginResponse);
     }
 
-    @PutMapping("/updateUser")
-    public UserEntity updateUserRecords(@RequestParam int userId, @RequestBody UserEntity newUserRecords){
-        return userv.updateUserRecords(userId, newUserRecords);
+    @GetMapping
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        List<UserEntity> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
-    @DeleteMapping("/deleteUser/{userId}")
-    public String deleteUser(@PathVariable int userId){
-
-        return userv.deleteUser(userId);
-    }
 }
