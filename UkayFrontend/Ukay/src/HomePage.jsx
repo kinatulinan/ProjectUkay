@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { Box, Typography, Button, Grid, Container } from '@mui/material';
 import img1 from './assets/img1.png';
-import img1Hover from './assets/img1-hover.png'; // Add hover image
+import img1Hover from './assets/img1-hover.png';
 import img2 from './assets/img2.png';
 import img2Hover from './assets/img2-hover.png';
 import img3 from './assets/img3.png';
@@ -47,7 +47,7 @@ function WinterWarmUp() {
       <Box 
         sx={{
           textAlign: 'center', 
-          backgroundImage: 'url(/path/to/header-image.jpg)', // Replace with your image path
+          backgroundImage: 'url(/path/to/header-image.jpg)',
           backgroundSize: 'cover',
           padding: '40px 20px',
           color: 'white'

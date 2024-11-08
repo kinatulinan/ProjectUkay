@@ -2,6 +2,7 @@ package com.Product.Ukay.UkayEntity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,7 @@ public class CartEntity {
     private int cartId;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<ProductEntity> products;
+    private List<ProductEntity> products = new ArrayList<>();
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "cartId")
@@ -31,8 +32,9 @@ public class CartEntity {
         return products;
     }
 
-    public void setProducts(List<ProductEntity> products){
+    public void setProducts(List<ProductEntity> products) {
         this.products = products;
     }
+
 
 }
