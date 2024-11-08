@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const handlePageClick = (page) => {
+  const handlePageClick = (page) => { //test
     if (page === 'Sell A Product') {
       navigate('/sell');
     } else if (page === 'Product Listing') {
