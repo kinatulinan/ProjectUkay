@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Product.Ukay.Dto.UserDto;
+import com.Product.Ukay.UkayEntity.AccountEntity;
 import com.Product.Ukay.UkayEntity.UserEntity;
 import com.Product.Ukay.UkayRepository.AccountRepository;
 import com.Product.Ukay.UkayRepository.UserRepository;
@@ -24,6 +25,16 @@ public class UserIMPL implements AccountService {
 
     @Override
     public String addAccount(UserDto userDto) {
+
+        if (accountRepository.existsByUsername(userDto.getUsername())) {
+            return "Username is already taken";
+        }
+        
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setUsername(userDto.getUsername());
+        accountEntity.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+        accountRepository.save(accountEntity);
+
         UserEntity userEntity = new UserEntity(
                 userDto.getUser_id(),
                 userDto.getFname(),

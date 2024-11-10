@@ -5,4 +5,5 @@ import com.Product.Ukay.UkayEntity.AccountEntity;
 
 public interface AccountRepository extends JpaRepository <AccountEntity, Integer> {
     boolean existsByUsername(String username);
+    
 }

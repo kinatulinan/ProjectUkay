@@ -10,7 +10,6 @@ public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-
     private int accountId;
 
     private String username;
