@@ -47,6 +47,7 @@ public class UserIMPL implements AccountService {
                 userDto.getUsername(),
                 this.passwordEncoder.encode(userDto.getPassword())
         );
+        userEntity.setAccount(accountEntity);
         userRepository.save(userEntity);
         return userEntity.getUsername();
     }

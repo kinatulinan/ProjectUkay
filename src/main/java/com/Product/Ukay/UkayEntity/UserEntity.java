@@ -10,16 +10,27 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int user_id;
 
+    @Column(name = "f_name")
     private String fname;
+
+    @Column(name = "m_name")
     private String mname;
+
+    @Column(name = "l_name")
     private String lname;
 
     @DateTimeFormat(pattern = "MM/dd/yyyy")
+    @Column(name = "birth_date")
     private LocalDate birthdate;
 
     private String address;
+
+    @Column(name = "email_address")
     private String emailadd;
+
+    @Column(name = "phone_number")
     private String mobile;
+
     private String username;
     private String password;
 

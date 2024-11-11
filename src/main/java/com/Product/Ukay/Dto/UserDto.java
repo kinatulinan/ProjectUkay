@@ -3,8 +3,8 @@ package com.Product.Ukay.Dto;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class UserDto {
     @Id
@@ -14,6 +14,7 @@ public class UserDto {
     private String fname;
     private String mname;
     private String lname;
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
     private LocalDate birthdate;
     private String address;
     private String emailadd;
