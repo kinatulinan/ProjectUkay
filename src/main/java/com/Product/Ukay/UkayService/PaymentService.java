@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class PaymentService {
 
-    @Autowired
+    @Autowired //testing balik
     private PaymentRepository pRepo;
 
     public List<PaymentEntity> getAllPayments() {
