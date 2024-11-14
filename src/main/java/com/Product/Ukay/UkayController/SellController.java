@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/sell")
-@CrossOrigin(origins = "*")
+
 public class SellController {
 
     @Autowired
@@ -24,9 +25,11 @@ public class SellController {
 
     //Create of CRUD
     @PostMapping("/post")
-    public SellEntity postSellRecord(@RequestBody SellEntity sell){
+    public SellEntity postSellRecord(@RequestBody SellEntity sell) {
+        System.out.println("Received product: " + sell); // Log received data
         return sser.postSellRecord(sell);
-    }
+}
+
 
     //Read of CRUD
     @GetMapping("/get")
