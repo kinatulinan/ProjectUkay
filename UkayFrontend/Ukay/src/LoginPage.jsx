@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Container, TextField, Button, Typography, Alert, Stack, Box } from '@mui/material';
 
 function LoginPage() {
     const [username, setUsername] = useState("");
@@ -13,66 +14,77 @@ function LoginPage() {
         setIsFormValid(username && password);
     }, [username, password]);
 
-   async function save(event) {
-    event.preventDefault();
-    setErrorMessage("");
+    async function save(event) {
+        event.preventDefault();
+        setErrorMessage("");
 
-    try {
-        const response = await axios.post("http://localhost:8080/api/register/login", {
-        username,
-        password,
-        });
+        try {
+            const response = await axios.post("http://localhost:8080/api/register/login", {
+                username,
+                password,
+            });
 
-        console.log("API Response:", response.data); // Log the full response
+            console.log("API Response:", response.data);
 
-        if (response.data.success) {
-        console.log("Login successful, navigating to /home");
-        navigate('/home');
-        } else {
-        setErrorMessage(response.data.message || "Login failed");
+            if (response.data.success) {
+                console.log("Login successful, navigating to /home");
+                navigate('/home');
+            } else {
+                setErrorMessage(response.data.message || "Login failed");
+            }
+        } catch (err) {
+            setErrorMessage("An error occurred. Please try again.");
+            console.error("Login error:", err);
         }
-    } catch (err) {
-        setErrorMessage("An error occurred. Please try again.");
-        console.error("Login error:", err);
     }
-}
 
     return (
-        <div>
-            <h2>Log In</h2>
+        <Container maxWidth="sm">
+            <Typography variant="h4" align="center" gutterBottom>
+                Log In
+            </Typography>
             <form onSubmit={save}>
-                <div className="form-group">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="username"
-                        placeholder="Enter Username"
+                <Stack spacing={3} mb={2}>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
+                        required
                     />
-                </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
+                    <TextField
+                        label="Password"
                         type="password"
-                        className="form-control"
-                        id="password"
-                        placeholder="Enter Password"
+                        variant="outlined"
+                        fullWidth
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        required
                     />
-                </div>
-                <button
+                </Stack>
+                <Button
                     type="submit"
-                    className="btn btn-primary mt-4"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
                     disabled={!isFormValid}
                 >
                     Log In
-                </button>
+                </Button>
             </form>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        </div>
+            {errorMessage && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                    {errorMessage}
+                </Alert>
+            )}
+            <Box textAlign="center" sx={{ mt: 2 }}>
+                <Typography variant="body2">
+                    Don't have an account? <Link to="/register">Register Here</Link>
+                </Typography>
+            </Box>
+        </Container>
+        
     );
 }
 

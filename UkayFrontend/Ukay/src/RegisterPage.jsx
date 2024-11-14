@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container, Stack, TextField, Button, Typography, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function RegisterPage() {
     const navigate = useNavigate();
-   
-    const [fname, setFname] = useState("");
-    const [mname, setMname] = useState("");
-    const [lname, setLname] = useState("");
+
+    const [firstName, setFirstName] = useState("");
+    const [middleName, setMiddleName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [birthdate, setBirthdate] = useState("");
     const [address, setAddress] = useState("");
-    const [emailadd, setEmailadd] = useState("");
+    const [email, setEmail] = useState("");
     const [mobile, setMobile] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
-
     const [isFormValid, setIsFormValid] = useState(false);
-
 
     useEffect(() => {
         setIsFormValid(
-            fname && lname && birthdate && address && emailadd && mobile && username && password
+            firstName && lastName && birthdate && address && email && mobile && username && password
         );
-    }, [fname, lname, birthdate, address, emailadd, mobile, username, password]);
+    }, [firstName, lastName, birthdate, address, email, mobile, username, password]);
 
-    // Submit handler
-    async function save(event) {
-        event.preventDefault(); 
+    async function handleSubmit(event) {
+        event.preventDefault();
         try {
             const response = await axios.post("http://localhost:8080/api/register/save", {
-                fname,
-                mname,
-                lname,
-                birthdate, 
+                fname: firstName,
+                mname: middleName,
+                lname: lastName,
+                birthdate,
                 address,
-                emailadd,
+                emailadd: email,
                 mobile,
                 username,
                 password,
@@ -49,130 +47,124 @@ function RegisterPage() {
                 console.error(err.response?.data || err.message);
                 alert("Registration failed: " + (err.response?.data?.message || err.message));
             }
+        }
     }
-}
+
     return (
-        <div className="container mt-4">
-            <div className="card">
-                <h1>Account Registration</h1>
-                <form onSubmit={save}> {/* Use onSubmit here */}
-                    <div className="form-group">
-                        <label htmlFor="fname">First Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="fname"
-                            placeholder="First Name"
-                            value={fname}
-                            onChange={(event) => setFname(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="mname">Middle Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="mname"
-                            placeholder="Middle Name"
-                            value={mname}
-                            onChange={(event) => setMname(event.target.value)}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="lname">Last Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="lname"
-                            placeholder="Last Name"
-                            value={lname}
-                            onChange={(event) => setLname(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="text">Birthdate</label>
-                        <input
-                            type="text" // Change to date type
-                            className="form-control"
-                            id="birthdate"
-                            placeholder="Birthdate"
-                            value={birthdate}
-                            onChange={(event) => setBirthdate(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="address">Address</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="address"
-                            placeholder="Address"
-                            value={address}
-                            onChange={(event) => setAddress(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="emailadd">Email Address</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="emailadd"
-                            placeholder="Email Address"
-                            value={emailadd}
-                            onChange={(event) => setEmailadd(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="mobile">Mobile</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="mobile"
-                            placeholder="Mobile"
-                            value={mobile}
-                            onChange={(event) => setMobile(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="username"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(event) => setUsername(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary mt-4"
-                        disabled={!isFormValid} 
-                    >
-                        Register
-                    </button>
-                </form>
-            </div>
-        </div>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Register Form
+                </Typography>
+                <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
+                    <TextField
+                        label="First Name"
+                        variant="outlined"
+                        color="secondary"
+                        onChange={(e) => setFirstName(e.target.value)}
+                        value={firstName}
+                        fullWidth
+                        required
+                    />
+                    <TextField
+                        label="Middle Name"
+                        variant="outlined"
+                        color="secondary"
+                        onChange={(e) => setMiddleName(e.target.value)}
+                        value={middleName}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Last Name"
+                        variant="outlined"
+                        color="secondary"
+                        onChange={(e) => setLastName(e.target.value)}
+                        value={lastName}
+                        fullWidth
+                        required
+                    />
+                </Stack>
+                <TextField
+                    label="Address"
+                    variant="outlined"
+                    color="secondary"
+                    onChange={(e) => setAddress(e.target.value)}
+                    value={address}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <TextField
+                    label="Email"
+                    type="email"
+                    variant="outlined"
+                    color="secondary"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <TextField
+                    label="Mobile"
+                    type="text"
+                    variant="outlined"
+                    color="secondary"
+                    onChange={(e) => setMobile(e.target.value)}
+                    value={mobile}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    color="secondary"
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <TextField
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    color="secondary"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <TextField
+                    label="Date of Birth"
+                    type="date"
+                    variant="outlined"
+                    color="secondary"
+                    InputLabelProps={{ shrink: true }}
+                    onChange={(e) => setBirthdate(e.target.value)}
+                    value={birthdate}
+                    fullWidth
+                    required
+                    sx={{ mb: 4 }}
+                />
+                <Button
+                    type="submit"
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    disabled={!isFormValid}
+                >
+                    Register
+                </Button>
+            </Box>
+            <Box textAlign="center" sx={{ mt: 2 }}>
+                <Typography variant="body2">
+                    Already have an account? <Link to="/login">Login Here</Link>
+                </Typography>
+            </Box>
+        </Container>
     );
 }
 
