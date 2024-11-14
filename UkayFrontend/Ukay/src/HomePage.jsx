@@ -179,47 +179,54 @@ function HomePage() {
           alignItems: 'center',
           justifyContent: 'center',
         }}
-      ><Typography
-      variant="h1"
-      fontWeight="bold"
-      sx={{
-        fontFamily: 'Lobster, Sans Serif', // Ensure 'Lobster' is imported in your CSS
-        fontSize: '25rem', // Increased font size for a bigger display
-        color: '#FF0000',
-        textShadow: '3px 3px 6px rgba(0, 0, 0, 0.3)', // Optional: Increase shadow for more depth
-        lineHeight: 1.1, // Adjust line height for better spacing
-      }}
-    >
-      <break></break>
-      <break></break>
-      <break></break>
-      U-Kay
-    </Typography>
-    
-    
-        <Typography variant="h2" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}>
-          New Festive Arrivals
-        </Typography>
-        <Typography variant="body1" sx={{ mt: 2, fontSize: '18px', fontStyle: 'italic', color: '#d1d1d1' }}>
-          Holiday social calendar piling up? Prep the affordable way with looks from quality brands up to 90% off.
-        </Typography>
-        <Button 
-          variant="contained" 
-          sx={{ mt: 3, backgroundColor: '#e0e0e0', color: '#000', fontWeight: 'bold', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' }}
-        >
-          Shop New Arrivals
-        </Button>
+      >
+        <Typography
+  variant="h1"
+  fontWeight="bold"
+  sx={{
+    fontFamily: 'Lobster, Sans Serif', // Ensure 'Lobster' is imported in your CSS
+    fontSize: '25rem', // Increased font size for a bigger display
+    color: '#FF0000',
+    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.3)', // Optional: Increase shadow for more depth
+    lineHeight: 1.1, // Adjust line height for better spacing
+  }}
+>
+  U-Kay
+</Typography>
+
+<Box sx={{ mt: 25 }}> {/* Adds space between "U-Kay" and the sentence */}
+  <Typography
+    variant="h2"
+    fontWeight="bold"
+    sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
+  >
+    Discover Unique Finds and Timeless Styles
+  </Typography>
+  <Typography
+    variant="body1"
+    sx={{
+      mt: 2,
+      fontSize: '18px',
+      fontStyle: 'italic',
+      color: '#d1d1d1',
+    }}
+  >
+    Style your wardrobe with handpicked thrift treasures at unbeatable prices.
+  </Typography>
+</Box>
+
       </Box>
 
-      {/* Product Grid Section */}
-      <Box sx={{ textAlign: 'center', mt: 6, padding: '0 20px' }}>
-        <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif'}}>
-          Outfit Every Gathering in Style
-        </Typography>
-        <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
-          From dinner tables to fall strolls, see all the occasion looks you need to dress to impress this season.
-        </Typography>
-      </Box>
+     {/* Product Grid Section */}
+<Box sx={{ textAlign: 'center', mt: 6, padding: '0 20px' }}>
+  <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
+    Find Your Perfect Thrifted Look
+  </Typography>
+  <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
+    From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
+  </Typography>
+</Box>
+
 
       <Grid container spacing={4} sx={{ mt: 4, padding: '0 20px' }}>
         {products.map((product, index) => (
