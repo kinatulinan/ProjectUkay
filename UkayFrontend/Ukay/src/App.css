@@ -110,7 +110,7 @@
   width: 850px;
 }
 
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
@@ -187,11 +187,11 @@ body {
   overflow: hidden;
 }
 
-/* Only apply max-width to content inside specific containers */
+/* Only apply max-width to content inside specific containers 
 .limited-width-content {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
-
+ *\
