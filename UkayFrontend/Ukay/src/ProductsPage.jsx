@@ -1,25 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid'; // Import Grid
-
+import { Box, Grid, Typography, Button, Link } from '@mui/material';
 import './App.css';
+import zara from './assets/zara1.png';
 
-export default function ProductsPage({ onAddToCart }) {
+export default function ProductDetailsPage({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [open, setOpen] = useState(false);
 
   // Fetch products from backend on load
   useEffect(() => {
@@ -27,6 +14,7 @@ export default function ProductsPage({ onAddToCart }) {
       try {
         const response = await axios.get('http://localhost:8080/api/sell/get');
         setProducts(response.data);
+        setSelectedProduct(response.data[0]); // Set the first product as selected by default
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -34,111 +22,70 @@ export default function ProductsPage({ onAddToCart }) {
     fetchProducts();
   }, []);
 
-  // Open update dialog
-  const handleUpdateClick = (product) => {
-    setSelectedProduct(product);
-    setOpen(true);
-  };
-
-  // Update product in backend
-  const handleUpdate = async () => {
-    try {
-      await axios.put(`http://localhost:8080/api/sell/update/${selectedProduct.sellId}`, selectedProduct);
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.sellId === selectedProduct.sellId ? selectedProduct : product
-        )
-      );
-      setOpen(false);
-    } catch (error) {
-      console.error('Error updating product:', error);
-    }
-  };
-
-  // Handle delete product
-  const handleDelete = async (sellId) => {
-    try {
-      await axios.delete(`http://localhost:8080/api/sell/delete/${sellId}`);
-      setProducts(products.filter((product) => product.sellId !== sellId));
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedProduct({ ...selectedProduct, [name]: value });
-  };
-
   return (
-    <div className="products-grid" style={{ padding: '20px' }}>
-      <Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.sellId}>
-            <Card sx={{ maxWidth: 1000 }}>
-              <CardMedia
-                sx={{ height: 150 }}
-                image={'/path/to/your/image.jpg' || 'placeholder.jpg'} // Replace with a relevant image URL
-                title={product.sellProductName}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.sellProductName}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Type: {product.sellProductType}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Price: ${product.sellProductPrice}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => onAddToCart(product)}>Add to Cart</Button>
-                <Button size="small" onClick={() => handleUpdateClick(product)}>Update</Button>
-                <Button size="small" onClick={() => handleDelete(product.sellId)}>Delete</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+    <div className="product-details-page" style={{ padding: '20px' }}>
+      <Grid container spacing={4}>
+        {/* Main Product Image */}
+        <Grid item xs={7}>
+          <Box
+            component="img"
+            src={zara} // Replace with your main product image path
+            alt={selectedProduct?.sellProductName || 'Product Image'}
+            sx={{ width: '501px', height: '752px' }}
+          />
+        </Grid>
 
-      {/* Update Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Update Product</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Product Name"
-            type="text"
-            fullWidth
-            name="sellProductName"
-            value={selectedProduct?.sellProductName || ''}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Product Type"
-            type="text"
-            fullWidth
-            name="sellProductType"
-            value={selectedProduct?.sellProductType || ''}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Product Price"
-            type="number"
-            fullWidth
-            name="sellProductPrice"
-            value={selectedProduct?.sellProductPrice || ''}
-            onChange={handleInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleUpdate}>Update</Button>
-        </DialogActions>
-      </Dialog>
+        {/* Product Details */}
+        <Grid item xs={5}>
+          <Box sx={{ border: '1px solid black', padding: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+              {selectedProduct?.sellProductName || 'Product Name'}
+            </Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              {selectedProduct?.sellProductPrice || '0.00'} PHP
+            </Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              {selectedProduct?.sellProductType || 'Product Type'}  
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 2, lineHeight: 1.5 }}>
+              Regular fit jacket made of shiny leather-effect fabric with a contrasting faux fur interior. Lapel collar and long sleeves. Welt pockets at the hip. Inside pocket detail. Zip-up front.
+            </Typography>
+            
+            
+            <Box sx={{ borderTop: '1px solid black', borderBottom: '1px solid black', py: 2, mb: 2 }}>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                BLACK | 3548/705
+              </Typography>
+
+              {/* Size Options */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2, mb: 1 }}>
+                {['S', 'M', 'L', 'XL'].map((size) => (
+                  <Button key={size} variant="contained" sx={{ fontWeight: 'bold' , color: 'black', backgroundColor: 'white', borderRadius: '30px', '&:hover': {                 
+                    backgroundColor: 'black',
+                    color: 'white',
+                  },}}>
+                    {size}
+                  </Button>
+                ))}
+              </Box>
+              
+            </Box>
+
+            {/* Add to Cart Button */}
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ width: '100%', fontWeight: 'bold' , color: 'black', backgroundColor: 'white', borderRadius: '30px', '&:hover': {                 
+      backgroundColor: 'black',
+      color: 'white',
+    },}}
+              onClick={() => onAddToCart(selectedProduct)}
+            >
+              ADD TO CART
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </div>
   );
 }

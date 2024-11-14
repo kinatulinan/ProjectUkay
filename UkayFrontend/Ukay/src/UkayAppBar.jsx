@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import TextField from '@mui/material/TextField';
 
 const pages = ['Product Listing', 'Sell A Product', 'Cart'];
 const settings = ['Login', 'Register', 'Order'];
@@ -23,6 +24,7 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,32 +41,38 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const handlePageClick = (page) => { //test
+  const handlePageClick = (page) => {
     if (page === 'Sell A Product') {
       navigate('/sell');
     } else if (page === 'Product Listing') {
       navigate('/products');
     } else if (page === 'Cart'){
-      navigate('/cart')
+      navigate('/cart');
     }
     handleCloseNavMenu();
   };
 
   const handleSettingClick = (setting) => {
-    // Navigate to LoginPage when 'Login' is clicked
     if (setting === 'Login') {
-      navigate('/login'); // Redirect to LoginPage
-    } 
-    // Navigate to RegisterPage when 'Register' is clicked
-    else if (setting === 'Register') {
-      navigate('/register'); // Redirect to RegisterPage
-    }
-    else if (setting === 'Cart') {
+      navigate('/login');
+    } else if (setting === 'Register') {
+      navigate('/register');
+    } else if (setting === 'Cart') {
       navigate('/cart');
     } else if(setting === 'Orders'){
       navigate('/orderlist');
     }
     handleCloseUserMenu();
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    if (event.key === 'Enter') {
+      navigate(`/search?query=${searchQuery}`);
+    }
   };
 
   return (
@@ -125,25 +133,7 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'Verdana',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -155,13 +145,26 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+
+          {/* Search Box */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, mx: 2}}>
+            <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onKeyPress={handleSearchSubmit}
+              sx={{ backgroundColor: 'white', borderRadius: 1 , width: '500px'
+              }}
+            />
+          </Box>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Account settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: 'white' }}>
                 <AccountCircleIcon />
-                <></>
-                <></>
-                <ShoppingCartIcon/>
+                
               </IconButton>
             </Tooltip>
             <Menu
