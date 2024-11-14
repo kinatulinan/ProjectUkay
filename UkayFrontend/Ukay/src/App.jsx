@@ -10,6 +10,7 @@ import OrderList from './OrderList';
 import OrderForm from './OrderForm';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
+import PaymentPage from './PaymentPage';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
 
       </Routes>
     </Router>

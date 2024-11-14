@@ -18,7 +18,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TextField from '@mui/material/TextField';
 
 const pages = ['Product Listing', 'Sell A Product', 'Cart'];
-const settings = ['Login', 'Register', 'Order'];
+const settings = ['Login', 'Register', 'Order', 'Payment'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -48,6 +48,8 @@ function ResponsiveAppBar() {
       navigate('/products');
     } else if (page === 'Cart'){
       navigate('/cart');
+    } else if (page === 'Payment'){
+      navigate('/payment');
     }
     handleCloseNavMenu();
   };
@@ -61,6 +63,8 @@ function ResponsiveAppBar() {
       navigate('/cart');
     } else if(setting === 'Orders'){
       navigate('/orderlist');
+    } else if(setting === 'Payment'){
+      navigate('/payment');
     }
     handleCloseUserMenu();
   };
