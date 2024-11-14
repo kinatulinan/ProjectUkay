@@ -17,8 +17,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TextField from '@mui/material/TextField';
 import CartPage from './CartPage';
 
-const pages = ['Product Listing', 'Sell A Product', 'Cart'];
-const settings = ['Login', 'Register', 'Order'];
+const pages = ['Product Listing', 'Sell A Product'];
+const settings = ['Login', 'Register', 'Order', 'Payment'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();

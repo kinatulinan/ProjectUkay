@@ -64,7 +64,7 @@ function App() {
         <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </Router>
   );
