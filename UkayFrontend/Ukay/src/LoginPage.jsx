@@ -16,23 +16,26 @@ function LoginPage() {
 
     async function save(event) {
         event.preventDefault();
-        setErrorMessage("");
-
+        setErrorMessage(""); // Clear any previous error messages
+    
         try {
             const response = await axios.post("http://localhost:8080/api/register/login", {
                 username,
                 password,
             });
-
+    
             console.log("API Response:", response.data);
-
-            if (response.data.success) {
+    
+            if (response.data.status) {
+                // Login is successful, navigate to home
                 console.log("Login successful, navigating to /home");
                 navigate('/home');
             } else {
-                setErrorMessage(response.data.message || "Login failed");
+                // Login failed, display error message
+                setErrorMessage("Username or password does not match");
             }
         } catch (err) {
+            // Handle any errors that occur during the request
             setErrorMessage("An error occurred. Please try again.");
             console.error("Login error:", err);
         }

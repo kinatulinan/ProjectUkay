@@ -139,7 +139,7 @@ function RegisterPage() {
                 />
                 <TextField
                     label="Date of Birth"
-                    type="date"
+                    type="text"
                     variant="outlined"
                     color="secondary"
                     InputLabelProps={{ shrink: true }}
