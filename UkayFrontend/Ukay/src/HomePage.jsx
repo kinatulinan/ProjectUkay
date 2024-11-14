@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Box, Typography, Button, Grid, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import Cover from './assets/Cover.jpg';
+import thriftshop from './assets/thriftshop.jpg';
 // Imports for product images
 import Cargo1 from './assets/Cargo.png';
 import Cargo2 from './assets/Cargo2.png';
@@ -123,7 +123,7 @@ function HomePage() {
     if (item.variants && item.variants.length > 1) {
       const interval = setInterval(() => {
         setHoverIndex((prevIndex) => (prevIndex + 1) % item.variants.length);
-      }, 2000);
+      }, 500);
       item.interval = interval;
     }
   };
@@ -138,12 +138,10 @@ function HomePage() {
   return (
     <Box sx={{ width: '100vw', overflowX: 'hidden' }}>
       {/* Hero Section */}
-    <Box sx={{ width: '100vw', overflowX: 'hidden' }}>
-      {/* Hero Section */}
       <Box 
         sx={{
           textAlign: 'center',
-          backgroundImage: `url(${Cover})`,
+          backgroundImage: `url(${thriftshop})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '100px 20px',
