@@ -110,8 +110,6 @@
   width: 850px;
 }
 
-
-You sent
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -181,3 +179,19 @@ body {
     border: 1px solid #f5c6cb;
     border-radius: 4px;
   }
+/* Reset #root container for full-width sections */
+.full-width-section {
+  width: 100vw;        /* Full viewport width */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Only apply max-width to content inside specific containers */
+.limited-width-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
