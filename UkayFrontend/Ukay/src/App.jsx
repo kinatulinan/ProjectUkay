@@ -35,7 +35,7 @@ function App() {
           element={<CartPage cartItems={cartItems} onRemoveItem={handleRemoveItem} />} 
         />
         <Route path="/order" element={<OrderForm />} />
-        <Route path="/orderlist" element={<OrderList />} />
+        <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 

@@ -19,8 +19,9 @@ function CartPage({ cartItems, onRemoveItem }) {
   ];
 
   const handleOrderClick = () => {
-    navigate('/order');
+    navigate('/order', { state: { cartItems } });
   };
+  
 
   return (
     <Box sx={{ padding: 4 }}>

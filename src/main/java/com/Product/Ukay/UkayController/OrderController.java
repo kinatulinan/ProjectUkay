@@ -1,6 +1,7 @@
 package com.Product.Ukay.UkayController;
 
 import com.Product.Ukay.UkayEntity.OrderEntity;
+import com.Product.Ukay.UkayEntity.ProductEntity;
 import com.Product.Ukay.UkayService.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,12 @@ public class OrderController {
     OrderService oserv;
 
     @PostMapping("/placeOrder")
-    public OrderEntity placeOrder(@RequestBody OrderEntity order){
-        return oserv.placeOrder(order);
+    public OrderEntity placeOrder(@RequestBody OrderEntity order) {
+        ProductEntity product = order.getProduct();
+        if (product == null) {
+            throw new IllegalArgumentException("Product information is required to place an order.");
+        }
+        return oserv.placeOrder(order, product);
     }
 
     @GetMapping("/showAllOrders")
