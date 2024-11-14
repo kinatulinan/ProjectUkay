@@ -179,7 +179,24 @@ function HomePage() {
           alignItems: 'center',
           justifyContent: 'center',
         }}
-      >
+      ><Typography
+      variant="h1"
+      fontWeight="bold"
+      sx={{
+        fontFamily: 'Lobster, Sans Serif', // Ensure 'Lobster' is imported in your CSS
+        fontSize: '25rem', // Increased font size for a bigger display
+        color: '#FF0000',
+        textShadow: '3px 3px 6px rgba(0, 0, 0, 0.3)', // Optional: Increase shadow for more depth
+        lineHeight: 1.1, // Adjust line height for better spacing
+      }}
+    >
+      <break></break>
+      <break></break>
+      <break></break>
+      U-Kay
+    </Typography>
+    
+    
         <Typography variant="h2" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}>
           New Festive Arrivals
         </Typography>
