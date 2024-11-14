@@ -7,6 +7,10 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_name")
+    private ProductEntity product;
     private String order_date;
     private int quantity;
     private float price;
@@ -56,5 +60,13 @@ public class OrderEntity {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public ProductEntity getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 }

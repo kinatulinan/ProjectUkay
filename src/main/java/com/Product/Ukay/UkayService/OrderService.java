@@ -1,6 +1,7 @@
 package com.Product.Ukay.UkayService;
 
 import com.Product.Ukay.UkayEntity.OrderEntity;
+import com.Product.Ukay.UkayEntity.ProductEntity;
 import com.Product.Ukay.UkayRepository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,20 @@ import java.util.NoSuchElementException;
 @Service
 public class OrderService {
     @Autowired
-    OrderRepository orepo;
+    private OrderRepository orepo;
 
-    public OrderService(){
+    public OrderService() {
         super();
     }
 
-    public OrderEntity placeOrder(OrderEntity order) {
+    public OrderEntity placeOrder(OrderEntity order, ProductEntity product) {
+        order.setProduct(product);
         float total = order.getQuantity() * order.getPrice();
         order.setTotal(total);
         return orepo.save(order);
     }
 
-    public List<OrderEntity> showAllOrders(){
+    public List<OrderEntity> showAllOrders() {
         return orepo.findAll();
     }
 

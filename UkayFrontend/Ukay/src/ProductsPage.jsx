@@ -1,144 +1,249 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid'; // Import Grid
-
+import { Box, Grid, Typography, Button, Stack } from '@mui/material';
 import './App.css';
+import zara from './assets/zara1.png';
+import model from './assets/model.png';
+import model1 from './assets/model1.png';
+import model2 from './assets/model2.png';
+import model3 from './assets/model3.png';
 
-export default function ProductsPage({ onAddToCart }) {
+export default function ProductDetailsPage({ onAddToCart }) {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const galleryImages = [model1, model2, model3, model]; // Array of images for the gallery
 
   // Fetch products from backend on load
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/sell/get');
-        setProducts(response.data);
+        const response = await axios.get("http://localhost:8080/api/sell/get");
+        setProducts(response.data); // Set all products to state
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
     fetchProducts();
   }, []);
+  // Handle Update Product
+  const handleUpdateProduct = async (product) => {
+    if (!product.sellId) {
+      console.error("Product ID missing for update.");
+      return;
+    }
 
-  // Open update dialog
-  const handleUpdateClick = (product) => {
-    setSelectedProduct(product);
-    setOpen(true);
-  };
-
-  // Update product in backend
-  const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:8080/api/sell/update/${selectedProduct.sellId}`, selectedProduct);
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.sellId === selectedProduct.sellId ? selectedProduct : product
-        )
+      const updatedProduct = {
+        ...product,
+        sellProductName: product.sellProductName + " (Updated)",
+      };
+
+      const response = await axios.put(
+        `http://localhost:8080/api/sell/update/${product.sellId}`,
+        updatedProduct
       );
-      setOpen(false);
+      setProducts(products.map((p) => (p.sellId === product.sellId ? response.data : p)));
+      console.log("Product updated:", response.data);
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error("Error updating product:", error);
     }
   };
 
-  // Handle delete product
-  const handleDelete = async (sellId) => {
+  // Handle Delete Product
+  const handleDeleteProduct = async (product) => {
+    if (!product.sellId) {
+      console.error("Product ID missing for deletion.");
+      return;
+    }
+
     try {
-      await axios.delete(`http://localhost:8080/api/sell/delete/${sellId}`);
-      setProducts(products.filter((product) => product.sellId !== sellId));
+      await axios.delete(`http://localhost:8080/api/sell/delete/${product.sellId}`);
+      setProducts(products.filter((p) => p.sellId !== product.sellId)); // Filter out the deleted product
+      console.log("Product deleted");
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error("Error deleting product:", error);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedProduct({ ...selectedProduct, [name]: value });
+  // Handle scrolling in the image container
+  const handleScroll = (event) => {
+    const scrollPosition = event.target.scrollTop;
+    const imageIndex = Math.min(
+      galleryImages.length - 0.5,
+      Math.floor(scrollPosition / 10) // Adjust 100 for sensitivity if needed
+    );
+    setCurrentImageIndex(imageIndex);
   };
 
   return (
-    <div className="products-grid" style={{ padding: '20px' }}>
-      <Grid container spacing={3}>
+    <div className="product-details-page" style={{ padding: '20px' }}>
+      <Grid container spacing={4}>
         {products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.sellId}>
-            <Card sx={{ maxWidth: 1000 }}>
-              <CardMedia
-                sx={{ height: 150 }}
-                image={'/path/to/your/image.jpg' || 'placeholder.jpg'} // Replace with a relevant image URL
-                title={product.sellProductName}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.sellProductName}
+          <Grid item xs={12} container spacing={2} key={product.sellId}>
+            <Grid item xs={4}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                {/* Main Image */}
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '310px',
+                    overflowY: 'scroll',
+                    border: '1px solid lightgray',
+                  }}
+                  onScroll={handleScroll}
+                >
+                  <Box
+                    component="img"
+                    src={galleryImages[currentImageIndex]}
+                    alt={product.sellProductName || 'Product Image'}
+                    sx={{ width: '100%', height: 'auto' }}
+                  />
+                </Box>
+
+                {/* Gallery Thumbnails on the right */}
+                <Stack direction="column" spacing={1} sx={{ width: '30%' }}>
+                  {galleryImages.map((imgSrc, index) => (
+                    <Box
+                      key={index}
+                      component="img"
+                      src={imgSrc}
+                      alt="Gallery Thumbnail"
+                      sx={{
+                        width: '80px',
+                        height: 'auto',
+                        border: index === currentImageIndex ? '2px solid black' : '1px solid gray',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+            </Grid>
+
+            {/* Right Column - Product Details */}
+            <Grid item xs={8}>
+              <Box sx={{ padding: 2, border: '1px solid black' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+    textAlign: 'justify', marginLeft: '50px'}}>
+                  {product.sellProductName || 'Product Name'}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Type: {product.sellProductType}
+                <Typography variant="h6" sx={{ mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+    textAlign: 'justify', marginLeft: '50px'}}>
+                  {product.sellProductType || 'Product Type'}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Price: ${product.sellProductPrice}
+                <Typography variant="h6" sx={{ mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+    textAlign: 'justify', marginLeft: '50px'}}>
+                  {product.sellProductPrice || '6,595.00'} PHP
                 </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => onAddToCart(product)}>Add to Cart</Button>
-                <Button size="small" onClick={() => handleUpdateClick(product)}>Update</Button>
-                <Button size="small" onClick={() => handleDelete(product.sellId)}>Delete</Button>
-              </CardActions>
-            </Card>
+                
+                <Typography sx={{ fontSize: '14px', mb: 2, fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+    textAlign: 'justify', marginLeft: '50px'}}>
+                  Model height: 186 cm | Size: L
+                </Typography>
+                <Typography
+  variant="body2"
+  sx={{
+    mb: 2,
+    lineHeight: 1.5,
+    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+    marginLeft: '50px',
+    textAlign: 'justify',
+    width: '350px',
+    
+  }}
+>
+  Cropped fit jacket made of leather effect fabric with a contrast faux fur interior. Lapel collar
+  and long sleeves. Welt pockets at the hip. Inside pocket detail. Zip-up front.
+</Typography>
+
+
+                <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
+                  {['S', 'M', 'L', 'XL'].map((size) => (
+                    <Grid item key={size}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          width: '50px',
+                          height: '50px',
+                          color: 'black',
+                          backgroundColor: 'white',
+                          borderRadius: '0',
+                          '&:hover': {
+                            backgroundColor: 'black',
+                            color: 'white',
+                          },
+                        }}
+                      >
+                        {size}
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    width: '30%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                    backgroundColor: 'white',
+                    borderRadius: '30px',
+                    marginRight: '10px',
+                    '&:hover': {
+                      backgroundColor: 'black',
+                      color: 'white',
+                    },
+                  }}
+                  onClick={() => onAddToCart(product)}
+                >
+                  ADD TO CART
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    width: '30%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                    marginTop: '5px',
+                    marginRight: 'px',
+                    backgroundColor: 'white',
+                    borderRadius: '30px',
+                    '&:hover': {
+                      backgroundColor: 'black',
+                      color: 'white',
+                    },
+                  }}
+                  onClick={() => handleUpdateProduct(product)}
+                >
+                  Update
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    width: '30%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                    marginTop: '5px',
+                    backgroundColor: 'white',
+                    borderRadius: '30px',
+                    '&:hover': {
+                      backgroundColor: 'black',
+                      color: 'white',
+                    },
+                  }}
+                  onClick={() => handleDeleteProduct(product)}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
         ))}
       </Grid>
-
-      {/* Update Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Update Product</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Product Name"
-            type="text"
-            fullWidth
-            name="sellProductName"
-            value={selectedProduct?.sellProductName || ''}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Product Type"
-            type="text"
-            fullWidth
-            name="sellProductType"
-            value={selectedProduct?.sellProductType || ''}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Product Price"
-            type="number"
-            fullWidth
-            name="sellProductPrice"
-            value={selectedProduct?.sellProductPrice || ''}
-            onChange={handleInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleUpdate}>Update</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
