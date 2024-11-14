@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { Box, Typography, Button, Grid, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import Cover from './assets/Cover.jpg';
@@ -136,6 +136,8 @@ function HomePage() {
   };
 
   return (
+    <Box sx={{ width: '100vw', overflowX: 'hidden' }}>
+      {/* Hero Section */}
     <Box sx={{ width: '100vw', overflowX: 'hidden' }}>
       {/* Hero Section */}
       <Box 
