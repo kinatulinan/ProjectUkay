@@ -1,3 +1,6 @@
+/* In App.css or index.css */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
