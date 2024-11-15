@@ -41,10 +41,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             backgroundColor: '#f9f9f9',
           }}
         >
-          <Typography>No items in cart</Typography>
-          <Button variant="outlined" sx={{ marginTop: 2 }} onClick={handleContinueShopping}>
-            Continue Shopping
-          </Button>
         </Box>
       ) : (
         <Box sx={{ maxHeight: 400, overflowY: 'auto', marginBottom: 2 }}>
