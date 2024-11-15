@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { Container, Box, Typography, Button, TextField, Grid, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
-import thrift from './assets/thriftshop.jpg';
-import steps from './assets/steps.png';
 import './App.css';
+import background from './assets/background.png';
+import background1 from './assets/background1.png';
 
 function SellProductPage() {
   const [formData, setFormData] = useState({
@@ -78,7 +78,7 @@ function SellProductPage() {
         <Grid item xs={12} md={6}>
           <Box
             component="img"
-            src={thrift} // Use the imported image here
+            src={background} // Use the imported image here
             alt="Clothing business setup"
             sx={{ width: '100%', borderRadius: 2 }}
           />
@@ -145,7 +145,7 @@ function SellProductPage() {
         <Grid item xs={12} md={6}>
           <Box
             component="img"
-            src={steps} // Use the imported image here
+            src={background1} // Use the imported image here
             alt="Steps illustration"
             sx={{ width: '100%', borderRadius: 2 }}
           />

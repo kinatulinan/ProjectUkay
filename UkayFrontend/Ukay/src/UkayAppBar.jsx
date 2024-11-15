@@ -11,20 +11,26 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TextField from '@mui/material/TextField';
+import CartPage from './CartPage';
 
-const pages = ['Product Listing', 'Sell A Product', 'Cart'];
-const settings = ['Login', 'Register', 'Order'];
+const pages = ['Product Listing', 'Sell A Product'];
+const settings = ['Login', 'Register', 'Order', 'Payment'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
+  const [cartItems, setCartItems] = React.useState([]);
+
+  const handleAddToCart = (item) => {
+    setCartItems((prevItems) => [...prevItems, item]);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -46,8 +52,10 @@ function ResponsiveAppBar() {
       navigate('/sell');
     } else if (page === 'Product Listing') {
       navigate('/products');
-    } else if (page === 'Cart'){
+    } else if (page === 'Cart') {
       navigate('/cart');
+    } else if (page === 'Payment'){
+      navigate('/payment');
     }
     handleCloseNavMenu();
   };
@@ -59,8 +67,10 @@ function ResponsiveAppBar() {
       navigate('/register');
     } else if (setting === 'Cart') {
       navigate('/cart');
-    } else if(setting === 'Orders'){
+    } else if (setting === 'Orders') {
       navigate('/orderlist');
+    } else if(setting === 'Payment'){
+      navigate('/payment');
     }
     handleCloseUserMenu();
   };
@@ -73,6 +83,22 @@ function ResponsiveAppBar() {
     if (event.key === 'Enter') {
       navigate(`/search?query=${searchQuery}`);
     }
+  };
+
+  const handleDrawerClose = () => {
+    setCartDrawerOpen(false);
+  };
+
+  const handleUpdateQuantity = (index, quantity) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, quantity: quantity } : item
+      )
+    );
+  };
+
+  const handleRemoveItem = (index) => {
+    setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
   return (
@@ -139,14 +165,13 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={() => handlePageClick(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block', '&:focus': { outline: 'none' },'&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' }  }}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          {/* Search Box */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, mx: 2}}>
             <TextField
               variant="outlined"
@@ -155,16 +180,22 @@ function ResponsiveAppBar() {
               value={searchQuery}
               onChange={handleSearchChange}
               onKeyPress={handleSearchSubmit}
-              sx={{ backgroundColor: 'white', borderRadius: 1 , width: '500px'
-              }}
+              sx={{ backgroundColor: 'white', borderRadius: 1, width: '500px' }}
             />
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip title="Cart">
+              <IconButton onClick={() => setCartDrawerOpen(true)} 
+                sx={{ p: 0, color: 'white', mr: 2,'&:focus': { outline: 'none' },'&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' }  }}>
+                <ShoppingCartIcon />
+              </IconButton>
+            </Tooltip>
+
             <Tooltip title="Account settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: 'white' }}>
+              <IconButton onClick={handleOpenUserMenu} 
+                sx={{ p: 0, color: 'white','&:focus': { outline: 'none' },'&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' }  }}>
                 <AccountCircleIcon />
-                
               </IconButton>
             </Tooltip>
             <Menu
@@ -192,6 +223,15 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
+
+      {/* Cart Drawer using CartPage Component */}
+      <CartPage
+        cartItems={cartItems}
+        onRemoveItem={handleRemoveItem}
+        onUpdateQuantity={handleUpdateQuantity}
+        open={cartDrawerOpen}
+        onClose={handleDrawerClose}
+      />
     </AppBar>
   );
 }
