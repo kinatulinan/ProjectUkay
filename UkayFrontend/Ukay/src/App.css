@@ -112,3 +112,119 @@
   justify-content: center;
   width: 850px;
 }
+
+.container-payment-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-payment-page h1,
+.container-payment-page h2 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.payment-form div {
+  margin-bottom: 15px;
+}
+
+.payment-form label {
+  display: block;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.payment-form input[type="number"],
+.payment-form input[type="date"],
+.payment-form input[type="text"],
+.payment-form select,
+.payment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.payment-form textarea {
+  resize: vertical;
+}
+
+.payment-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.payment-form button:hover {
+  background-color: #0056b3;
+}
+
+.payment-search {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.payment-search label {
+  font-weight: bold;
+  color: #555;
+  margin-right: 10px;
+}
+
+.payment-search input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 16px;
+}
+
+.payment-list {
+  list-style-type: none;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.payment-list li {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+}
+
+.payment-list li:last-child {
+  border-bottom: none;
+}
+
+.payment-list li span {
+  display: block;
+  color: #333;
+}
+
+.payment-list li span.label {
+  font-weight: bold;
+  color: #007bff;
+}
