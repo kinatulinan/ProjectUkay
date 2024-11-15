@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PaymentServicee {
+public class PaymentServicee implements PaymentService{
 
     @Autowired //testing balik
     private PaymentRepository pRepo;
