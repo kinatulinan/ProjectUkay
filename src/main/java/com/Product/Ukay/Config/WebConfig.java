@@ -12,7 +12,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/sell/**")
-                        .allowedOrigins("http://localhost:5173") // Allow requests from your frontend
+                        .allowedOrigins("http://localhost:5174") // Allow requests from your frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify allowed methods
                         .allowedHeaders("*")
                         .allowCredentials(true); // Allows cookies if needed
