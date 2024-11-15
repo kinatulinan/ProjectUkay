@@ -1,84 +1,118 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import { Box, Grid, Typography, Button, IconButton, TextField, Drawer, Divider, List, ListItem } from '@mui/material';
+import { Add, Remove, Close as CloseIcon } from '@mui/icons-material';
 
-function CartPage({ cartItems, onRemoveItem }) {
-  const navigate = useNavigate();
-  const totalPrice = cartItems.reduce((total, item) => total + item.sellProductPrice, 0);
-
-  const itemsWithPlaceholders = [
-    ...cartItems,
-    ...Array((3 - (cartItems.length % 3)) % 3).fill(null)
-  ];
-
-  const handleOrderClick = () => {
-    navigate('/order', { state: { cartItems } });
-  };
-  
+function CartPage({ cartItems, onRemoveItem, onUpdateQuantity, open, onClose, handleViewCart }) {
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.sellProductPrice * item.quantity,
+    0
+  );
 
   return (
-    <Box sx={{ padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Your Cart
-      </Typography>
-      {cartItems.length === 0 ? (
-        <Typography variant="body1">Your cart is empty.</Typography>
-      ) : (
-        <Grid container spacing={3}>
-          {itemsWithPlaceholders.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              {item ? (
-                <Card sx={{ height: '100%', boxShadow: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" color="text.primary">
-                      {item.sellProductName}
-                    </Typography>
-                    <Divider sx={{ marginY: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      Type: {item.sellProductType}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Price: ${item.sellProductPrice.toFixed(2)}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="secondary" onClick={() => onRemoveItem(index)}>
-                      Remove
-                    </Button>
-                  </CardActions>
-                </Card>
-              ) : (
-                <Box sx={{ visibility: 'hidden' }}>
-                  <Card sx={{ height: '100%' }} />
-                </Box>
-              )}
-            </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Box sx={{ marginTop: 3, padding: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
-              <Typography variant="h6" color="text.primary">
-                Total: ${totalPrice.toFixed(2)}
-              </Typography>
-              <Button 
-                variant="contained" 
-                color="primary" 
-                sx={{ marginTop: 2 }} 
-                onClick={handleOrderClick}
-              >
-                Order
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      )}
-    </Box>
+    <Drawer 
+      anchor="right" 
+      open={open} 
+      onClose={onClose} 
+      sx={{
+        '& .MuiDrawer-paper': { 
+          borderTopLeftRadius: '20px', 
+          borderBottomLeftRadius: '20px',
+        },
+      }}
+    >
+      <Box 
+        sx={{ 
+          width: 500, 
+          position: 'relative', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          height: '100%' 
+        }} 
+        role="presentation" 
+        onClick={onClose} 
+        onKeyDown={onClose}
+      >
+        {/* Close Icon */}
+        <IconButton 
+          onClick={onClose} 
+          sx={{ 
+            position: 'absolute', 
+            top: 10, 
+            right: 10, 
+            color: 'black' 
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        {/* Cart Title */}
+        <Typography 
+          variant="h6" 
+          sx={{ 
+            padding: 2, 
+            fontFamily: 'Roboto, sans-serif', 
+            fontWeight: 'bold', 
+            fontSize: '0.9rem' 
+          }}
+        >
+          CART
+        </Typography>
+        <Divider />
+
+        {/* Cart Items List */}
+        <List sx={{ flexGrow: 1 }}>
+          {cartItems.length === 0 ? (
+            <ListItem> </ListItem>
+          ) : (
+            cartItems.map((item, index) => (
+              <div key={index}>
+                <Typography>{item.sellProductName}</Typography>
+                <Typography>{item.sellProductPrice}</Typography>
+              </div>
+            ))
+          )}
+        </List>
+
+        {/* View Cart Button */}
+        <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center', marginTop: 'auto' }}>
+          <Button 
+            variant="text" 
+            sx={{ 
+              width: '18%', 
+              fontWeight: 'bold', 
+              backgroundColor: 'white', 
+              color: 'black', 
+              borderRadius: '0px', 
+              textTransform: 'capitalize', 
+              position: 'relative', 
+              overflow: 'hidden',
+              '&::after': {
+                content: '""', 
+                position: 'absolute', 
+                bottom: 0, 
+                left: '0%', 
+                width: '100%', 
+                height: '2px',
+                backgroundColor: '#b3b5b5',  
+                transform: 'scaleX(1)', 
+                transformOrigin: 'bottom right',
+                transition: 'transform 10s ease, background-color 0.5s ease', 
+              },
+              '&:hover': { 
+                '&::after': {
+                  backgroundColor: 'black', 
+                  transform: 'scaleX(1)', 
+                  transformOrigin: 'bottom left',
+                },
+              },
+            }} 
+            onClick={handleViewCart}
+          >
+            View Cart
+          </Button>
+        </Box>
+      </Box>
+    </Drawer>
   );
 }
 
