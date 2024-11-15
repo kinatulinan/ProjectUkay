@@ -1,24 +1,13 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip, Menu, MenuItem } from '@mui/material';
+import { Menu as MenuIcon, Checkroom as CheckroomIcon, AccountCircle as AccountCircleIcon, ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import CartPage from './CartPage';
+import ProductsPage from './ProductsPage';
 
-const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Order', 'Payment'];
+const pages = ['Product Listing', 'Sell A Product', 'Cart'];
+const settings = ['Login', 'Register', 'Buyer Payment'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -28,8 +17,18 @@ function ResponsiveAppBar() {
   const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
 
-  const handleAddToCart = (item) => {
-    setCartItems((prevItems) => [...prevItems, item]);
+  const handleAddToCart = (product) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.sellId === product.sellId);
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.sellId === product.sellId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevItems, { ...product, quantity: 1 }];
+      }
+    });
+    setCartDrawerOpen(true);
   };
 
   const handleOpenNavMenu = (event) => {
@@ -101,6 +100,10 @@ function ResponsiveAppBar() {
     setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -118,6 +121,7 @@ function ResponsiveAppBar() {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
+              '&:hover': { color: 'black', fontWeight: 'bold'},
               textDecoration: 'none',
             }}
           >
@@ -230,7 +234,8 @@ function ResponsiveAppBar() {
         onRemoveItem={handleRemoveItem}
         onUpdateQuantity={handleUpdateQuantity}
         open={cartDrawerOpen}
-        onClose={handleDrawerClose}
+        onClose={() => setCartDrawerOpen(false)}
+        handleViewCart={() => {}}
       />
     </AppBar>
   );

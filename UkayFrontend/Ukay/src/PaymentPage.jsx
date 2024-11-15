@@ -2,6 +2,49 @@ import React, { useState, useEffect } from 'react';
 import './App.css'; 
 import PaymentService from '../PaymentService';
 
+const PaymentPage = () => {
+    const userid = 1; // Sample user ID
+    const [payments, setPayments] = useState([]);
+    const [searchId, setSearchId] = useState('');
+
+    const fetchPayments = async () => {
+        try {
+            const response = await PaymentService.getPaymentsByUserId(userid);
+            setPayments(response.data);
+        } catch (error) {
+            console.error('Error fetching payments:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchPayments();
+    }, [userid]);
+
+    const handlePaymentCreated = () => {
+        fetchPayments();
+    };
+
+    return (
+        <div className="container-payment-page">
+            <h1>Buyer Payment</h1>
+            <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
+            <div className="payment-section">
+                <h2>Recorded Payments</h2>
+                <div className="payment-search">
+                    <label>Search by Order ID:</label>
+                    <input
+                        type="text"
+                        value={searchId}
+                        onChange={(e) => setSearchId(e.target.value)}
+                        placeholder="Enter Transaction ID"
+                    />
+                </div>
+                <PaymentList payments={payments} searchId={searchId} />
+            </div>
+        </div>
+    );
+};
+
 // PaymentForm component
 const PaymentForm = ({ userid, onPaymentCreated }) => {
     const [amount, setAmount] = useState('');
@@ -31,7 +74,7 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="payment-form" onSubmit={handleSubmit}>
             <div>
                 <label>Amount:</label>
                 <input
@@ -87,69 +130,65 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
 };
 
 // PaymentList component
+// PaymentList component with pagination
 const PaymentList = ({ payments, searchId }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const paymentsPerPage = 3; // Display 5 payments per page
+
+    // Filter payments based on search term
     const filteredPayments = searchId
         ? payments.filter(payment => payment.transactionId.toLowerCase().includes(searchId.toLowerCase()))
         : payments;
 
-    return (
-        <ul>
-            {filteredPayments.length > 0 ? (
-                filteredPayments.map(payment => (
-                    <li key={payment.paymentid}>
-                        Amount: {payment.amount}, Date: {payment.paymentDate}, Method: {payment.method}, Order ID: {payment.transactionId}, Notes: {payment.notes}
-                    </li>
-                ))
-            ) : (
-                <li>No payments found.</li>
-            )}
-        </ul>
-    );
-};
+    // Calculate the number of pages
+    const totalPages = Math.ceil(filteredPayments.length / paymentsPerPage);
 
-// Main PaymentPage component
-const PaymentPage = () => {
-    const userid = 1; // Sample user ID
-    const [payments, setPayments] = useState([]);
-    const [searchId, setSearchId] = useState('');
+    // Calculate payments to display for the current page
+    const startIndex = (currentPage - 1) * paymentsPerPage;
+    const currentPayments = filteredPayments.slice(startIndex, startIndex + paymentsPerPage);
 
-    const fetchPayments = async () => {
-        try {
-            const response = await PaymentService.getPaymentsByUserId(userid);
-            setPayments(response.data);
-        } catch (error) {
-            console.error('Error fetching payments:', error);
-        }
-    };
-      
-
-    useEffect(() => {
-        fetchPayments();
-    }, [userid]);
-
-    const handlePaymentCreated = () => {
-        fetchPayments(); 
-    };
+    // Change page
+    const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+    const goToPreviousPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
 
     return (
-        <div className="container">
-            <h1>Create Payment</h1>
-            <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
-            <div style={{ marginTop: '20px' }}>
-                <h2>Your Payments</h2>
-                <div>
-                    <label>Search by Order ID:</label>
-                    <input
-                        type="text"
-                        value={searchId}
-                        onChange={(e) => setSearchId(e.target.value)}
-                        placeholder="Enter Transaction ID"
-                    />
-                </div>
-                <PaymentList payments={payments} searchId={searchId} />
+        <div>
+            <ul className="payment-list">
+                {currentPayments.length > 0 ? (
+                    currentPayments.map(payment => (
+                        <li key={payment.paymentid}>
+                            <span className="label">Amount:</span> {payment.amount}, 
+                            <span className="label"> Date:</span> {payment.paymentDate}, 
+                            <span className="label"> Method:</span> {payment.method}, 
+                            <span className="label"> Order ID:</span> {payment.transactionId}, 
+                            <span className="label"> Notes:</span> {payment.notes}
+                        </li>
+                    ))
+                ) : (
+                    <li>No payments found.</li>
+                )}
+            </ul>
+            
+            {/* Pagination Controls */}
+            <div className="pagination-controls">
+                <button 
+                    onClick={goToPreviousPage} 
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <button 
+                    onClick={goToNextPage} 
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
             </div>
         </div>
     );
 };
+
+
 
 export default PaymentPage;
