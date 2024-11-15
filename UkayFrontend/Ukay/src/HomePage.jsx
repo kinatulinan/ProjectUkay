@@ -3,7 +3,6 @@ import './App.css';
 import { Box, Typography, Button, Grid, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import Cover from './assets/Cover.jpg';
 
-// Imports for product images
 import Cargo1 from './assets/Cargo.png';
 import Cargo2 from './assets/Cargo2.png';
 import Cargo3 from './assets/Cargo3.png';
