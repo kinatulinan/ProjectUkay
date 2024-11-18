@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Container, TextField, Button, Typography, Alert, Stack, Box } from '@mui/material';
+import { Container, TextField, Button, Typography, Alert, Stack, Box, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
     const [isFormValid, setIsFormValid] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
@@ -14,9 +16,13 @@ function LoginPage() {
         setIsFormValid(username && password);
     }, [username, password]);
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     async function save(event) {
         event.preventDefault();
-        setErrorMessage(""); // Clear any previous error messages
+        setErrorMessage(""); 
     
         try {
             const response = await axios.post("http://localhost:8080/api/register/login", {
@@ -27,15 +33,12 @@ function LoginPage() {
             console.log("API Response:", response.data);
     
             if (response.data.status) {
-                // Login is successful, navigate to home
                 console.log("Login successful, navigating to /home");
                 navigate('/home');
             } else {
-                // Login failed, display error message
                 setErrorMessage("Username or password does not match");
             }
         } catch (err) {
-            // Handle any errors that occur during the request
             setErrorMessage("An error occurred. Please try again.");
             console.error("Login error:", err);
         }
@@ -58,12 +61,24 @@ function LoginPage() {
                     />
                     <TextField
                         label="Password"
-                        type="password"
+                        type={showPassword ? "text" : "password"} // Dynamic type for password visibility
                         variant="outlined"
                         fullWidth
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         required
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={togglePasswordVisibility}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                 </Stack>
                 <Button
@@ -87,7 +102,6 @@ function LoginPage() {
                 </Typography>
             </Box>
         </Container>
-        
     );
 }
 
