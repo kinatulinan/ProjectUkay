@@ -9,7 +9,7 @@ public class OrderEntity {
     private int orderId;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_name")
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
     private String order_date;
     private int quantity;

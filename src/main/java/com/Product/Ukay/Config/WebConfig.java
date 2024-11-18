@@ -12,10 +12,10 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/sell/**")
-                        .allowedOrigins("http://localhost:5174") // Allow requests from your frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify allowed methods
+                        .allowedOrigins("http://localhost:5174")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
-                        .allowCredentials(true); // Allows cookies if needed
+                        .allowCredentials(true);
             }
         };
     }
