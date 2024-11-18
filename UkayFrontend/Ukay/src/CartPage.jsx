@@ -24,8 +24,8 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
   return (
     <Drawer
       anchor="right"
-      open={open}  // Control drawer visibility based on `open` prop
-      onClose={onClose}  // Close drawer when clicked outside or on close button
+      open={open}
+      onClose={onClose}
       sx={{
         '& .MuiDrawer-paper': {
           width: 500,

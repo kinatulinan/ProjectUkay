@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { placeOrder as placeOrderService, fetchOrders as fetchOrdersService, deleteOrder as deleteOrderService } from '../orderService';
-import './Orders.css';
+import { Box, Typography, TextField, Button, IconButton } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 const OrderForm = () => {
     const [orders, setOrders] = useState([]);
@@ -74,78 +75,80 @@ const OrderForm = () => {
     };
 
     return (
-        <div className="orders-container">
-            <h1 className="orders-header">Orders</h1>
-            <div className="order-form-container">
-                <h2 className="form-title">Place a New Order</h2>
-                <div className="form-fields">
-                    <label>
-                        Order Date:
-                        <input
-                            type="text"
-                            value={newOrder.order_date}
-                            placeholder="yyyy-mm-dd"
-                            onChange={(e) => handleInputChange('order_date', e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        Quantity:
-                        <input
-                            type="number"
-                            value={newOrder.quantity}
-                            onChange={(e) => handleInputChange('quantity', Number(e.target.value))}
-                        />
-                    </label>
-                    <label>
-                        Price:
-                        <input
-                            type="text"
-                            value={newOrder.price}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                if (value === "" || !isNaN(value) && !isNaN(parseFloat(value))) {
-                                    handleInputChange('price', value);
-                                }
-                            }}
-                        />
-                    </label>
-                    <button className="place-order-button" onClick={placeOrder}>
-                        Place Order
-                    </button>
-                </div>
-            </div>
+        <Box sx={{ padding: 2, marginTop: '0px'  }}>
+            <Typography
+                variant="h5"
+                sx={{
+                    fontWeight: 'bold',
+                    marginBottom: 2,
+                    textAlign: 'left',
+                }}
+            >
+                Orders
+            </Typography>
 
-            <h2 className="order-list-title">Order List</h2>
-            <table className="order-table">
-                <thead>
-                    <tr>
-                        <th>Order Date</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map((order, index) => (
-                        <tr key={index}>
-                            <td>{order.order_date}</td>
-                            <td>{order.quantity}</td>
-                            <td>${order.price}</td>
-                            <td>${order.total.toFixed(2)}</td>
-                            <td>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => deleteOrder(index)}
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+            <Box sx={{ marginBottom: 3 }}>
+                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                    Place a New Order
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <TextField
+                        label="Order Date"
+                        value={newOrder.order_date}
+                        placeholder="yyyy-mm-dd"
+                        onChange={(e) => handleInputChange('order_date', e.target.value)}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Quantity"
+                        type="number"
+                        value={newOrder.quantity}
+                        onChange={(e) => handleInputChange('quantity', Number(e.target.value))}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Price"
+                        value={newOrder.price}
+                        onChange={(e) => handleInputChange('price', e.target.value)}
+                        fullWidth
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ marginTop: 2 }}
+                        onClick={placeOrder}
+                    >
+                        Place Order
+                    </Button>
+                </Box>
+            </Box>
+
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+                Order List
+            </Typography>
+            <Box sx={{ overflowY: 'auto', maxHeight: 400 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', fontWeight: 'bold', borderBottom: '1px solid #ddd', padding: 1 }}>
+                    <Typography textAlign="center">Order Date</Typography>
+                    <Typography textAlign="center">Quantity</Typography>
+                    <Typography textAlign="center">Price</Typography>
+                    <Typography textAlign="center">Total</Typography>
+                </Box>
+                {orders.map((order, index) => (
+                    <Box key={index} sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', borderBottom: '1px solid #ddd', padding: 1 }}>
+                        <Typography textAlign="center">{order.order_date}</Typography>
+                        <Typography textAlign="center">{order.quantity}</Typography>
+                        <Typography textAlign="center">${order.price}</Typography>
+                        <Typography textAlign="center">${order.total.toFixed(2)}</Typography>
+                        <IconButton
+                            sx={{ color: 'red' }}
+                            onClick={() => deleteOrder(index)}
+                        >
+                            <Delete />
+                        </IconButton>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
     );
 };
 

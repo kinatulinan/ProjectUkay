@@ -117,7 +117,7 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'Papyrus',
+              fontFamily: 'Lobster, Sans Serif',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',

@@ -270,7 +270,7 @@ export default function ProductDetailsPage({ onAddToCart }) {
                     borderRadius: '30px',
                     '&:hover': {
                       backgroundColor: '#0D0F1F',
-                      color: '#C81501',
+                      color: '#FF4141',
                     },
                   }}
                   onClick={() => handleDeleteDialogOpen(product)} // Open delete dialog
@@ -283,14 +283,14 @@ export default function ProductDetailsPage({ onAddToCart }) {
         ))}
       </Grid>
 
-      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose} >
       <DialogContent
         sx={{
           padding: '20px',
           textAlign: 'center',
           fontSize: '1rem',
           color: '#0D0F1F',
-          backgroundColor: '#e0e0e0',
+          backgroundColor: '#e0e0e0'
         }}
       >
         <Typography

@@ -162,7 +162,7 @@ function HomePage() {
   };
 
   return (
-    <Box sx={{ width: '100vw', overflowX: 'hidden' }}>
+    <Box sx={{ overflowX: 'hidden' }}>
       {/* Hero Section */}
       <Box 
         sx={{
@@ -170,30 +170,32 @@ function HomePage() {
           backgroundImage: `url(${Cover})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          padding: '100px 20px',
+          padding: '100px 18px',
+          marginTop: '30px',
           color: 'white',
+          width: '80vw',
           height: '80vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          borderRadius: '0px 0px 20px 20px',
         }}
       >
-        <Typography
-  variant="h1"
-  fontWeight="bold"
-  sx={{
-    fontFamily: 'Lobster, Sans Serif', // Ensure 'Lobster' is imported in your CSS
-    fontSize: '25rem', // Increased font size for a bigger display
-    color: '#FF0000',
-    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.3)', // Optional: Increase shadow for more depth
-    lineHeight: 1.1, // Adjust line height for better spacing
-  }}
->
-  U-Kay
-</Typography>
+      <Typography
+          variant="h1"
+          fontWeight="bold"
+          sx={{
+            fontFamily: 'Lobster, Sans Serif',
+            fontSize: '24rem',
+            color: '#E99E00',
+            textShadow: '0 0 10px #E99E00, 0 0 20px #010f42, 0 0 30px #010f42',
+            lineHeight: 1.1,
+          }}>
+        U-Kay
+      </Typography>
 
-<Box sx={{ mt: 25 }}> {/* Adds space between "U-Kay" and the sentence */}
+<Box sx={{ mt: 10 }}>
   <Typography
     variant="h2"
     fontWeight="bold"
@@ -217,7 +219,7 @@ function HomePage() {
       </Box>
 
      {/* Product Grid Section */}
-<Box sx={{ textAlign: 'center', mt: 6, padding: '0 20px' }}>
+<Box sx={{ textAlign: 'center', mt: 6 }}>
   <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
     Find Your Perfect Thrifted Look
   </Typography>
@@ -227,7 +229,7 @@ function HomePage() {
 </Box>
 
 
-      <Grid container spacing={4} sx={{ mt: 4, padding: '0 20px' }}>
+      <Grid container spacing={4} sx={{ mt: 4}}>
         {products.map((product, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box 
@@ -238,9 +240,10 @@ function HomePage() {
                 padding: 2,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                 cursor: 'pointer',
+                overflow: 'hidden',
                 '&:hover': {
-                  boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.15)',
-                  transform: 'scale(1.05)',
+                  boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.40)',
+                  transform: 'scale(1.00)',
                   transition: 'all 0.3s ease',
                 }
               }}
@@ -248,11 +251,13 @@ function HomePage() {
             >
               <Box
                 component="img"
-                src={product.variants[0].img} // Display the first variant image by default
+                src={product.variants[0].img}
                 alt={product.label}
                 sx={{
                   width: '100%',
                   borderRadius: 2,
+                  height: 'auto',
+                  overflow: 'hidden',
                   mb: 1,
                   border: '1px solid #999',
                   transition: 'transform 0.3s ease',
@@ -268,21 +273,22 @@ function HomePage() {
       {/* Dialog for product details */}
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
         <DialogTitle>{selectedItem?.label}</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ overflow: 'hidden' }}>
           <Grid container spacing={2}>
             {selectedItem?.variants.map((variant, idx) => (
               <Grid item xs={6} sm={4} md={3} key={idx}>
                 <Box 
                   sx={{
                     textAlign: 'center',
-                    padding: 2,
+                    padding: 1,
                     backgroundColor: '#f9f9f9',
                     borderRadius: 2,
                     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
                     cursor: 'pointer',
+                    overflow: 'hidden',
                     '&:hover': {
-                      boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.15)',
-                      transform: 'scale(1.05)',
+                      boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.35)', 
+                      transform: 'scale(1.00)',
                       transition: 'all 0.3s ease',
                     }
                   }}
@@ -294,6 +300,7 @@ function HomePage() {
                     sx={{
                       width: '100%',
                       borderRadius: 2,
+                      overflow: 'hidden',
                       mb: 1,
                       border: '1px solid #ddd',
                     }}
