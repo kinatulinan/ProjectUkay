@@ -56,7 +56,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
         </Box>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 400, overflowY: 'auto' }}>
-          {/* Table Header */}
           <Box
             sx={{
               display: 'grid',
@@ -72,7 +71,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             <Typography fontWeight={"bold"}>Total</Typography>
           </Box>
 
-          {/* Cart Items */}
           {cartItems.map((item, index) => (
             <Box
               key={index}
@@ -87,7 +85,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             >
               <Typography>{item.sellProductName}</Typography>
 
-              {/* Quantity Controls */}
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
                 <IconButton
                   onClick={() => onUpdateQuantity(index, item.quantity - 1 )}
@@ -138,17 +135,18 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
               textTransform: 'capitalize', 
               position: 'relative', 
               overflow: 'hidden',
+              '&:focus': { outline: 'none' },
               '&::after': {
                 content: '""', 
                 position: 'absolute', 
                 bottom: 0, 
                 left: '0%', 
                 width: '100%', 
-                height: '2px',
+                height: '1.3px',
                 backgroundColor: '#b3b5b5',  
-                transform: 'scaleX(1)', 
+                transform: 'scaleX(0)', 
                 transformOrigin: 'bottom right',
-                transition: 'transform 20s ease, background-color 0.5s ease', 
+                transition: 'transform 1s ease, background-color 0.5s ease', 
               },
               '&:hover': { 
                 '&::after': {
@@ -167,11 +165,12 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             variant="contained"
             color="primary"
             sx={{
-              width: '30%',
-              color: 'white',
+              width: '25%',
+              color: '#E99E00',
               backgroundColor: 'black',
               borderRadius: '30px',
               marginRight: '10px',
+              textTransform: 'capitalize',
               '&:hover': {
                 backgroundColor: 'white',
                 color: 'black',

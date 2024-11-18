@@ -6,8 +6,8 @@ import TextField from '@mui/material/TextField';
 import CartPage from './CartPage';
 import ProductsPage from './ProductsPage';
 
-const pages = ['Product Listing', 'Sell A Product', 'Cart'];
-const settings = ['Login', 'Register', 'Buyer Payment'];
+const pages = ['Product Listing', 'Sell A Product'];
+const settings = ['Login', 'Register', 'Orders', 'Buyer Payment'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ function ResponsiveAppBar() {
       navigate('/products');
     } else if (page === 'Cart') {
       navigate('/cart');
-    } else if (page === 'Payment'){
+    } else if (page === 'Buyer Payment'){
       navigate('/payment');
     }
     handleCloseNavMenu();
@@ -67,8 +67,8 @@ function ResponsiveAppBar() {
     } else if (setting === 'Cart') {
       navigate('/cart');
     } else if (setting === 'Orders') {
-      navigate('/orderlist');
-    } else if(setting === 'Payment'){
+      navigate('/order');
+    } else if(setting === 'Buyer Payment'){
       navigate('/payment');
     }
     handleCloseUserMenu();
@@ -105,7 +105,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: '#0D0F1F' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <CheckroomIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -121,7 +121,7 @@ function ResponsiveAppBar() {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              '&:hover': { color: 'black', fontWeight: 'bold'},
+              '&:hover': { color: '#E99E00', fontWeight: 'bold'},
               textDecoration: 'none',
             }}
           >
@@ -166,10 +166,36 @@ function ResponsiveAppBar() {
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => handlePageClick(page)}
-                sx={{ my: 2, color: 'white', display: 'block', '&:focus': { outline: 'none' },'&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' }  }}
+              <Button key={page} onClick={() => handlePageClick(page)} 
+              variant="text" 
+              sx={{ 
+                width: '30%', 
+                color: '#f5f5f5', 
+                borderRadius: '0px', 
+                position: 'relative', 
+                textTransform: 'capitalize',
+                overflow: 'hidden',
+                '&:focus': { outline: 'none' },
+                '&::after': {
+                  content: '""', 
+                  position: 'absolute', 
+                  bottom: 0, 
+                  left: '0%', 
+                  width: '100%', 
+                  height: '1.5px',
+                  backgroundColor: '#0D0F1F',  
+                  transform: 'scaleX(0)', 
+                  transformOrigin: 'bottom right',
+                  transition: 'transform 1s ease, background-color 0.5s ease', 
+                },
+                '&:hover': { 
+                  '&::after': {
+                    backgroundColor: '#E99E00', 
+                    transform: 'scaleX(1)', 
+                    transformOrigin: 'bottom left',
+                  },
+                },
+              }} 
               >
                 {page}
               </Button>

@@ -58,16 +58,18 @@ function SellProductPage() {
           <Button 
     type="submit" 
     variant="contained" 
-    sx={{ 
-      whiteSpace: 'nowrap',
-      backgroundColor: 'white',       // Custom background color
-      color: 'black',                 // Text color
-      padding: '10px 20px',           // Padding
-      borderRadius: '30px',           // Rounded corners
-      fontWeight: 'bold',             // Bold text
-      '&:hover': {                    // Hover effect
-        backgroundColor: 'black',
-        color: 'white',
+    sx={{
+      '&:focus': { outline: 'none' },
+      width: '40%',
+      fontWeight: 'bold',
+      color: '#0D0F1F',
+      backgroundColor: 'white',
+      padding: '10px, 20px',
+      borderRadius: '30px',
+      marginRight: '10px',
+      '&:hover': {
+        backgroundColor: '#0D0F1F',
+        color: '#E99E00',
       },
     }}
   >
@@ -214,16 +216,17 @@ function SellProductPage() {
 <Button 
   type="submit" 
   variant="contained" 
-  sx={{ 
-    mt: 2, 
-    backgroundColor: 'white', 
-    color: 'black',              
-    padding: '10px 20px',        
-    borderRadius: '30px',        
-    fontWeight: 'bold',          
-    '&:hover': {                 
-      backgroundColor: 'black',
-      color: 'white',
+  sx={{
+    '&:focus': { outline: 'none' },
+    width: '40%',
+    fontWeight: 'bold',
+    color: '#0D0F1F',
+    backgroundColor: 'white',
+    borderRadius: '30px',
+    marginRight: '10px',
+    '&:hover': {
+      backgroundColor: '#0D0F1F',
+      color: '#E99E00',
     },
   }}
 >
