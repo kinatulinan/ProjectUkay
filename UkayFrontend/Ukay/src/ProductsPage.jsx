@@ -18,13 +18,25 @@ export default function ProductDetailsPage({ onAddToCart }) {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/sell/get");
-        setProducts(response.data); // Set all products to state
+        setProducts(response.data.reverse()); // Reverse the order so that the latest product is first
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
     fetchProducts();
   }, []);
+
+  // Handle Add Product (assuming there's a function to add products)
+  const handleAddProduct = async (newProduct) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/sell/add", newProduct);
+      setProducts([response.data, ...products]);
+      console.log("Product added:", response.data);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
+
   // Handle Update Product
   const handleUpdateProduct = async (product) => {
     if (!product.sellId) {
@@ -42,7 +54,11 @@ export default function ProductDetailsPage({ onAddToCart }) {
         `http://localhost:8080/api/sell/update/${product.sellId}`,
         updatedProduct
       );
-      setProducts(products.map((p) => (p.sellId === product.sellId ? response.data : p)));
+      setProducts(
+        products
+          .map((p) => (p.sellId === product.sellId ? response.data : p))
+          .reverse()
+      );
       console.log("Product updated:", response.data);
     } catch (error) {
       console.error("Error updating product:", error);
@@ -58,21 +74,13 @@ export default function ProductDetailsPage({ onAddToCart }) {
 
     try {
       await axios.delete(`http://localhost:8080/api/sell/delete/${product.sellId}`);
-      setProducts(products.filter((p) => p.sellId !== product.sellId)); // Filter out the deleted product
+      setProducts(
+        products.filter((p) => p.sellId !== product.sellId).reverse()
+      );
       console.log("Product deleted");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
-  };
-
-  // Handle scrolling in the image container
-  const handleScroll = (event) => {
-    const scrollPosition = event.target.scrollTop;
-    const imageIndex = Math.min(
-      galleryImages.length - 0.5,
-      Math.floor(scrollPosition / 10) // Adjust 100 for sensitivity if needed
-    );
-    setCurrentImageIndex(imageIndex);
   };
 
   return (
@@ -90,7 +98,6 @@ export default function ProductDetailsPage({ onAddToCart }) {
                     overflowY: 'scroll',
                     border: '1px solid lightgray',
                   }}
-                  onScroll={handleScroll}
                 >
                   <Box
                     component="img"
@@ -124,39 +131,65 @@ export default function ProductDetailsPage({ onAddToCart }) {
             {/* Right Column - Product Details */}
             <Grid item xs={8}>
               <Box sx={{ padding: 2, border: '1px solid black' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-    textAlign: 'justify', marginLeft: '50px'}}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 'bold',
+                    mb: 1,
+                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+                    textAlign: 'justify',
+                    marginLeft: '50px',
+                  }}
+                >
                   {product.sellProductName || 'Product Name'}
                 </Typography>
-                <Typography variant="h6" sx={{ mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-    textAlign: 'justify', marginLeft: '50px'}}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mb: 1,
+                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+                    textAlign: 'justify',
+                    marginLeft: '50px',
+                  }}
+                >
                   {product.sellProductType || 'Product Type'}
                 </Typography>
-                <Typography variant="h6" sx={{ mb: 1 , fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-    textAlign: 'justify', marginLeft: '50px'}}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mb: 1,
+                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+                    textAlign: 'justify',
+                    marginLeft: '50px',
+                  }}
+                >
                   {product.sellProductPrice || '6,595.00'} PHP
                 </Typography>
-                
-                <Typography sx={{ fontSize: '14px', mb: 2, fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-    textAlign: 'justify', marginLeft: '50px'}}>
+
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    mb: 2,
+                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+                    textAlign: 'justify',
+                    marginLeft: '50px',
+                  }}
+                >
                   Model height: 186 cm | Size: L
                 </Typography>
                 <Typography
-  variant="body2"
-  sx={{
-    mb: 2,
-    lineHeight: 1.5,
-    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-    marginLeft: '50px',
-    textAlign: 'justify',
-    width: '350px',
-    
-  }}
->
-  Cropped fit jacket made of leather effect fabric with a contrast faux fur interior. Lapel collar
-  and long sleeves. Welt pockets at the hip. Inside pocket detail. Zip-up front.
-</Typography>
-
+                  variant="body2"
+                  sx={{
+                    mb: 2,
+                    lineHeight: 1.5,
+                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
+                    marginLeft: '50px',
+                    textAlign: 'justify',
+                    width: '350px',
+                  }}
+                >
+                  Cropped fit jacket made of leather effect fabric with a contrast faux fur interior. Lapel collar and long sleeves. Welt pockets at the hip. Inside pocket detail. Zip-up front.
+                </Typography>
 
                 <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
                   {['S', 'M', 'L', 'XL'].map((size) => (
@@ -208,7 +241,6 @@ export default function ProductDetailsPage({ onAddToCart }) {
                     fontWeight: 'bold',
                     color: 'black',
                     marginTop: '5px',
-                    marginRight: 'px',
                     backgroundColor: 'white',
                     borderRadius: '30px',
                     '&:hover': {

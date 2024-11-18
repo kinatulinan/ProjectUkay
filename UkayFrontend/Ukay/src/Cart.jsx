@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, Grid, IconButton } from '@mui/material';
+import { Box, Typography, Button, IconButton } from '@mui/material';
 import { RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,14 +19,24 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h6" gutterBottom sx={{ textAlign: 'left', marginTop: 0, fontWeight: 'bold',
-        position: 'sticky',
-        top: 0,
-        zIndex: 10, 
-       }}>
+    <div>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          textAlign: 'left',
+          marginTop: 0,
+          fontWeight: 'bold',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          backgroundColor: 'white',
+          padding: '10px 0',
+        }}
+      >
         Your Cart
       </Typography>
+    <Box sx={{ padding: 3 }}>
       {cartItems.length === 0 ? (
         <Box
           sx={{
@@ -34,62 +44,93 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            height: 400,
+            minHeight: 400,
             border: '1px solid lightgray',
             borderRadius: '8px',
             padding: 2,
             backgroundColor: '#f9f9f9',
           }}
         >
+          <Typography variant="body1" color="textSecondary">
+            Your cart is empty.
+          </Typography>
         </Box>
       ) : (
-        <Box sx={{ maxHeight: 400, overflowY: 'auto', marginBottom: 2 }}>
-          <Grid container spacing={4}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 400, overflowY: 'auto' }}>
+          {/* Cart Items */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', padding: '8px 0' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontWeight: 'bold',
+                padding: '8px 0',
+                borderBottom: '2px solid lightgray',
+              }}
+            >
+              <Typography>Product</Typography>
+              <Typography>Quantity</Typography>
+              <Typography>Total</Typography>
+            </Box>
             {cartItems.map((item, index) => (
-              <Grid item xs={12} sm={12} md={12} key={index}>
-                <Box sx={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid lightgray', paddingBottom: 2 }}>
-                  <Box sx={{ width: 120, height: 120, mr: 2 }}>
-                    <img
-                      src={item.image}
-                      alt={item.sellProductName}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </Box>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6">{item.sellProductName}</Typography>
-                    <Typography variant="body2">Size: {item.size}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      ₱{item.sellProductPrice.toFixed(2)}
-                    </Typography>
-                  </Box>
-                  {/* Quantity and Remove Button */}
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton onClick={() => onUpdateQuantity(index, item.quantity - 1)} disabled={item.quantity === 1}>
-                      <RemoveCircle />
-                    </IconButton>
-                    <Typography variant="body2">{item.quantity}</Typography>
-                    <IconButton onClick={() => onUpdateQuantity(index, item.quantity + 1)}>
-                      <AddCircle />
-                    </IconButton>
-                    <IconButton onClick={() => onRemoveItem(index)}>
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                  <Typography variant="body2" sx={{  marginLeft: 2,  fontSize: '0.875rem',  marginTop: -1, }}>
-                    Total: ₱{(item.sellProductPrice * item.quantity).toFixed(2)}
-                  </Typography>
+              <Box
+                key={index}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 0',
+                  borderBottom: '1px solid lightgray',
+                }}
+              >
+                {/* Product Name */}
+                <Typography>{item.sellProductName}</Typography>
+
+                {/* Quantity and Quantity Control */}
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <IconButton
+                    onClick={() => onUpdateQuantity(index, item.quantity - 1)}
+                    disabled={item.quantity === 1}
+                  >
+                    <RemoveCircle />
+                  </IconButton>
+                  <Typography variant="body2">{item.quantity}</Typography>
+                  <IconButton onClick={() => onUpdateQuantity(index, item.quantity + 1)}>
+                    <AddCircle />
+                  </IconButton>
                 </Box>
-              </Grid>
+
+                {/* Total Price */}
+                <Typography>₱{(item.sellProductPrice * item.quantity).toFixed(2)}</Typography>
+
+                {/* Remove Button */}
+                <IconButton onClick={() => onRemoveItem(index)}>
+                  <Delete />
+                </IconButton>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Box>
       )}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, position: 'sticky', bottom: 0, backgroundColor: 'white', padding: '10px 0' }}>
+
+      {/* Checkout and Continue Shopping Buttons */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 4,
+          position: 'sticky',
+          bottom: 0,
+          backgroundColor: 'white',
+          padding: '10px 0',
+        }}
+      >
         <Typography variant="h6">Total: ₱{getTotalPrice().toFixed(2)}</Typography>
         <Button variant="contained" color="primary" sx={{ padding: '10px 20px' }} onClick={handleCheckout}>
           Checkout
         </Button>
       </Box>
+
       <Box
         sx={{
           position: 'fixed',
@@ -103,5 +144,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
         </Button>
       </Box>
     </Box>
+    </div>
   );
 }
