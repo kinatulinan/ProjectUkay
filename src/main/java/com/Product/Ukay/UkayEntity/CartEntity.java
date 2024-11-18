@@ -12,9 +12,7 @@ public class CartEntity {
     private int cartId;
 
     private String cartProductName;
-    private String cartProductType;
     private int cartProductQuantity;
-    private float cartProductPrice;
     private float cartProductTotal;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -22,12 +20,10 @@ public class CartEntity {
 
     public CartEntity(){ super();}
 
-    public CartEntity(int cartId, String cartProductName, String cartProductType, int cartProductQuantity, float cartProductPrice, float cartProductTotal){
+    public CartEntity(int cartId, String cartProductName, int cartProductQuantity, float cartProductTotal){
         this.cartId = cartId;
         this.cartProductName = cartProductName;
-        this.cartProductType = cartProductType;
         this.cartProductQuantity = cartProductQuantity;
-        this.cartProductPrice = cartProductPrice;
         this.cartProductTotal = cartProductTotal;
     }
 
@@ -47,28 +43,12 @@ public class CartEntity {
         this.cartProductName = cartProductName;
     }
 
-    public String getCartProductType() {
-        return cartProductType;
-    }
-
-    public void setCartProductType(String cartProductType) {
-        this.cartProductType = cartProductType;
-    }
-
     public int getCartProductQuantity() {
         return cartProductQuantity;
     }
 
     public void setCartProductQuantity(int cartProductQuantity) {
         this.cartProductQuantity = cartProductQuantity;
-    }
-
-    public float getCartProductPrice() {
-        return cartProductPrice;
-    }
-
-    public void setCartProductPrice(float cartProductPrice) {
-        this.cartProductPrice = cartProductPrice;
     }
 
     public float getCartProductTotal() {

@@ -42,8 +42,6 @@ public class CartService {
 
             cart.setCartProductName(newCartDetails.getCartProductName());
             cart.setCartProductQuantity(newCartDetails.getCartProductQuantity());
-            cart.setCartProductType(newCartDetails.getCartProductType());
-            cart.setCartProductPrice(newCartDetails.getCartProductPrice());
             cart.setCartProductTotal(newCartDetails.getCartProductTotal());
 
         } catch(NoSuchElementException nex){
