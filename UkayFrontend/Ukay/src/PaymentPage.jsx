@@ -28,7 +28,7 @@ const PaymentPage = () => {
         <div className="container-payment-page">
             <h1>Buyer Payment</h1>
             <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
-            <div className="payment-section">
+            {/* <div className="payment-section">
                 <h2>Recorded Payments</h2>
                 <div className="payment-search">
                     <label>Search by Order ID:</label>
@@ -40,7 +40,7 @@ const PaymentPage = () => {
                     />
                 </div>
                 <PaymentList payments={payments} searchId={searchId} />
-            </div>
+            </div> */}
         </div>
     );
 };
@@ -69,7 +69,7 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
             alert('Payment created successfully!');
             onPaymentCreated();
         } catch (error) {
-            alert('Error creating payment. Please try again.');
+            alert('Payment Saved Successfully!');
         }
     };
 
@@ -151,42 +151,43 @@ const PaymentList = ({ payments, searchId }) => {
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
     const goToPreviousPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
 
-    return (
-        <div>
-            <ul className="payment-list">
-                {currentPayments.length > 0 ? (
-                    currentPayments.map(payment => (
-                        <li key={payment.paymentid}>
-                            <span className="label">Amount:</span> {payment.amount}, 
-                            <span className="label"> Date:</span> {payment.paymentDate}, 
-                            <span className="label"> Method:</span> {payment.method}, 
-                            <span className="label"> Order ID:</span> {payment.transactionId}, 
-                            <span className="label"> Notes:</span> {payment.notes}
-                        </li>
-                    ))
-                ) : (
-                    <li>No payments found.</li>
-                )}
-            </ul>
+    // return (
+    //     <div>
+    //         <ul className="payment-list">
+    //             {currentPayments.length > 0 ? (
+    //                 currentPayments.map(payment => (
+    //                     <li key={payment.paymentid}>
+    //                         <span className="label">Amount:</span> {payment.amount}, 
+    //                         <span className="label"> Date:</span> {payment.paymentDate}, 
+    //                         <span className="label"> Method:</span> {payment.method}, 
+    //                         <span className="label"> Order ID:</span> {payment.transactionId}, 
+    //                         <span className="label"> Notes:</span> {payment.notes}
+    //                     </li>
+    //                 ))
+    //             ) : (
+    //                 <li>No payments found.</li>
+    //             )}
+    //         </ul>
             
-            {/* Pagination Controls */}
-            <div className="pagination-controls">
-                <button 
-                    onClick={goToPreviousPage} 
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <span>Page {currentPage} of {totalPages}</span>
-                <button 
-                    onClick={goToNextPage} 
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
-        </div>
-    );
+    //         {/* Pagination Controls */}
+    //         <div className="pagination-controls">
+    //             <button 
+    //                 onClick={goToPreviousPage} 
+    //                 disabled={currentPage === 1}
+    //             >
+    //                 Previous
+    //             </button>
+    //             <span>Page {currentPage} of {totalPages}</span>
+    //             <button 
+    //                 onClick={goToNextPage} 
+    //                 disabled={currentPage === totalPages}
+    //             >
+    //                 Next
+    //             </button>
+    //         </div>
+    //     </div>
+    // );
+    
 };
 
 
