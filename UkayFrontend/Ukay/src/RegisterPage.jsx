@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Stack, TextField, Button, Typography, Box } from '@mui/material';
+import { Container, Stack, TextField, Button, Typography, Box, IconButton, InputAdornment } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -16,11 +17,28 @@ function RegisterPage() {
     const [mobile, setMobile] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false); // Show/Hide password toggle state
+    const [passwordError, setPasswordError] = useState("");
     const [isFormValid, setIsFormValid] = useState(false);
 
+    // Password validation function
+    const validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        return passwordRegex.test(password);
+    };
+
     useEffect(() => {
+        const isPasswordValid = validatePassword(password);
+        setPasswordError(isPasswordValid ? "" : "Password must be at least 8 characters long and contain at least one special character.");
         setIsFormValid(
-            firstName && lastName && birthdate && address && email && mobile && username && password
+            firstName &&
+            lastName &&
+            birthdate &&
+            address &&
+            email &&
+            mobile &&
+            username &&
+            isPasswordValid
         );
     }, [firstName, lastName, birthdate, address, email, mobile, username, password]);
 
@@ -128,7 +146,7 @@ function RegisterPage() {
                 />
                 <TextField
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"} // Dynamically set input type
                     variant="outlined"
                     color="secondary"
                     onChange={(e) => setPassword(e.target.value)}
@@ -136,6 +154,20 @@ function RegisterPage() {
                     fullWidth
                     required
                     sx={{ mb: 4 }}
+                    helperText={passwordError}
+                    error={!!passwordError}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                 />
                 <TextField
                     label="Date of Birth"

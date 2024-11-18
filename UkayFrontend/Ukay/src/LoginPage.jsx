@@ -16,7 +16,7 @@ function LoginPage() {
 
     async function save(event) {
         event.preventDefault();
-        setErrorMessage(""); // Clear any previous error messages
+        setErrorMessage(""); 
     
         try {
             const response = await axios.post("http://localhost:8080/api/register/login", {
