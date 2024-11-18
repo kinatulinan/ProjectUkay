@@ -26,7 +26,7 @@ const PaymentPage = () => {
 
     return (
         <div className="container-payment-page">
-            <h1>Buyer Payment</h1>
+            <h1>Payment Form</h1>
             <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
             {/* <div className="payment-section">
                 <h2>Recorded Payments</h2>
@@ -52,6 +52,12 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
     const [transactionId, setTransactionId] = useState('');
     const [notes, setNotes] = useState('');
     const [method, setMethod] = useState('');
+
+    // Calculate today's date in the local timezone
+    const today = new Date();
+    const offset = today.getTimezoneOffset(); // Get timezone offset in minutes
+    const adjustedToday = new Date(today.getTime() - offset * 60 * 1000);
+    const todayDate = adjustedToday.toISOString().split('T')[0];
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -90,6 +96,7 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
                     type="date"
                     value={paymentDate}
                     onChange={(e) => setPaymentDate(e.target.value)}
+                    min={todayDate} // Restrict to today or later
                     required
                 />
             </div>
@@ -130,10 +137,9 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
 };
 
 // PaymentList component
-// PaymentList component with pagination
 const PaymentList = ({ payments, searchId }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const paymentsPerPage = 3; // Display 5 payments per page
+    const paymentsPerPage = 3; // Display 3 payments per page
 
     // Filter payments based on search term
     const filteredPayments = searchId
@@ -187,9 +193,6 @@ const PaymentList = ({ payments, searchId }) => {
     //         </div>
     //     </div>
     // );
-    
 };
-
-
 
 export default PaymentPage;
