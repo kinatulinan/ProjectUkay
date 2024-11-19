@@ -165,23 +165,23 @@ function HomePage() {
     <Box sx={{ overflowX: 'hidden' }}>
       {/* Hero Section */}
       <Box 
-  sx={{
-    textAlign: 'center',
-    backgroundImage: `url(${Cover})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    padding: { xs: '50px 12px', md: '100px 18px' },
-    marginTop: '30px',
-    color: 'white',
-    width: '100%',
-    height: { xs: '60vh', md: '80vh' },
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }}
->
-      <Typography
+          sx={{
+            textAlign: 'center',
+            backgroundImage: `url(${Cover})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            padding: { xs: '50px 12px', md: '100px 18px' },
+            marginTop: '30px',
+            color: 'white',
+            width: '100%',
+            height: { xs: '60vh', md: '80vh' },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+        <Typography
           variant="h1"
           fontWeight="bold"
           sx={{
@@ -195,37 +195,36 @@ function HomePage() {
         </Typography>
 
         <Box sx={{ mt: { xs: 2, md: 4 } }}>
-    <Typography
-      variant="h2"
-      fontWeight="bold"
-      sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
-    >
-      Discover Unique Finds and Timeless Styles
-    </Typography>
-    <Typography
-      variant="body1"
-      sx={{
-        mt: 2,
-        fontSize: { xs: '14px', md: '18px' },
-        fontStyle: 'italic',
-        color: '#d1d1d1',
-      }}
-    >
-      Style your wardrobe with handpicked thrift treasures at unbeatable prices.
-    </Typography>
-  </Box>
+        <Typography
+          variant="h2"
+          fontWeight="bold"
+          sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}>
+          Discover Unique Finds and Timeless Styles
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            mt: 2,
+            fontSize: { xs: '14px', md: '18px' },
+            fontStyle: 'italic',
+            color: '#d1d1d1',
+          }}
+        >
+          Style your wardrobe with handpicked thrift treasures at unbeatable prices.
+        </Typography>
+      </Box>
 
-    </Box>
+      </Box>
 
      {/* Product Grid Section */}
-<Box sx={{ textAlign: 'center', mt: 6 }}>
-  <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
-    Find Your Perfect Thrifted Look
-  </Typography>
-  <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
-    From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
-  </Typography>
-</Box>
+      <Box sx={{ textAlign: 'center', mt: 6 }}>
+        <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
+          Find Your Perfect Thrifted Look
+        </Typography>
+        <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
+          From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
+        </Typography>
+      </Box>
 
 
       <Grid container spacing={4} sx={{ mt: 4}}>
