@@ -193,30 +193,30 @@ function HomePage() {
             lineHeight: 1.1,
           }}>
         U-Kay
-      </Typography>
+        </Typography>
 
-<Box sx={{ mt: 10 }}>
-  <Typography
-    variant="h2"
-    fontWeight="bold"
-    sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
-  >
-    Discover Unique Finds and Timeless Styles
-  </Typography>
-  <Typography
-    variant="body1"
-    sx={{
-      mt: 2,
-      fontSize: '18px',
-      fontStyle: 'italic',
-      color: '#d1d1d1',
-    }}
-  >
-    Style your wardrobe with handpicked thrift treasures at unbeatable prices.
-  </Typography>
-</Box>
-
+        <Box sx={{ mt: 10 }}>
+        <Typography
+          variant="h2"
+          fontWeight="bold"
+          sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
+        >
+          Discover Unique Finds and Timeless Styles
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            mt: 2,
+            fontSize: '18px',
+            fontStyle: 'italic',
+            color: '#d1d1d1',
+          }}
+        >
+          Style your wardrobe with handpicked thrift treasures at unbeatable prices.
+        </Typography>
       </Box>
+
+    </Box>
 
      {/* Product Grid Section */}
 <Box sx={{ textAlign: 'center', mt: 6 }}>

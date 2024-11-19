@@ -76,7 +76,7 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
               variant="contained"
               sx={{
                 width: '50%',
-                color: '#E99E00',
+                color: '#F5F5F5',
                 backgroundColor: 'black',
                 borderRadius: '30px',
                 marginRight: '10px',

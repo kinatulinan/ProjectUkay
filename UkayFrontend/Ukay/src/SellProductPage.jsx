@@ -69,7 +69,7 @@ function SellProductPage() {
       marginRight: '10px',
       '&:hover': {
         backgroundColor: '#0D0F1F',
-        color: '#E99E00',
+        color: '#F5F5F5',
       },
     }}
   >
@@ -226,7 +226,7 @@ function SellProductPage() {
     marginRight: '10px',
     '&:hover': {
       backgroundColor: '#0D0F1F',
-      color: '#E99E00',
+      color: '#F5F5F5',
     },
   }}
 >

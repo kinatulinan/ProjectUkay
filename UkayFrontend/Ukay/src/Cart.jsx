@@ -188,7 +188,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             color="primary"
             sx={{
               width: '25%',
-              color: '#E99E00',
+              color: '#F5F5F5',
               backgroundColor: 'black',
               borderRadius: '30px',
               marginRight: '10px',
@@ -241,7 +241,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             borderRadius: '25px',
             padding: '5px 20px',
             '&:hover': {
-              color: '#E99E00',
+              color: 'F5F5F5',
               backgroundColor: '#0D0F1F',
             },
           }}
