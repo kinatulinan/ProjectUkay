@@ -16,7 +16,7 @@ public class ProductController {
 
 
 
-    @CrossOrigin(origins = "http://localhost:5174")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/print")
     public String print(){
 

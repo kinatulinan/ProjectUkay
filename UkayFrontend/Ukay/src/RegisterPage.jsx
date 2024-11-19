@@ -173,6 +173,7 @@ function RegisterPage() {
                     label="Date of Birth"
                     type="text"
                     variant="outlined"
+                    placeholder = "yyyy-mm-dd"
                     color="secondary"
                     InputLabelProps={{ shrink: true }}
                     onChange={(e) => setBirthdate(e.target.value)}
