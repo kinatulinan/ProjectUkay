@@ -165,23 +165,22 @@ function HomePage() {
     <Box sx={{ overflowX: 'hidden' }}>
       {/* Hero Section */}
       <Box 
-        sx={{
-          textAlign: 'center',
-          backgroundImage: `url(${Cover})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '100px 18px',
-          marginTop: '30px',
-          color: 'white',
-          width: '80vw',
-          height: '80vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: '0px 0px 20px 20px',
-        }}
-      >
+  sx={{
+    textAlign: 'center',
+    backgroundImage: `url(${Cover})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: { xs: '50px 12px', md: '100px 18px' },
+    marginTop: '30px',
+    color: 'white',
+    width: '100%',
+    height: { xs: '60vh', md: '80vh' },
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}
+>
       <Typography
           variant="h1"
           fontWeight="bold"
@@ -195,26 +194,26 @@ function HomePage() {
         U-Kay
         </Typography>
 
-        <Box sx={{ mt: 10 }}>
-        <Typography
-          variant="h2"
-          fontWeight="bold"
-          sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
-        >
-          Discover Unique Finds and Timeless Styles
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            mt: 2,
-            fontSize: '18px',
-            fontStyle: 'italic',
-            color: '#d1d1d1',
-          }}
-        >
-          Style your wardrobe with handpicked thrift treasures at unbeatable prices.
-        </Typography>
-      </Box>
+        <Box sx={{ mt: { xs: 2, md: 4 } }}>
+    <Typography
+      variant="h2"
+      fontWeight="bold"
+      sx={{ fontFamily: 'Georgia, serif', color: '#fff' }}
+    >
+      Discover Unique Finds and Timeless Styles
+    </Typography>
+    <Typography
+      variant="body1"
+      sx={{
+        mt: 2,
+        fontSize: { xs: '14px', md: '18px' },
+        fontStyle: 'italic',
+        color: '#d1d1d1',
+      }}
+    >
+      Style your wardrobe with handpicked thrift treasures at unbeatable prices.
+    </Typography>
+  </Box>
 
     </Box>
 
