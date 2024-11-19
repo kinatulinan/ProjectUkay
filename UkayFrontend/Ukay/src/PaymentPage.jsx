@@ -100,14 +100,14 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
                     required
                 />
             </div>
-            <div>
+            {/* <div>
                 <label>Order ID:</label>
                 <input
                     type="text"
                     value={transactionId}
                     onChange={(e) => setTransactionId(e.target.value)}
                 />
-            </div>
+            </div> */}
             <div>
                 <label>Notes:</label>
                 <textarea
