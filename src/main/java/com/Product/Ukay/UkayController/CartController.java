@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping(method = RequestMethod.GET, path = "/api/cart")
 public class CartController {
@@ -14,8 +15,8 @@ public class CartController {
     CartService cserv;
 
     @PostMapping("/postCart")
-    public CartEntity postCart(@RequestBody CartEntity cart){
-        return cserv.postCart(cart);
+    public CartEntity addToCart(@RequestBody CartEntity cart){
+        return cserv.addToCart(cart);
     }
 
     @GetMapping("/showCart")

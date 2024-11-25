@@ -1,6 +1,7 @@
 package com.Product.Ukay.UkayService;
 import com.Product.Ukay.UkayEntity.CartEntity;
 import com.Product.Ukay.UkayEntity.ProductEntity;
+import com.Product.Ukay.UkayEntity.SellEntity;
 import com.Product.Ukay.UkayRepository.CartRepository;
 import com.Product.Ukay.UkayRepository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -14,25 +15,20 @@ import java.util.NoSuchElementException;
 public class CartService {
     @Autowired
     CartRepository crepo;
-    @Autowired
-    ProductRepository prepo;
 
     public CartService(){ super();}
 
-    @Transactional
-    public CartEntity addToCart(int cartId, ProductEntity product) throws NameNotFoundException {
-        CartEntity cart = crepo.findById(cartId)
-                .orElseThrow(() -> new NameNotFoundException("Cart " + cartId + " not found"));
-        product.setCart(cart);
-        cart.getProducts().add(product);
+    public CartEntity addToCart(CartEntity cart){
         return crepo.save(cart);
     }
-
-    public CartEntity postCart(CartEntity cart){
-        ProductEntity product = prepo.findById(cart.getProducts().get(0).getProductId()).orElseThrow();
-        cart.getProducts().add(product);
-        return crepo.save(cart);
-    }
+//    @Transactional
+//    public CartEntity addToCart(int cartId, ProductEntity product) throws NameNotFoundException {
+//        CartEntity cart = crepo.findById(cartId)
+//                .orElseThrow(() -> new NameNotFoundException("Cart " + cartId + " not found"));
+//        product.setCart(cart);
+//        cart.getProducts().add(product);
+//        return crepo.save(cart);
+//    }
 
     public List<CartEntity> showCart(){
         return crepo.findAll();
@@ -44,8 +40,9 @@ public class CartService {
         try{
             cart = crepo.findById(cartId).get();
 
-            ProductEntity product = prepo.findById(newCartDetails.getProducts().get(0).getProductId()).orElseThrow();
-            cart.getProducts().add(product);
+            cart.setCartProductName(newCartDetails.getCartProductName());
+            cart.setCartProductQuantity(newCartDetails.getCartProductQuantity());
+            cart.setCartProductTotal(newCartDetails.getCartProductTotal());
 
         } catch(NoSuchElementException nex){
             throw new NameNotFoundException("Cart " + cartId + " not found");

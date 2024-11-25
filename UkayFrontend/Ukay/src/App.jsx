@@ -54,10 +54,8 @@ function App() {
         cartOpen={cartOpen}
         setCartOpen={setCartOpen}
       />
-      <br />
-      <hr />
       <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage onAddToCart={handleAddToCart} />} />
         <Route path="/sell" element={<SellProductPage />} />
