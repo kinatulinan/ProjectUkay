@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox } from '@mui/material';
 import { RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,18 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [emptyCartDialog, setEmptyCartDialog] = useState(false);
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState(() => {
+    const savedCheckedItems = localStorage.getItem('checkedItems');
+    return savedCheckedItems ? JSON.parse(savedCheckedItems) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+  }, [checkedItems]);
 
   const getTotalPrice = () => {
     return cartItems
-      .filter((item, index) => checkedItems.includes(index)) // Only compute total for checked items
+      .filter((item, index) => checkedItems.includes(index))
       .reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
   };
 
