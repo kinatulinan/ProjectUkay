@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox } from '@mui/material';
 import { RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
-  
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false); // For opening/closing dialog
-  const [itemToDelete, setItemToDelete] = useState(null); // To store the item to be deleted
+  const [openDialog, setOpenDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [emptyCartDialog, setEmptyCartDialog] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
+    return cartItems
+      .filter((item, index) => checkedItems.includes(index)) // Only compute total for checked items
+      .reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
   };
 
   const handleCheckout = () => {
+    if (cartItems.length === 0 || checkedItems.length === 0) {
+      setEmptyCartDialog(true);
+      return;
+    }
     navigate('/payment');
   };
 
@@ -22,19 +29,33 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   };
 
   const handleDeleteItem = (index) => {
-    setItemToDelete(index); // Store the item to delete
-    setOpenDialog(true); // Open the dialog
+    setItemToDelete(index);
+    setOpenDialog(true);
   };
 
   const confirmDelete = () => {
-    onRemoveItem(itemToDelete); // Perform the removal
-    setOpenDialog(false); // Close the dialog
-    setItemToDelete(null); // Clear the item
+    onRemoveItem(itemToDelete);
+    setOpenDialog(false);
+    setItemToDelete(null);
   };
 
   const cancelDelete = () => {
-    setOpenDialog(false); // Close the dialog without removing
-    setItemToDelete(null); // Clear the item
+    setOpenDialog(false);
+    setItemToDelete(null);
+  };
+
+  const closeEmptyCartDialog = () => {
+    setEmptyCartDialog(false);
+  };
+
+  const handleCheckboxChange = (index) => {
+    setCheckedItems((prevCheckedItems) => {
+      if (prevCheckedItems.includes(index)) {
+        return prevCheckedItems.filter((item) => item !== index);
+      } else {
+        return [...prevCheckedItems, index];
+      }
+    });
   };
 
   return (
@@ -88,6 +109,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             <Typography fontWeight={"bold"}>Product</Typography>
             <Typography fontWeight={"bold"}>Quantity</Typography>
             <Typography fontWeight={"bold"}>Total</Typography>
+            <Typography fontWeight={"bold"}>Buy</Typography>
           </Box>
 
           {cartItems.map((item, index) => (
@@ -102,13 +124,13 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
                 textAlign: 'center',
               }}
             >
-              <Typography>{item.sellProductName}</Typography>
+              <Typography sx={{ textAlign: 'left', marginLeft: '38%'}}>{item.sellProductName}</Typography>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
                 <IconButton
-                  onClick={() => onUpdateQuantity(index, item.quantity - 1 )}
+                  onClick={() => onUpdateQuantity(index, item.quantity - 1)}
                   sx={{ p: 0, color: 'black', '&:focus': { outline: 'none' }, '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' } }}
-                  disabled={item.quantity === 1 }
+                  disabled={item.quantity === 1}
                 >
                   <RemoveCircle />
                 </IconButton>
@@ -120,7 +142,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
                   <AddCircle />
                 </IconButton>
                 <IconButton
-                  onClick={() => handleDeleteItem(index)} // Trigger delete confirmation
+                  onClick={() => handleDeleteItem(index)}
                   sx={{ p: 0, color: 'black', '&:focus': { outline: 'none' }, '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' } }}
                 >
                   <Delete sx={{ color: 'red' }} />
@@ -128,6 +150,16 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
               </Box>
 
               <Typography>₱{(item.sellProductPrice * item.quantity).toFixed(2)}</Typography>
+
+              <Checkbox checked={checkedItems.includes(index)} onChange={() => handleCheckboxChange(index)}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                    '& .MuiTouchRipple-root': {
+                    display: 'none',
+                    },
+                  }} />
             </Box>
           ))}
         </Box>
@@ -145,127 +177,153 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           padding: '10px 0',
         }}
       >
-        <Typography sx={{ fontSize: '18px' }}>Total: ₱{getTotalPrice().toFixed(2)}</Typography>
+        <Typography sx={{ fontSize: '16px' }}>Total: ₱{getTotalPrice().toFixed(2)}</Typography>
 
-        <Button 
-            variant="text" 
-            sx={{ 
-              width: '18%',
-              backgroundColor: 'white', 
-              color: 'black', 
-              borderRadius: '0px', 
-              textTransform: 'capitalize', 
-              position: 'relative', 
-              overflow: 'hidden',
-              '&:focus': { outline: 'none' },
+        <Button
+          variant="text"
+          sx={{
+            width: '18%',
+            backgroundColor: 'white',
+            color: 'black',
+            borderRadius: '0px',
+            textTransform: 'capitalize',
+            position: 'relative',
+            overflow: 'hidden',
+            '&:focus': { outline: 'none' },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: '0%',
+              width: '100%',
+              height: '1.3px',
+              backgroundColor: '#b3b5b5',
+              transform: 'scaleX(0)',
+              transformOrigin: 'bottom right',
+              transition: 'transform 1s ease, background-color 0.5s ease',
+            },
+            '&:hover': {
               '&::after': {
-                content: '""', 
-                position: 'absolute', 
-                bottom: 0, 
-                left: '0%', 
-                width: '100%', 
-                height: '1.3px',
-                backgroundColor: '#b3b5b5',  
-                transform: 'scaleX(0)', 
-                transformOrigin: 'bottom right',
-                transition: 'transform 1s ease, background-color 0.5s ease', 
+                backgroundColor: 'black',
+                transform: 'scaleX(1)',
+                transformOrigin: 'bottom left',
               },
-              '&:hover': { 
-                '&::after': {
-                  backgroundColor: 'black', 
-                  transform: 'scaleX(1)', 
-                  transformOrigin: 'bottom left',
-                },
-              },
-            }} 
+            },
+          }}
           onClick={handleContinueShopping}
         >
           Continue Shopping
         </Button>
 
         <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              width: '25%',
-              color: '#F5F5F5',
-              backgroundColor: 'black',
-              borderRadius: '30px',
-              marginRight: '10px',
-              textTransform: 'capitalize',
-              '&:hover': {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
+          variant="contained"
+          color="primary"
+          sx={{
+            width: '25%',
+            color: '#F5F5F5',
+            backgroundColor: 'black',
+            borderRadius: '30px',
+            marginRight: '10px',
+            textTransform: 'capitalize',
+            '&:focus': { outline: 'none' },
+            '&:hover': {
+              backgroundColor: 'white',
+              color: 'black',
+            },
+          }}
           onClick={handleCheckout}
         >
           Checkout
         </Button>
       </Box>
 
+      {/* Delete Confirmation Dialog */}
       <Dialog open={openDialog} onClose={cancelDelete}>
-      <DialogContent
-        sx={{
-          padding: '20px',
-          textAlign: 'center',
-          fontSize: '1rem',
-          color: '#0D0F1F',
-          backgroundColor: '#e0e0e0',
-        }}
-      >
-        <Typography
-          sx={{
-            marginBottom: '10px',
-            fontSize: '1rem',
-            color: '#0D0F1F',
-            fontWeight: 'bold',
-          }}
-        >
-          Are you sure you want to delete this product?
-        </Typography>
-      </DialogContent>
-      <DialogActions
-        sx={{
-          padding: '10px',
-          justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-        }}
-      >
-        <Button
-          onClick={cancelDelete}
-          color="primary"
-          sx={{
-            color: '#0D0F1F',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '25px',
-            padding: '5px 20px',
-            '&:hover': {
-              color: 'F5F5F5',
-              backgroundColor: '#0D0F1F',
-            },
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={confirmDelete}
-          color="secondary"
-          sx={{
-            color: '#f5f5f5',
-            backgroundColor: '#C81501',
-            borderRadius: '25px',
-            padding: '5px 20px',
-            '&:hover': {
-              backgroundColor: '#0D0F1F',
-              color: '#E99E00',
-            },
-          }}
-        >
-          Delete
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <DialogContent>
+          <Typography
+            sx={{
+              marginBottom: '10px',
+              fontSize: '1rem',
+              color: '#0D0F1F',
+            }}
+          >
+            Are you sure you want to remove this in your cart?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={cancelDelete}
+            color="primary"
+            sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            color="secondary"
+            sx={{
+              color: '#D02A2A',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#FFFFFF',
+                backgroundColor: '#D02A2A',
+              },
+            }}
+          >
+            Remove
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Empty Cart Dialog */}
+      <Dialog open={emptyCartDialog} onClose={closeEmptyCartDialog}>
+        <DialogContent>
+          <Typography
+            sx={{
+              marginBottom: '10px',
+              fontSize: '1rem',
+              color: '#0D0F1F',
+            }}
+          >
+            Please select at least one item to checkout.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={closeEmptyCartDialog}
+            color="primary"
+            sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

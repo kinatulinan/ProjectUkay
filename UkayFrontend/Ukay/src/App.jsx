@@ -29,7 +29,6 @@ function App() {
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });
-    setCartOpen(true);
   };
 
   const handleRemoveItem = (index) => {
@@ -46,8 +45,8 @@ function App() {
 
   return (
     <Router>
-      <UkayAppBar 
-        onCartClick={() => setCartOpen(true)} 
+      <UkayAppBar
+        onCartClick={() => setCartOpen(true)}
         cartItems={cartItems}
         onRemoveItem={handleRemoveItem}
         onUpdateQuantity={handleUpdateQuantity}
@@ -60,7 +59,7 @@ function App() {
         <Route path="/products" element={<ProductsPage onAddToCart={handleAddToCart} />} />
         <Route path="/sell" element={<SellProductPage />} />
         <Route path="/order" element={<OrderForm />} />
-        <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveItem={handleRemoveItem} />} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveItem={handleRemoveItem} onUpdateQuantity={handleUpdateQuantity}/>} />
         <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
