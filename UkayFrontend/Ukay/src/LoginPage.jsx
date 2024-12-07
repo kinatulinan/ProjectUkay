@@ -82,14 +82,25 @@ function LoginPage() {
                     />
                 </Stack>
                 <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    disabled={!isFormValid}
-                >
-                    Log In
-                </Button>
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        disabled={!isFormValid}
+                        sx={{
+                            backgroundColor: 'white',
+                            color: 'black',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#0D0F1F',
+                                color: 'white', // Change background color on hover
+                                },
+                                '&:disabled': {
+                                    backgroundColor: '#B0B3BB', // Change background color when disabled
+                                    },
+                                    }}
+                                    >
+                                        Login
+                                        </Button>
             </form>
             {errorMessage && (
                 <Alert severity="error" sx={{ mt: 2 }}>

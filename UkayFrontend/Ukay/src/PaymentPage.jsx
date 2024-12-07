@@ -131,7 +131,7 @@ const PaymentForm = ({ userid, onPaymentCreated }) => {
                     <option value="OTHER">Other</option>
                 </select>
             </div>
-            <button type="submit">Save Payment</button>
+            <button type="submit">Place Order</button>
         </form>
     );
 };

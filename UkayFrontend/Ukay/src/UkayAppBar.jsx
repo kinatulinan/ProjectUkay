@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip, Menu, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, Checkroom as CheckroomIcon, AccountCircle as AccountCircleIcon, ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
-import CartPage from './CartPage';
+import Cart from './Cart';
 import ProductsPage from './ProductsPage';
 
 const pages = ['Product Listing', 'Sell A Product'];
@@ -14,7 +14,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
+  // const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
 
   const handleAddToCart = (product) => {
@@ -53,8 +53,6 @@ function ResponsiveAppBar() {
       navigate('/products');
     } else if (page === 'Cart') {
       navigate('/cart');
-    } else if (page === 'Buyer Payment'){
-      navigate('/payment');
     }
     handleCloseNavMenu();
   };
@@ -68,8 +66,6 @@ function ResponsiveAppBar() {
       navigate('/cart');
     } else if (setting === 'Orders') {
       navigate('/order');
-    } else if(setting === 'Buyer Payment'){
-      navigate('/payment');
     }
     handleCloseUserMenu();
   };
@@ -84,9 +80,9 @@ function ResponsiveAppBar() {
     }
   };
 
-  const handleDrawerClose = () => {
-    setCartDrawerOpen(false);
-  };
+  // const handleDrawerClose = () => {
+  //   setCartDrawerOpen(false);
+  // };
 
   const handleUpdateQuantity = (index, quantity) => {
     setCartItems((prevItems) =>
@@ -100,8 +96,8 @@ function ResponsiveAppBar() {
     setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
+  const handleCartClick = () => {
+    navigate('/cart');
   };
 
   return (
@@ -137,7 +133,7 @@ function ResponsiveAppBar() {
             >
               U-Kay
           </Typography>
-          
+
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -149,7 +145,7 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -173,7 +169,7 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button key={page} onClick={() => handlePageClick(page)} 
@@ -226,7 +222,7 @@ function ResponsiveAppBar() {
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Tooltip title="Cart">
-              <IconButton onClick={() => setCartDrawerOpen(true)} 
+              <IconButton onClick={handleCartClick} 
                 sx={{ p: 0, color: 'white', mr: 2,'&:focus': { outline: 'none' },'&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' }  }}>
                 <ShoppingCartIcon />
               </IconButton>
@@ -256,23 +252,13 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
         </Toolbar>
       </Container>
-
-      {/* Cart Drawer using CartPage Component */}
-      <CartPage
-        cartItems={cartItems}
-        onRemoveItem={handleRemoveItem}
-        onUpdateQuantity={handleUpdateQuantity}
-        open={cartDrawerOpen}
-        onClose={() => setCartDrawerOpen(false)}
-        handleViewCart={() => {}}
-      />
     </AppBar>
   );
 }
