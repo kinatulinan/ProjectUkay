@@ -8,9 +8,15 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [emptyCartDialog, setEmptyCartDialog] = useState(false);
+
   const [checkedItems, setCheckedItems] = useState(() => {
     const savedCheckedItems = localStorage.getItem('checkedItems');
-    return savedCheckedItems ? JSON.parse(savedCheckedItems) : [];
+    try {
+      return savedCheckedItems ? JSON.parse(savedCheckedItems) : [];
+    } catch (e) {
+      console.error('Error parsing checked items from localStorage:', e);
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -193,9 +199,9 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           variant="text"
           sx={{
             width: '18%',
-            backgroundColor: 'white',
+            backgroundColor: '#f5f5f5',
             color: 'black',
-            borderRadius: '0px',
+            borderRadius: '30px',
             textTransform: 'capitalize',
             position: 'relative',
             overflow: 'hidden',
@@ -213,6 +219,8 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
               transition: 'transform 1s ease, background-color 0.5s ease',
             },
             '&:hover': {
+              borderRadius: '30px',
+              backgroundColor: 'white',
               '&::after': {
                 backgroundColor: 'black',
                 transform: 'scaleX(1)',
@@ -229,7 +237,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           variant="contained"
           color="primary"
           sx={{
-            width: '25%',
+            width: '15%',
             color: '#F5F5F5',
             backgroundColor: 'black',
             borderRadius: '30px',
