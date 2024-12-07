@@ -184,7 +184,10 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           padding: '10px 0',
         }}
       >
-        <Typography sx={{ fontSize: '16px' }}>Total: ₱{getTotalPrice().toFixed(2)}</Typography>
+        <Typography sx={{ fontSize: '16px', width: '150px', textAlign: 'left'}}>
+          Total: ₱<span style={{ fontWeight: 'bold' }}>
+                    {getTotalPrice().toFixed(2)}
+                </span></Typography>
 
         <Button
           variant="text"
