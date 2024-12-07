@@ -14,7 +14,6 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState('');
-  // const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
 
   const handleAddToCart = (product) => {

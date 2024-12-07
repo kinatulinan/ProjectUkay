@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox } from '@mui/material';
+import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, Checkbox } from '@mui/material';
 import { RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [emptyCartDialog, setEmptyCartDialog] = useState(false);
-
   const [checkedItems, setCheckedItems] = useState(() => {
     const savedCheckedItems = localStorage.getItem('checkedItems');
     try {
@@ -18,6 +18,23 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
       return [];
     }
   });
+
+  useEffect(() => {
+    const savedCartItems = localStorage.getItem('cartItems');
+    if (savedCartItems) {
+      cartItems = JSON.parse(savedCartItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (location.pathname !== '/cart') {
+      localStorage.removeItem('checkedItems');
+    }
+  }, [location]);
 
   useEffect(() => {
     localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
