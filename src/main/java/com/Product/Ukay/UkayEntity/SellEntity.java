@@ -15,20 +15,23 @@ public class SellEntity {
     private String sellProductName;
     private String sellProductType;
     private double sellProductPrice;
+    private String sellProductSize; // New attribute
+    private String sellProductDescription; //New attribute
 
     @OneToMany(mappedBy = "sell", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductEntity> products;
 
-
-    public SellEntity(){
+    public SellEntity() {
         super();
     }
 
-    public SellEntity(int sellId, String sellProductName, String sellProductType, double sellProductPrice){
+    public SellEntity(int sellId, String sellProductName, String sellProductType, double sellProductPrice, String sellProductSize, String sellProductDescription) { //
         this.sellId = sellId;
         this.sellProductName = sellProductName;
         this.sellProductType = sellProductType;
         this.sellProductPrice = sellProductPrice;
+        this.sellProductSize = sellProductSize;
+        this.sellProductDescription = sellProductDescription; //
     }
 
     public int getSellId() {
@@ -63,5 +66,20 @@ public class SellEntity {
         this.sellProductPrice = sellProductPrice;
     }
 
+    public String getSellProductSize() {
+        return sellProductSize;
+    }
+
+    public void setSellProductSize(String sellProductSize) {
+        this.sellProductSize = sellProductSize;
+    }
+
+    public String getSellProductDescription() { //
+        return sellProductDescription;
+    }
+
+    public void setSellProductDescription(String sellProductDescription) { //
+        this.sellProductDescription = sellProductDescription;
+    }
 
 }

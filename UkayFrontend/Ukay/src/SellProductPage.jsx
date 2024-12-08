@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Container, Box, Typography, Button, TextField, Grid, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Grid, Accordion, AccordionSummary, AccordionDetails, 
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 import './App.css';
@@ -11,10 +12,13 @@ function SellProductPage() {
     sellProductName: '',
     sellProductType: '',
     sellProductPrice: '',
+    sellProductSize: '',
+    sellProductDescription: '',
   });
-
+  
   const [email, setEmail] = useState('');
   const formRef = useRef(null); // Create a reference for the form
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -38,6 +42,24 @@ function SellProductPage() {
   const handleEmailSubmit = (e) => {
     e.preventDefault();
     formRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleOpenConfirmation = () => {
+    setConfirmationOpen(true); // Open the modal
+  };
+
+  const handleCloseConfirmation = () => {
+    setConfirmationOpen(false); // Close the modal
+  };
+
+  const handleConfirmSubmit = async () => {
+    setConfirmationOpen(false); // Close the modal
+    try {
+      const response = await axios.post('http://localhost:8080/api/sell/post', formData);
+      console.log('Product added:', response.data);
+    } catch (error) {
+      console.error('Error adding product:', error);
+    }
   };
 
   return (
@@ -177,6 +199,7 @@ function SellProductPage() {
             <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
               Sell A Product
             </Typography>
+
             <label className="label-adjust" htmlFor="sellProductName">Product Name</label>
             <TextField
               fullWidth
@@ -200,6 +223,29 @@ function SellProductPage() {
               margin="normal"
               variant="outlined"
             />
+            <label className="label-adjust" htmlFor="sellProductSize">Product Size</label>
+            <TextField
+            fullWidth
+            type="text"
+            id="sellProductSize"
+            placeholder="Product Size here"
+            value={formData.sellProductSize}
+            onChange={handleInputChange}
+            margin="normal"
+            variant="outlined"
+            />
+
+            <label className="label-adjust" htmlFor="sellProductDescription">Product Description</label>
+            <TextField
+            fullWidth
+            type="text"
+            id="sellProductDescription"
+            placeholder="Product Description here"
+            value={formData.sellProductDescription}
+            onChange={handleInputChange}
+            margin="normal"
+            variant="outlined"
+            />
 
             <label className="label-adjust" htmlFor="sellProductPrice">Product Price</label>
             <TextField
@@ -212,29 +258,57 @@ function SellProductPage() {
               margin="normal"
               variant="outlined"
             />
-
-<Button 
-  type="submit" 
-  variant="contained" 
-  sx={{
-    '&:focus': { outline: 'none' },
-    width: '40%',
-    fontWeight: 'bold',
-    color: '#0D0F1F',
-    backgroundColor: 'white',
-    borderRadius: '30px',
-    marginRight: '10px',
-    '&:hover': {
-      backgroundColor: '#0D0F1F',
-      color: '#F5F5F5',
-    },
-  }}
->
-  Submit Product
-</Button>
+            <Button 
+            type="button"
+            onClick={handleOpenConfirmation}
+            variant="contained" 
+            sx={{
+              '&:focus': { outline: 'none' },
+              width: '40%',
+              fontWeight: 'bold',
+              color: '#0D0F1F',
+              backgroundColor: 'white',
+              borderRadius: '30px',
+              marginRight: '10px',
+              '&:hover': {
+                backgroundColor: '#0D0F1F',
+                color: '#F5F5F5',
+              },
+            }}
+            >
+              Submit Product
+              </Button>
           </Box>
         </Grid>
       </Grid>
+
+      <Dialog
+        open={confirmationOpen}
+        onClose={handleCloseConfirmation}
+        aria-labelledby="confirmation-dialog-title"
+        aria-describedby="confirmation-dialog-description"
+      >
+        <DialogTitle id="confirmation-dialog-title">Confirm Submission</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirmation-dialog-description">
+            Are you sure you want to submit the product details?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmation} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmSubmit} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      
+      
+     
+
+      
     </Container>
   );
 }

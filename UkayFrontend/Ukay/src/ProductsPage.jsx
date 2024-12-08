@@ -17,11 +17,15 @@ export default function ProductDetailsPage({ onAddToCart }) {
   const [updatedProduct, setUpdatedProduct] = useState({});
   const galleryImages = [model1, model2, model3, model];
 
+  // To track the number of products
+  const [productCount, setProductCount] = useState(0);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/sell/get");
         setProducts(response.data.reverse());
+        setProductCount(response.data.length); // Set the product count
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -87,35 +91,51 @@ export default function ProductDetailsPage({ onAddToCart }) {
     try {
       await axios.delete(`http://localhost:8080/api/sell/delete/${productToDelete.sellId}`);
       setProducts(products.filter((p) => p.sellId !== productToDelete.sellId));
+      setProductCount(products.length - 1); // Decrement product count after deletion
       setOpenDeleteDialog(false);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
 
+  // Handle adding a product to the cart
+  const handleAddToCart = (product) => {
+    onAddToCart(product); // Your existing logic for adding to cart
+    setProductCount(productCount + 1); // Increment product count when added to cart
+  };
+
   return (
     <div className="product-details-page" style={{ padding: '20px', marginTop: '35px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
+        {/* Display the count of products found */}
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          {productCount} Products Found
+        </Typography>
+      </Box>
+
       <Grid container spacing={4}>
         {products.map((product) => (
           <Grid item xs={12} container spacing={2} key={product.sellId}>
-            <Grid item xs={4}>
-              <Stack direction="row" spacing={2} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <Stack direction="column" spacing={2} alignItems="center">
                 <Box
                   sx={{
                     width: '100%',
-                    height: '310px',
-                    overflowY: 'scroll',
+                    height: '350px',
+                    overflow: 'hidden',
                     border: '1px solid lightgray',
+                    borderRadius: '10px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                   }}
                 >
                   <Box
                     component="img"
                     src={galleryImages[currentImageIndex]}
                     alt={product.sellProductName || 'Product Image'}
-                    sx={{ width: '100%', height: 'auto' }}
+                    sx={{ width: '100%', height: 'auto', borderRadius: '10px' }}
                   />
                 </Box>
-                <Stack direction="column" spacing={1} sx={{ width: '30%' }}>
+                <Stack direction="row" spacing={1}>
                   {galleryImages.map((imgSrc, index) => (
                     <Box
                       key={index}
@@ -123,163 +143,153 @@ export default function ProductDetailsPage({ onAddToCart }) {
                       src={imgSrc}
                       alt="Gallery Thumbnail"
                       sx={{
-                        width: '80px',
+                        width: '60px',
                         height: 'auto',
                         border: index === currentImageIndex ? '2px solid black' : '1px solid gray',
                         cursor: 'pointer',
+                        borderRadius: '5px',
                       }}
                       onClick={() => setCurrentImageIndex(index)}
                     />
                   ))}
-              </Stack>
+                </Stack>
               </Stack>
             </Grid>
 
-            <Grid item xs={8}>
-              <Box sx={{ padding: 2, border: '1px solid black' }}>
-              <Typography
-                  variant="h6"
+            <Grid item xs={12} md={8}>
+              <Box sx={{ padding: 2, border: '1px solid #ddd', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                <Typography
+                  variant="h5"
                   sx={{
                     fontWeight: 'bold',
-                    mb: 1,
-                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-                    textAlign: 'justify',
-                    marginLeft: '50px',
+                    mb: 2,
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    color: '#333',
                   }}
                 >
                   {product.sellProductName || 'Product Name'}
                 </Typography>
+
                 <Typography
                   variant="h6"
                   sx={{
                     mb: 1,
-                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-                    textAlign: 'justify',
-                    marginLeft: '50px',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    color: '#333',
                   }}
                 >
+
+                  
                   {product.sellProductType || 'Product Type'}
                 </Typography>
+
+                <Typography
+                variant="body1"
+                sx={{
+                  fontSize: '14px',
+                  mb: 2,
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  color: '#333',
+                }}
+                >
+                  SIZE: {product.sellProductSize || 'Not specified'}
+                  </Typography>
+
+
+                  <Typography
+                variant="body1"
+                sx={{
+                  fontSize: '14px',
+                  mb: 2,
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  color: '#333',
+                }}
+                >
+                   {product.sellProductDescription || 'Not specified'}
+                  </Typography>
+
+
                 <Typography
                   variant="h6"
                   sx={{
                     mb: 1,
-                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-                    textAlign: 'justify',
-                    marginLeft: '50px',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    color: '#333',
                   }}
                 >
                   {product.sellProductPrice || '6,595.00'} PHP
                 </Typography>
 
-                <Typography
-                  sx={{
-                    fontSize: '14px',
-                    mb: 2,
-                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-                    textAlign: 'justify',
-                    marginLeft: '50px',
-                  }}
-                >
-                  Model height: 186 cm | Size: L
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    mb: 2,
-                    lineHeight: 1.5,
-                    fontFamily: 'Neue-Helvetica, Helvetica, Arial',
-                    marginLeft: '50px',
-                    textAlign: 'justify',
-                    width: '350px',
-                  }}
-                >
-                  Cropped fit jacket made of leather effect fabric with a contrast faux fur interior. Lapel collar and long sleeves. Welt pockets at the hip. Inside pocket detail. Zip-up front.
-                </Typography>
+                
+
+                
+
+              
 
                 <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
-                  {['S', 'M', 'L', 'XL'].map((size) => (
-                    <Grid item key={size}>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          width: '50px',
-                          height: '50px',
-                          color: '#0D0F1F',
-                          backgroundColor: 'white',
-                          borderRadius: '0',
-                          '&:hover': {
-                            backgroundColor: '#0D0F1F',
-                            color: 'white',
-                          },
-                        }}
-                      >
-                        {size}
-                      </Button>
-                    </Grid>
-                  ))}
+                  <Grid item xs={4} sm={3}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        width: '100%',
+                        fontWeight: 'bold',
+                        color: '#0D0F1F',
+                        backgroundColor: 'white',
+                        borderRadius: '30px',
+                        '&:hover': {
+                          backgroundColor: '#0D0F1F',
+                          color: '#F5F5F5',
+                        },
+                      }}
+                      onClick={() => handleAddToCart(product)} // Increment the count when added to cart
+                    >
+                      ADD TO CART
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={4} sm={3}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleUpdateDialogOpen(product)}
+                      sx={{
+                        width: '100%',
+                        fontWeight: 'bold',
+                        color: '#0D0F1F',
+                        backgroundColor: 'white',
+                        borderRadius: '30px',
+                        '&:hover': {
+                          backgroundColor: '#0D0F1F',
+                          color: '#F5F5F5',
+                        },
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={4} sm={3}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleDeleteDialogOpen(product)}
+                      sx={{
+                        width: '100%',
+                        fontWeight: 'bold',
+                        color: '#0D0F1F',
+                        backgroundColor: 'white',
+                        borderRadius: '30px',
+                        '&:hover': {
+                          backgroundColor: '#0D0F1F',
+                          color: '#F5F5F5',
+                        },
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
                 </Grid>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    '&:focus': { outline: 'none' },
-                    width: '30%',
-                    fontWeight: 'bold',
-                    color: '#0D0F1F',
-                    backgroundColor: 'white',
-                    borderRadius: '30px',
-                    marginRight: '10px',
-                    '&:hover': {
-                      backgroundColor: '#0D0F1F',
-                      color: '#F5F5F5',
-                    },
-                  }}
-                  onClick={() => onAddToCart(product)}
-                >
-                  ADD TO CART
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleUpdateDialogOpen(product)}
-                  sx={{ 
-                    margin: '5px',
-                    fontWeight: 'bold',
-                    color: '#0D0F1F',
-                    backgroundColor: 'white',
-                    width: '30%',
-                    borderRadius: '30px',
-                    '&:hover': {
-                      backgroundColor: '#0D0F1F',
-                      color: '#F5F5F5',
-                    },
-
-                  }}
-                >
-                  Update
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => handleDeleteDialogOpen(product)}
-                  sx={{ 
-                    margin: '5px',
-                    fontWeight: 'bold',
-                    color: '#0D0F1F',
-                    backgroundColor: 'white',
-                    width: '30%',
-                    borderRadius: '30px',
-                    '&:hover': {
-                      backgroundColor: '#0D0F1F',
-                      color: '#F5F5F5',
-                    },
-                   }}
-                >
-                  Delete
-                </Button>
               </Box>
             </Grid>
           </Grid>
@@ -303,6 +313,22 @@ export default function ProductDetailsPage({ onAddToCart }) {
               onChange={(e) => handleInputChange('sellProductType', e.target.value)}
               fullWidth
             />
+            
+            <TextField
+              label="Product Size"
+              value={updatedProduct.sellProductSize || ''}
+              onChange={(e) => handleInputChange('sellProductSize', e.target.value)}
+              fullWidth
+            />
+            
+            <TextField
+              label="Product Description"
+              value={updatedProduct.sellProductDescription || ''}
+              onChange={(e) => handleInputChange('sellProductDescription', e.target.value)}
+              fullWidth
+            />
+
+            
             <TextField
               label="Product Price"
               value={updatedProduct.sellProductPrice || ''}

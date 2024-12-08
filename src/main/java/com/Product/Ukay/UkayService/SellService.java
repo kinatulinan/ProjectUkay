@@ -43,6 +43,8 @@ public class SellService {
             sell.setSellProductName(newSellDetails.getSellProductName());
             sell.setSellProductType(newSellDetails.getSellProductType());
             sell.setSellProductPrice(newSellDetails.getSellProductPrice());
+            sell.setSellProductSize(newSellDetails.getSellProductSize());
+            sell.setSellProductDescription(newSellDetails.getSellProductDescription());
 
         } catch(NoSuchElementException nex){
             throw new NameNotFoundException("Sell " + sellId + " not found");
