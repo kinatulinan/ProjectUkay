@@ -7,7 +7,7 @@ import CartPage from './CartPage';
 import ProductsPage from './ProductsPage';
 
 const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Orders'];
+const settings = ['Login', 'Register', 'Orders', 'Update Account'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
