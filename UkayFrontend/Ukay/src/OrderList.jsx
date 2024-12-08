@@ -17,6 +17,7 @@ const OrderList = () => {
 
   const deleteOrder = async (orderId) => {
     try {
+      
       await axios.delete(`/api/order/deleteOrder/${orderId}`);
       setOrders((prev) => prev.filter((order) => order.orderId !== orderId));
     } catch (error) {

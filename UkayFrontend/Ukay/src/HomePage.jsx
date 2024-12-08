@@ -52,6 +52,8 @@ import Jorts6 from './assets/Jorts6.jpg';
 function HomePage() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [isAdded, setIsAdded] = useState(false);
 
   // Product data
   const products = [
@@ -160,41 +162,60 @@ function HomePage() {
     setOpen(false);
     setSelectedItem(null);
   };
+  const handleAddToCart = (variant) => {
+    const updatedCart = [...cartItems];
+    const existingItemIndex = updatedCart.findIndex(item => item.name === variant.name);
+
+    if (existingItemIndex >= 0) {
+      updatedCart[existingItemIndex].quantity += 1;
+    } else {
+      updatedCart.push({ ...variant, quantity: 1 });
+    }
+
+    setCartItems(updatedCart);
+    setIsAdded(true);  // Trigger animation
+    setOpen(false); // Close the dialog after adding to the cart
+
+    // Reset animation after 1 second
+    setTimeout(() => setIsAdded(false), 3000);
+  };
+
+
 
   return (
-    <Box sx={{ overflowX: 'hidden' }}>
-      {/* Hero Section */}
-      <Box 
-          sx={{
-            textAlign: 'center',
-            backgroundImage: `url(${Cover})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            padding: { xs: '50px 12px', md: '100px 18px' },
-            marginTop: '30px',
-            color: 'white',
-            width: '100%',
-            height: { xs: '60vh', md: '80vh' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-        <Typography
-          variant="h1"
-          fontWeight="bold"
-          sx={{
-            fontFamily: 'Lobster, Sans Serif',
-            fontSize: '24rem',
-            color: '#E99E00',
-            textShadow: '0 0 10px #E99E00, 0 0 20px #010f42, 0 0 30px #010f42',
-            lineHeight: 1.1,
-          }}>
+  <Box sx={{ overflowX: 'hidden' }}>
+    {/* Hero Section */}
+    <Box 
+      sx={{
+        textAlign: 'center',
+        backgroundImage: `url(${Cover})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: { xs: '50px 12px', md: '100px 18px' },
+        marginTop: '30px',
+        color: 'white',
+        width: '100%',
+        height: { xs: '60vh', md: '80vh' },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Typography
+        variant="h1"
+        fontWeight="bold"
+        sx={{
+          fontFamily: 'Lobster, Sans Serif',
+          fontSize: '24rem',
+          color: '#E99E00',
+          textShadow: '0 0 10px #E99E00, 0 0 20px #010f42, 0 0 30px #010f42',
+          lineHeight: 1.1,
+        }}>
         U-Kay
-        </Typography>
+      </Typography>
 
-        <Box sx={{ mt: { xs: 2, md: 4 } }}>
+      <Box sx={{ mt: { xs: 2, md: 4 } }}>
         <Typography
           variant="h2"
           fontWeight="bold"
@@ -214,105 +235,149 @@ function HomePage() {
         </Typography>
       </Box>
 
-      </Box>
-
-     {/* Product Grid Section */}
-      <Box sx={{ textAlign: 'center', mt: 6 }}>
-        <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
-          Find Your Perfect Thrifted Look
-        </Typography>
-        <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
-          From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
-        </Typography>
-      </Box>
-
-
-      <Grid container spacing={4} sx={{ mt: 4}}>
-        {products.map((product, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Box 
-              sx={{
-                textAlign: 'center',
-                backgroundColor: '#f0f0f0',
-                borderRadius: 2,
-                padding: 2,
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer',
-                overflow: 'hidden',
-                '&:hover': {
-                  boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.40)',
-                  transform: 'scale(1.00)',
-                  transition: 'all 0.3s ease',
-                }
-              }}
-              onClick={() => handleOpen(product)}
-            >
-              <Box
-                component="img"
-                src={product.variants[0].img}
-                alt={product.label}
-                sx={{
-                  width: '100%',
-                  borderRadius: 2,
-                  height: 'auto',
-                  overflow: 'hidden',
-                  mb: 1,
-                  border: '1px solid #999',
-                  transition: 'transform 0.3s ease',
-                }}
-              />
-              <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{product.price}</Typography>
-              <Typography variant="body2" sx={{ color: '#666' }}>{product.label}</Typography>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Dialog for product details */}
-      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-        <DialogTitle>{selectedItem?.label}</DialogTitle>
-        <DialogContent sx={{ overflow: 'hidden' }}>
-          <Grid container spacing={2}>
-            {selectedItem?.variants.map((variant, idx) => (
-              <Grid item xs={6} sm={4} md={3} key={idx}>
-                <Box 
-                  sx={{
-                    textAlign: 'center',
-                    padding: 1,
-                    backgroundColor: '#f9f9f9',
-                    borderRadius: 2,
-                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-                    cursor: 'pointer',
-                    overflow: 'hidden',
-                    '&:hover': {
-                      boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.35)', 
-                      transform: 'scale(1.00)',
-                      transition: 'all 0.3s ease',
-                    }
-                  }}
-                >
-                  <Box
-                    component="img"
-                    src={variant.img}
-                    alt={variant.name}
-                    sx={{
-                      width: '100%',
-                      borderRadius: 2,
-                      overflow: 'hidden',
-                      mb: 1,
-                      border: '1px solid #ddd',
-                    }}
-                  />
-                  <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{variant.price}</Typography>
-                  <Typography variant="body2" sx={{ color: '#666' }}>{variant.name}</Typography>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </DialogContent>
-      </Dialog>
     </Box>
-  );
+
+    {/* Product Grid Section */}
+    <Box sx={{ textAlign: 'center', mt: 6 }}>
+      <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
+        Find Your Perfect Thrifted Look
+      </Typography>
+      <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
+        From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
+      </Typography>
+    </Box>
+
+    <Grid container spacing={4} sx={{ mt: 4}}>
+      {products.map((product, index) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+          <Box 
+            sx={{
+              textAlign: 'center',
+              backgroundColor: '#f0f0f0',
+              borderRadius: 2,
+              padding: 2,
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+              overflow: 'hidden',
+              '&:hover': {
+                boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.40)',
+                transform: 'scale(1.00)',
+                transition: 'all 0.3s ease',
+              }
+            }}
+            onClick={() => handleOpen(product)}
+          >
+            <Box
+              component="img"
+              src={product.variants[0].img}
+              alt={product.label}
+              sx={{
+                width: '100%',
+                borderRadius: 2,
+                height: 'auto',
+                overflow: 'hidden',
+                mb: 1,
+                border: '1px solid #999',
+                transition: 'transform 0.3s ease',
+              }}
+            />
+            <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{product.price}</Typography>
+            <Typography variant="body2" sx={{ color: '#666' }}>{product.label}</Typography>
+          </Box>
+        </Grid>
+      ))}
+    </Grid>
+
+    {/* Dialog for product details */}
+    <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+      <DialogTitle>{selectedItem?.label}</DialogTitle>
+      <DialogContent
+        sx={{
+          overflow: 'hidden',
+          maxHeight: '60vh',
+          overflowY: 'auto', // Enable vertical scrolling inside the dialog
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#888',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: '#f0f0f0',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#555',
+          },
+        }}
+      >
+        <Grid container spacing={2}>
+          {selectedItem?.variants.map((variant, idx) => (
+            <Grid item xs={6} sm={4} md={3} key={idx}>
+              <Box 
+                sx={{
+                  textAlign: 'center',
+                  padding: 1,
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: 2,
+                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  overflow: 'hidden',
+                  '&:hover': {
+                    boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.35)', 
+                    transform: 'scale(1.00)',
+                    transition: 'all 0.3s ease',
+                  }
+                }}
+              >
+                <Box
+                  component="img"
+                  src={variant.img}
+                  alt={variant.name}
+                  sx={{
+                    width: '100%',
+                    borderRadius: 2,
+                    overflow: 'hidden',
+                    mb: 1,
+                    border: '1px solid #ddd',
+                  }}
+                />
+                <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{variant.price}</Typography>
+                <Typography variant="body2" sx={{ color: '#666' }}>{variant.name}</Typography>
+
+                {/* Add to Cart button for variants */}
+                <Box sx={{ textAlign: 'center', mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      backgroundColor: '#E99E00',
+                      color: '#fff',
+                      fontFamily: 'Lobster, Sans Serif',
+                      fontSize: '1.2rem',
+                      padding: '10px 20px',
+                      borderRadius: '30px',
+                      textTransform: 'none',
+                      '&:hover': {
+                        backgroundColor: '#D68E00',
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                      },
+                      animation: isAdded ? 'bounce 0.6s ease-in-out' : '', // Animation on add
+                    }}
+                    onClick={() => handleAddToCart(variant)}
+                  >
+                    Add to Cart
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </DialogContent>
+    </Dialog>
+  </Box>
+);
+
 }
 
 export default HomePage;

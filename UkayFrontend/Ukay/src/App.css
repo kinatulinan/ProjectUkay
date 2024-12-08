@@ -1,12 +1,7 @@
 /* In App.css or index.css */
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+
 
 .logo {
   height: 6em;
@@ -343,4 +338,12 @@
 .payment-list li span.label {
   font-weight: bold;
   color: #007bff;
+}
+
+@keyframes bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
