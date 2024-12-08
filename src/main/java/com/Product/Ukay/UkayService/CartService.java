@@ -21,14 +21,6 @@ public class CartService {
     public CartEntity addToCart(CartEntity cart){
         return crepo.save(cart);
     }
-//    @Transactional
-//    public CartEntity addToCart(int cartId, ProductEntity product) throws NameNotFoundException {
-//        CartEntity cart = crepo.findById(cartId)
-//                .orElseThrow(() -> new NameNotFoundException("Cart " + cartId + " not found"));
-//        product.setCart(cart);
-//        cart.getProducts().add(product);
-//        return crepo.save(cart);
-//    }
 
     public List<CartEntity> showCart(){
         return crepo.findAll();

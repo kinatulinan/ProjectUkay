@@ -1,25 +1,44 @@
-import React from 'react';
-import { Box, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemText, Button } from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
+import React, { useState } from 'react';
+import {Box, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemText, Button, Dialog, DialogActions, DialogContent,
+} from '@mui/material';
+import { Close as CloseIcon, RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-function CartPage({ cartItems, onClose, open, onRemoveItem }) {
+function CartPage({ cartItems, onClose, open, onRemoveItem, onUpdateQuantity }) {
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.sellProductPrice * item.quantity,
     0
   );
 
-  const handleViewCart = () => {
-    navigate('/cart');
-    onClose();
+  const handleDeleteItem = (index) => {
+    setItemToDelete(index);
+    setOpenDialog(true);
+  };
+
+  const confirmDelete = () => {
+    onRemoveItem(itemToDelete);
+    setOpenDialog(false);
+    setItemToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setOpenDialog(false);
+    setItemToDelete(null);
   };
 
   const handleCheckOut = () => {
     navigate('/payment');
     onClose();
-  }
+  };
+
+  const handleViewCart = () => {
+    navigate('/cart');
+    onClose();
+  };
 
   return (
     <Drawer
@@ -40,7 +59,10 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
           <Typography variant="h6" fontWeight="bold">
             Cart
           </Typography>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} sx={{'&:focus': { outline: 'none' }, '&:hover': {
+              color: '#f5f5f5',
+            backgroundColor: '#C81501',
+            }}}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -49,20 +71,38 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
         {/* Cart Items */}
         <List sx={{ flexGrow: 1, overflowY: 'auto' }}>
           {cartItems.length === 0 ? (
-            <Typography variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
-              Your cart is empty.
-            </Typography>
+            <Typography sx = {{fontSize:'0.8rem', paddingLeft: '35%'}}>Add items to cart first.</Typography>
           ) : (
             cartItems.map((item, index) => (
               <ListItem key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <ListItemText
-                  primary={item.sellProductName}
-                  secondary={`₱${item.sellProductPrice} x ${item.quantity}`}
-                />
-                <Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <ListItemText
+                    primary={item.sellProductName}
+                    secondary={`₱${item.sellProductPrice}`}
+                  />
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <IconButton
+                      onClick={() => onUpdateQuantity(index, item.quantity - 1)}
+                      disabled={item.quantity === 1}
+                    >
+                      <RemoveCircle />
+                    </IconButton>
+                    <Typography>{item.quantity}</Typography>
+                    <IconButton
+                      onClick={() => onUpdateQuantity(index, item.quantity + 1)}
+                    >
+                      <AddCircle />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDeleteItem(index)}
+                    >
+                      <Delete sx={{ color: 'red' }} />
+                    </IconButton>
+                  </Box>
+                </Box>
+                <Typography sx={{ marginLeft: 2 }}>
                   ₱{(item.sellProductPrice * item.quantity).toFixed(2)}
                 </Typography>
-                <IconButton onClick={() => onRemoveItem(index)}>Remove</IconButton>
               </ListItem>
             ))
           )}
@@ -88,6 +128,7 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
                 },
               }}
               onClick={handleCheckOut}
+              disabled={cartItems.length === 0}
             >
               Checkout &middot; ₱{totalPrice.toFixed(2)}
             </Button>
@@ -133,6 +174,23 @@ function CartPage({ cartItems, onClose, open, onRemoveItem }) {
           </Button>
         </Box>
       </Box>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={cancelDelete}>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to remove this item from your cart?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={confirmDelete} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Drawer>
   );
 }
