@@ -303,12 +303,6 @@ function SellProductPage() {
           </Button>
         </DialogActions>
       </Dialog>
-
-      
-      
-     
-
-      
     </Container>
   );
 }

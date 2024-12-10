@@ -51,8 +51,11 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
       setEmptyCartDialog(true);
       return;
     }
-    navigate('/payment');
+    const selectedItems = cartItems.filter((_, index) => checkedItems.includes(index));
+    const totalPrice = getTotalPrice();
+    navigate('/payment', { state: { selectedItems, totalPrice } });
   };
+  
 
   const handleContinueShopping = () => {
     navigate('/products');

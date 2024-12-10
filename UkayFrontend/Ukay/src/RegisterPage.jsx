@@ -57,6 +57,12 @@ function RegisterPage() {
             });
             alert("Account Successfully Registered");
             navigate("/login");
+
+            localStorage.setItem("userDetails", JSON.stringify({
+                fullName: `${firstName} ${middleName} ${lastName}`,
+                address,
+                mobile,
+            }));
         } catch (err) {
             if (err.response?.status === 409) {
                 alert("Username or email already exists. Please try again.");
@@ -68,7 +74,7 @@ function RegisterPage() {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100vh' }}>
+        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100vh', marginTop: '95px' }}>
             <Card sx={{ width: 550 }}>
                 <CardContent>
                     <Box component="form" onSubmit={handleSubmit}>
