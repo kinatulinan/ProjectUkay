@@ -267,7 +267,7 @@ function RegisterPage() {
                                             backgroundColor: '#D18A00',
                                         },
                                     }}
-                                    disabled={!isFormValid}
+                                    //disabled={!isFormValid}
                                 >
                                     Register
                                 </Button>

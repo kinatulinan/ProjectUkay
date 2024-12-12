@@ -35,7 +35,8 @@ function LoginPage() {
             if (response.data.status) {
                 navigate('/home');
             } else {
-                setErrorMessage("Username or password does not match");
+                //alert.setErrorMessage("Username or password does not match");
+                alert(`Username or password does not match`);
             }
         } catch (err) {
             setErrorMessage("An error occurred. Please try again.");

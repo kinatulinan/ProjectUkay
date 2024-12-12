@@ -1,10 +1,8 @@
 package com.Product.Ukay.UkayService;
 import com.Product.Ukay.UkayEntity.CartEntity;
-import com.Product.Ukay.UkayEntity.ProductEntity;
-import com.Product.Ukay.UkayEntity.SellEntity;
+
 import com.Product.Ukay.UkayRepository.CartRepository;
-import com.Product.Ukay.UkayRepository.ProductRepository;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.naming.NameNotFoundException;

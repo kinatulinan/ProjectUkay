@@ -66,6 +66,9 @@ import Jorts6 from './assets/Jorts6.jpg';
 function HomePage({ onAddToCart }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
+
+
 
   const products = [
     {
@@ -190,6 +193,10 @@ function HomePage({ onAddToCart }) {
     setSelectedItem(null);
   };
 
+
+
+  
+
   return (
     <Box sx={{ overflowX: 'hidden' }}>
     {/* Hero Section */}
@@ -262,7 +269,8 @@ function HomePage({ onAddToCart }) {
         </Typography>
       </Box>
     </Box>
-
+    
+    
       {/* Product Grid Section */}
       <Box sx={{ textAlign: 'center', mt: 6 }}>
         <Typography

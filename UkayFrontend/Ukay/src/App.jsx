@@ -50,11 +50,21 @@ function App() {
     });
   };
 
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem('userDetails');
+    localStorage.removeItem('cartItems');
+    // Redirect to the login page
+    navigate('/login');
+};
+  
+
   return (
     <Router>
       <UkayAppBar
         onCartClick={() => setCartOpen(true)}
         cartItems={cartItems}
+        handleLogout={handleLogout}
         onRemoveItem={handleRemoveItem}
         onUpdateQuantity={handleUpdateQuantity}
       />

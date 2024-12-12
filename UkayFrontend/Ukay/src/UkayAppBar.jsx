@@ -7,7 +7,7 @@ import Cart from './Cart';
 import ProductsPage from './ProductsPage';
 
 const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Orders', 'Update Account'];
+const settings = ['Login', 'Register', 'Orders', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -55,14 +55,24 @@ function ResponsiveAppBar() {
     }
     handleCloseNavMenu();
   };
-
+  //UPDATE
   const handleSettingClick = (setting) => {
-    if (setting === 'Login') {
+    if (setting === 'Logout') {
+      // Retrieve username from localStorage or fallback to "User"
+      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+      const username = userDetails?.username || 'User';
+  
+      // Display logout message
+      alert(`${username} is now logged out`);
+  
+      // Clear user data and redirect to login page
+      localStorage.removeItem('userDetails');
+      localStorage.removeItem('cartItems');
+      navigate('/login');
+    } else if (setting === 'Login') {
       navigate('/login');
     } else if (setting === 'Register') {
       navigate('/register');
-    } else if (setting === 'Cart') {
-      navigate('/cart');
     } else if (setting === 'Orders') {
       navigate('/order');
     }

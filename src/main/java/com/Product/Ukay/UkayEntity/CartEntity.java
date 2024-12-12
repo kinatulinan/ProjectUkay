@@ -18,6 +18,9 @@ public class CartEntity {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductEntity> products;
 
+    //UPDATES
+ 
+
     public CartEntity(){ super();}
 
     public CartEntity(int cartId, String cartProductName, int cartProductQuantity, float cartProductTotal){
