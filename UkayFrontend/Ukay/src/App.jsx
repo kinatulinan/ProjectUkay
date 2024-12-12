@@ -5,8 +5,7 @@ import UkayAppBar from './UkayAppBar';
 import HomePage from './HomePage';
 import ProductsPage from './ProductsPage';
 import SellProductPage from './SellProductPage';
-import OrderList from './OrderList';
-import OrderForm from './OrderForm';
+import OrderPage from './OrderPage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import PaymentPage from './PaymentPage';
@@ -66,9 +65,8 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage onAddToCart={handleAddToCart} />} />
         <Route path="/sell" element={<SellProductPage />} />
-        <Route path="/order" element={<OrderForm />} />
+        <Route path="/order" element={<OrderPage />} />
         <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveItem={handleRemoveItem} onUpdateQuantity={handleUpdateQuantity}/>} />
-        <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/payment" element={<PaymentPage />} />

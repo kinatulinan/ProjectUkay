@@ -47,14 +47,14 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   };
 
   const handleCheckout = () => {
-    if (cartItems.length === 0 || checkedItems.length === 0) {
-      setEmptyCartDialog(true);
-      return;
-    }
-    const selectedItems = cartItems.filter((_, index) => checkedItems.includes(index));
-    const totalPrice = getTotalPrice();
-    navigate('/payment', { state: { selectedItems, totalPrice } });
-  };
+  if (cartItems.length === 0 || checkedItems.length === 0) {
+    setEmptyCartDialog(true);
+    return;
+  }
+  const selectedItems = cartItems.filter((_, index) => checkedItems.includes(index));
+  const totalPrice = getTotalPrice();
+  navigate('/order', { state: { selectedItems, totalPrice }});
+};
   
 
   const handleContinueShopping = () => {
