@@ -104,34 +104,34 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <CheckroomIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="home"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'Lobster, Sans Serif',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                position: 'relative',
-                textDecoration: 'none',
-                color: '#E99E00',
-                background: 'linear-gradient(to right, #E99E00, white)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundSize: '200% 100%',
-                backgroundPosition: '200% 0',
-                transition: 'background-position 1.0s ease',
-                '&:hover': {
-                  backgroundPosition: '0 0',
+            <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="home"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'Lobster, Sans Serif',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  position: 'relative',
+                  textDecoration: 'none',
+                  color: '#E99E00',
+                  background: 'linear-gradient(to right, #E99E00, white)',
+                  WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                },
-              }}
-            >
-              U-Kay
-          </Typography>
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '200% 0',
+                  transition: 'background-position 1.0s ease',
+                  '&:hover': {
+                    backgroundPosition: '0 0',
+                    WebkitTextFillColor: 'transparent',
+                  },
+                }}
+              >
+                U-Kay
+            </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
