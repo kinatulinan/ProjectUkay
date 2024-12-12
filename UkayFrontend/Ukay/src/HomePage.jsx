@@ -55,6 +55,9 @@ function HomePage() {
   const [cartItems, setCartItems] = useState([]);
   const [isAdded, setIsAdded] = useState(false);
 
+
+  
+
   // Product data
   const products = [
     {
