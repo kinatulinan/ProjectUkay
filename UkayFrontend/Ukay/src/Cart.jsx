@@ -55,7 +55,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
     const totalPrice = getTotalPrice();
     navigate('/payment', { state: { selectedItems, totalPrice } });
   };
-  
 
   const handleContinueShopping = () => {
     navigate('/products');
@@ -157,7 +156,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
                 textAlign: 'center',
               }}
             >
-              <Typography sx={{ textAlign: 'left', marginLeft: '38%'}}>{item.sellProductName}</Typography>
+              <Typography sx={{ textAlign: 'left', marginLeft: '38%'}}>{item.name || 'Unnamed Product'}</Typography>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
                 <IconButton

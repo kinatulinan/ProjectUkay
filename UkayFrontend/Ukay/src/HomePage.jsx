@@ -6,6 +6,12 @@ import Cover from './assets/Cover.jpg';
 import Cargo1 from './assets/Cargo.png';
 import Cargo2 from './assets/Cargo2.png';
 import Cargo3 from './assets/Cargo3.png';
+import Cargo4 from './assets/Cargo4.png';
+import Cargo5 from './assets/Cargo5.png';
+import Cargo6 from './assets/Cargo6.png';
+import Cargo7 from './assets/Cargo7.png';
+import Cargo8 from './assets/Cargo8.png';
+import Cargo9 from './assets/Cargo9.jpg';
 import Acs from './assets/Acs.jpg';
 import Acs2 from './assets/Acs2.jpg';
 import Acs3 from './assets/Acs3.jpg';
@@ -49,109 +55,114 @@ import Jorts4 from './assets/Jorts4.jpg';
 import Jorts5 from './assets/Jorts5.jpg';
 import Jorts6 from './assets/Jorts6.jpg';
 
-function HomePage() {
+
+function HomePage({ onAddToCart }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [isAdded, setIsAdded] = useState(false);
 
-  // Product data
   const products = [
     {
       label: 'Cargo Pants',
-      price: 'Cargo',
       variants: [
-        { img: Cargo1, name: 'Classic Cargo', price: '2,995 PHP' },
-        { img: Cargo2, name: 'Animal Print Cargo', price: '3,295 PHP' },
-        { img: Cargo3, name: 'Denim Cargo', price: '3,495 PHP' },
+        { img: Cargo1, name: 'Classic Cargo', sellProductPrice: 2995 },
+        { img: Cargo2, name: 'Animal Print Cargo', sellProductPrice: 2995 },
+        { img: Cargo3, name: 'Deni3 Cargo', sellProductPrice: 2995 },
+        { img: Cargo4, name: 'Denifd Cargo', sellProductPrice: 2995 },
+        { img: Cargo5, name: 'Deni3fd Cargo', sellProductPrice: 2995 },
+        { img: Cargo6, name: 'Denidf Cargo', sellProductPrice: 2995 },
+        { img: Cargo7, name: 'Denifd Cargo', sellProductPrice: 2995 },
+        { img: Cargo9, name: 'Denifd Cargo', sellProductPrice: 2995 },
+        { img: Cargo8, name: 'Denifd Cargo', sellProductPrice: 2995 },
+
       ]
     },
     {
       label: 'Accessories',
-      price: 'Accessories',
+     
       variants: [
-        { img: Acs6, name: 'Cap', price: '500 PHP' },
-        { img: Acs2, name: 'Bracelet', price: '300 PHP' },
-        { img: Acs3, name: 'Ring Set', price: '450 PHP' },
-        { img: Acs5, name: 'Ring Set', price: '450 PHP' },
-        { img: Acs4, name: 'Ring Set', price: '450 PHP' },
-        { img: Acs, name: 'Ring Set', price: '450 PHP' },
+        { img: Acs6, name: 'Cap', sellProductPrice: 2995 },
+        { img: Acs2, name: 'Bracelet', sellProductPrice: 2995 },
+        { img: Acs3, name: 'Ring Set', sellProductPrice: 2995 },
+        { img: Acs5, name: 'Ring Set', sellProductPrice: 2995 },
+        { img: Acs4, name: 'Ring Set', sellProductPrice: 2995 },
+        { img: Acs, name: 'Ring Set', sellProductPrice: 2995 },
       ]
     },
     {
       label: 'Jackets',
-      price: 'Various Styles',
+     
       variants: [
-        { img: Jacket, name: 'Stylish Jacket', price: '4,000 PHP' },
-        { img: Jacket2, name: 'Cozy Jacket', price: '3,500 PHP' },
-        { img: Jacket3, name: 'Denim Jacket', price: '3,800 PHP' },
-        { img: Jacket4, name: 'Denim Jacket', price: '3,800 PHP' },
-        { img: Jacket5, name: 'Denim Jacket', price: '3,800 PHP' },
+        { img: Jacket, name: 'Stylish Jacket', sellProductPrice: 2995 },
+        { img: Jacket2, name: 'Cozy Jacket', sellProductPrice: 2995 },
+        { img: Jacket3, name: 'Denim Jacket', sellProductPrice: 2995 },
+        { img: Jacket4, name: 'Denim Jacket', sellProductPrice: 2995 },
+        { img: Jacket5, name: 'Denim Jacket', sellProductPrice: 2995 },
         
       ]
     },
     {
       label: 'Shoes',
-      price: 'Trendy Footwear',
+      
       variants: [
-        { img: Shoes7, name: 'Footwear', price: '120 PHP' },
-        { img: Shoes, name: 'Sneakers', price: '120 PHP' },
-        { img: Shoes2, name: 'Casual Shoes', price: '120 PHP' },
-        { img: Shoes2, name: 'Casual Shoes', price: '120 PHP' },
-        { img: Shoes4, name: 'Casual Shoes', price: '120 PHP' },
-        { img: Shoes3, name: 'Casual Shoes', price: '120 PHP' },
-        { img: Shoes5, name: 'Casual Shoes', price: '120 PHP' },
+        { img: Shoes7, name: 'Footwear', sellProductPrice: 2995 },
+        { img: Shoes, name: 'Sneakers', sellProductPrice: 2995 },
+        { img: Shoes2, name: 'Casual Shoes', sellProductPrice: 2995 },
+        { img: Shoes6, name: 'Casual Shoes', sellProductPrice: 2995 },
+        { img: Shoes4, name: 'Casual Shoes', sellProductPrice: 2995 },
+        { img: Shoes3, name: 'Casual Shoes', sellProductPrice: 2995 },
+        { img: Shoes5, name: 'Casual Shoes', sellProductPrice: 2995 },
         
       ]
     },
     {
       label: 'Bags',
-      price: 'Stylish Bags',
+     
       variants: [
-        { img: Bag, name: 'Shoulder Bag', price: '150 PHP' },
-        { img: Bag2, name: 'Handbag', price: '150 PHP' },
-        { img: Bag3, name: 'Backpack', price: '150 PHP' },
-        { img: Bag4, name: 'Backpack', price: '150 PHP' },
-        { img: Bag5, name: 'Backpack', price: '150 PHP' },
+        { img: Bag, name: 'Shoulder Bag', sellProductPrice: 2995 },
+        { img: Bag2, name: 'Handbag', sellProductPrice: 2995 },
+        { img: Bag3, name: 'Backpack', sellProductPrice: 2995 },
+        { img: Bag4, name: 'Backpack', sellProductPrice: 2995 },
+        { img: Bag5, name: 'Backpack', sellProductPrice: 2995 },
       ]
     },
     {
       label: 'Dresses',
-      price: 'Elegant Dresses',
+      
       variants: [
-        { img: Dress, name: 'Evening Dress', price: '200 PHP' },
-        { img: Dress2, name: 'Casual Dress', price: '200 PHP' },
-        { img: Dress3, name: 'Party Dress', price: '200 PHP' },
-        { img: Dress4, name: 'Party Dress', price: '200 PHP' },
-        { img: Dress5, name: 'Party Dress', price: '200 PHP' },
-        { img: Dress6, name: 'Party Dress', price: '200 PHP' },
+        { img: Dress, name: 'Evening Dress', sellProductPrice: 2995 },
+        { img: Dress2, name: 'Casual Dress', sellProductPrice: 2995 },
+        { img: Dress3, name: 'Party Dress', sellProductPrice: 2995 },
+        { img: Dress4, name: 'Party Dress', sellProductPrice: 2995 },
+        { img: Dress5, name: 'Party Dress', sellProductPrice: 2995 },
+        { img: Dress6, name: 'Party Dress', sellProductPrice: 2995 },
       ]
     },
     {
       label: 'Jeans',
-      price: 'Classic Denim',
+      
       variants: [
-        { img: Jeans, name: 'Skinny Jeans', price: '50 PHP' },
-        { img: Jeans2, name: 'Straight Cut', price: '50 PHP' },
-        { img: Jeans3, name: 'Straight Cut', price: '50 PHP' },
-        { img: Jeans4, name: 'Straight Cut', price: '50 PHP' },
-        { img: Jeans5, name: 'Straight Cut', price: '50 PHP' },
-        { img: Jeans6, name: 'Straight Cut', price: '50 PHP' },
+        { img: Jeans, name: 'Skinny Jeans', sellProductPrice: 2995 },
+        { img: Jeans2, name: 'Straight Cut', sellProductPrice: 2995 },
+        { img: Jeans3, name: 'Straight Cut', sellProductPrice: 2995 },
+        { img: Jeans4, name: 'Straight Cut', sellProductPrice: 2995 },
+        { img: Jeans5, name: 'Straight Cut', sellProductPrice: 2995 },
+        { img: Jeans6, name: 'Straight Cut', sellProductPrice: 2995 },
       ]
     },
     {
       label: 'Jorts',
-      price: 'Trendy Shorts',
+      
       variants: [
-        { img: Jorts, name: 'Denim Shorts', price: '230 PHP' },
-        { img: Jorts2, name: 'Cargo Shorts', price: '230 PHP' },
-        { img: Jorts3, name: 'Cargo Shorts', price: '230 PHP' },
-        { img: Jorts4, name: 'Cargo Shorts', price: '230 PHP' },
-        { img: Jorts5, name: 'Cargo Shorts', price: '230 PHP' },
-        { img: Jorts6, name: 'Cargo Shorts', price: '230 PHP' },
+        { img: Jorts, name: 'Denim Shorts', sellProductPrice: 2995 },
+        { img: Jorts2, name: 'Cargo Shorts', sellProductPrice: 2995 },
+        { img: Jorts3, name: 'Cargo Shorts', sellProductPrice: 2995 },
+        { img: Jorts4, name: 'Cargo Shorts', sellProductPrice: 2995 },
+        { img: Jorts5, name: 'Cargo Shorts', sellProductPrice: 2995 },
+        { img: Jorts6, name: 'Cargo Shorts', sellProductPrice: 2995 },
       ]
     }
   ];
+
 
   const handleOpen = (item) => {
     setSelectedItem(item);
@@ -162,28 +173,9 @@ function HomePage() {
     setOpen(false);
     setSelectedItem(null);
   };
-  const handleAddToCart = (variant) => {
-    const updatedCart = [...cartItems];
-    const existingItemIndex = updatedCart.findIndex(item => item.name === variant.name);
-
-    if (existingItemIndex >= 0) {
-      updatedCart[existingItemIndex].quantity += 1;
-    } else {
-      updatedCart.push({ ...variant, quantity: 1 });
-    }
-
-    setCartItems(updatedCart);
-    setIsAdded(true);  // Trigger animation
-    setOpen(false); // Close the dialog after adding to the cart
-
-    // Reset animation after 1 second
-    setTimeout(() => setIsAdded(false), 3000);
-  };
-
-
 
   return (
-  <Box sx={{ overflowX: 'hidden' }}>
+    <Box sx={{ overflowX: 'hidden' }}>
     {/* Hero Section */}
     <Box 
       sx={{
@@ -195,25 +187,44 @@ function HomePage() {
         marginTop: '30px',
         color: 'white',
         width: '100%',
-        height: { xs: '60vh', md: '80vh' },
+        height: { xs: '76vh', md: '96vh' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'
       }}
     >
-      <Typography
-        variant="h1"
-        fontWeight="bold"
-        sx={{
-          fontFamily: 'Lobster, Sans Serif',
-          fontSize: '24rem',
-          color: '#E99E00',
-          textShadow: '0 0 10px #E99E00, 0 0 20px #010f42, 0 0 30px #010f42',
-          lineHeight: 1.1,
-        }}>
-        U-Kay
-      </Typography>
+  <Typography
+  variant="h1"
+  noWrap
+  component="a"
+  href="home"
+  sx={{
+    mr: 2,
+    display: { xs: 'block', md: 'block' },
+    fontFamily: 'Lobster, Sans Serif',
+    fontWeight: 700,
+    fontSize: { xs: '55rem', md: '25rem' }, // Adjust the font size as needed
+    letterSpacing: '.3rem',
+    textDecoration: 'none',
+    color: '#E99E00',
+    background: 'linear-gradient(to right, #E99E00, white)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundSize: '200% 100%',
+    backgroundPosition: '200% 0',
+    transition: 'background-position 1.0s ease',
+    lineHeight: 1.2, // Fix clipping of descenders like "y"
+    paddingTop: '20px', // Adjust padding to move it higher
+    '&:hover': {
+      backgroundPosition: '0 0',
+      WebkitTextFillColor: 'transparent',
+    },
+  }}
+>
+  U-Kay
+</Typography>
+
 
       <Box sx={{ mt: { xs: 2, md: 4 } }}>
         <Typography
@@ -234,123 +245,102 @@ function HomePage() {
           Style your wardrobe with handpicked thrift treasures at unbeatable prices.
         </Typography>
       </Box>
-
     </Box>
 
-    {/* Product Grid Section */}
-    <Box sx={{ textAlign: 'center', mt: 6 }}>
-      <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: 'Georgia, serif', color: '#333' }}>
-        Find Your Perfect Thrifted Look
-      </Typography>
-      <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
-        From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
-      </Typography>
-    </Box>
+      {/* Product Grid Section */}
+      <Box sx={{ textAlign: 'center', mt: 6 }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          sx={{ fontFamily: 'Georgia, serif', color: '#333' }}
+        >
+          Find Your Perfect Thrifted Look
+        </Typography>
+        <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
+          From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
+        </Typography>
+      </Box>
 
-    <Grid container spacing={4} sx={{ mt: 4}}>
-      {products.map((product, index) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-          <Box 
-            sx={{
-              textAlign: 'center',
-              backgroundColor: '#f0f0f0',
-              borderRadius: 2,
-              padding: 2,
-              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              overflow: 'hidden',
-              '&:hover': {
-                boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.40)',
-                transform: 'scale(1.00)',
-                transition: 'all 0.3s ease',
-              }
-            }}
-            onClick={() => handleOpen(product)}
-          >
+      <Grid container spacing={4} sx={{ mt: 4 }}>
+        {products.map((product, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box
-              component="img"
-              src={product.variants[0].img}
-              alt={product.label}
               sx={{
-                width: '100%',
+                textAlign: 'center',
+                backgroundColor: '#f0f0f0',
                 borderRadius: 2,
-                height: 'auto',
-                overflow: 'hidden',
-                mb: 1,
-                border: '1px solid #999',
-                transition: 'transform 0.3s ease',
+                padding: 2,
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                cursor: 'pointer',
+              
               }}
-            />
-            <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{product.price}</Typography>
-            <Typography variant="body2" sx={{ color: '#666' }}>{product.label}</Typography>
-          </Box>
-        </Grid>
-      ))}
-    </Grid>
-
-    {/* Dialog for product details */}
-    <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-      <DialogTitle>{selectedItem?.label}</DialogTitle>
-      <DialogContent
-        sx={{
-          overflow: 'hidden',
-          maxHeight: '60vh',
-          overflowY: 'auto', // Enable vertical scrolling inside the dialog
-          '&::-webkit-scrollbar': {
-            width: '8px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#888',
-            borderRadius: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: '#f0f0f0',
-          },
-          '&::-webkit-scrollbar-thumb:hover': {
-            backgroundColor: '#555',
-          },
-        }}
-      >
-        <Grid container spacing={2}>
-          {selectedItem?.variants.map((variant, idx) => (
-            <Grid item xs={6} sm={4} md={3} key={idx}>
-              <Box 
+              onClick={() => handleOpen(product)}
+            >
+              <Box
+                component="img"
+                src={product.variants[0].img}
+                alt={product.label}
                 sx={{
-                  textAlign: 'center',
-                  padding: 1,
-                  backgroundColor: '#f9f9f9',
+                  width: '100%',
                   borderRadius: 2,
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-                  cursor: 'pointer',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.35)', 
-                    transform: 'scale(1.00)',
-                    transition: 'all 0.3s ease',
-                  }
+                  height: 'auto',
+                  mb: 1,
+                  border: '1px solid #999',
                 }}
-              >
-                <Box
-                  component="img"
-                  src={variant.img}
-                  alt={variant.name}
-                  sx={{
-                    width: '100%',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    mb: 1,
-                    border: '1px solid #ddd',
-                  }}
-                />
-                <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>{variant.price}</Typography>
-                <Typography variant="body2" sx={{ color: '#666' }}>{variant.name}</Typography>
+              />
+              <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>
+                {product.label}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
 
-                {/* Add to Cart button for variants */}
-                <Box sx={{ textAlign: 'center', mt: 2 }}>
+      {/* Dialog for product details */}
+      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+        <DialogTitle>{selectedItem?.label}</DialogTitle>
+        <DialogContent
+          sx={{
+            overflow: 'hidden',
+            maxHeight: '60vh',
+            overflowY: 'auto',
+          }}
+        >
+          <Grid container spacing={2}>
+            {selectedItem?.variants.map((variant, idx) => (
+              <Grid item xs={6} sm={4} md={3} key={idx}>
+                <Box
+                  sx={{
+                    textAlign: 'center',
+                    padding: 1,
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: 2,
+                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                    cursor: 'pointer',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={variant.img}
+                    alt={variant.name}
+                    sx={{
+                      width: '100%',
+                      borderRadius: 2,
+                      mb: 1,
+                      border: '1px solid #ddd',
+                    }}
+                  />
+                  <Typography variant="body1" fontWeight="bold" sx={{ color: '#333' }}>
+                    {variant.name}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    ₱{variant.sellProductPrice}
+                  </Typography>
                   <Button
                     variant="contained"
-                    color="primary"
                     sx={{
+                      mt: 2,
                       backgroundColor: '#E99E00',
                       color: '#fff',
                       fontFamily: 'Lobster, Sans Serif',
@@ -362,22 +352,19 @@ function HomePage() {
                         backgroundColor: '#D68E00',
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                       },
-                      animation: isAdded ? 'bounce 0.6s ease-in-out' : '', // Animation on add
                     }}
-                    onClick={() => handleAddToCart(variant)}
+                    onClick={() => onAddToCart(variant)}
                   >
                     Add to Cart
                   </Button>
                 </Box>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
-    </Dialog>
-  </Box>
-);
-
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+      </Dialog>
+    </Box>
+  );
 }
 
 export default HomePage;
