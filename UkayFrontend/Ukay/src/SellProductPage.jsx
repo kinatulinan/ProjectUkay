@@ -19,6 +19,7 @@ function SellProductPage() {
   const [email, setEmail] = useState('');
   const formRef = useRef(null); // Create a reference for the form
   const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [missingDetailsOpen, setMissingDetailsOpen] = useState(false);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -44,10 +45,6 @@ function SellProductPage() {
     formRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleOpenConfirmation = () => {
-    setConfirmationOpen(true); // Open the modal
-  };
-
   const handleCloseConfirmation = () => {
     setConfirmationOpen(false); // Close the modal
   };
@@ -60,6 +57,25 @@ function SellProductPage() {
     } catch (error) {
       console.error('Error adding product:', error);
     }
+  };
+
+  const handleOpenConfirmation = () => {
+    // Check if any form field is blank
+    if (
+      !formData.sellProductName ||
+      !formData.sellProductType ||
+      !formData.sellProductPrice ||
+      !formData.sellProductSize ||
+      !formData.sellProductDescription
+    ) {
+      setMissingDetailsOpen(true);
+      return;
+    }
+    setConfirmationOpen(true);
+  };
+  
+  const handleCloseMissingDetails = () => {
+    setMissingDetailsOpen(false);
   };
 
   return (
@@ -295,14 +311,70 @@ function SellProductPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfirmation} color="primary">
+          <Button onClick={handleCloseConfirmation} sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}>
             Cancel
           </Button>
-          <Button onClick={handleConfirmSubmit} color="primary" autoFocus>
+          <Button onClick={handleConfirmSubmit} sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#white',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#F5F5F5',
+                backgroundColor: '#0D0F1F',
+              },
+            }} autoFocus>
             Confirm
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+          open={missingDetailsOpen}
+          onClose={handleCloseMissingDetails}
+          aria-labelledby="missing-details-dialog-title"
+          aria-describedby="missing-details-dialog-description"
+        >
+          <DialogTitle id="missing-details-dialog-title" sx={{ color: '#D02A2A' }}>Incomplete Details</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="missing-details-dialog-description" sx={{color: '#0D0F1F'}}>
+              Please fill in all the required details before submitting the product.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleCloseMissingDetails}
+              sx={{
+                color: '#0D0F1F',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '25px',
+                padding: '5px 20px',
+                textTransform: 'capitalize',
+                '&:focus': { outline: 'none' },
+                '&:hover': {
+                  color: '#FFFFFF',
+                  backgroundColor: '#0D0F1F',
+                },
+              }}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
     </Container>
   );
 }

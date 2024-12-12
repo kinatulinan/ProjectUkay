@@ -247,7 +247,7 @@ function HomePage({ onAddToCart }) {
     display: { xs: 'block', md: 'block' },
     fontFamily: 'Lobster, Sans Serif',
     fontWeight: 700,
-    fontSize: { xs: '55rem', md: '25rem' }, // Adjust the font size as needed
+    fontSize: { xs: '55rem', md: '25rem' },
     letterSpacing: '.3rem',
     textDecoration: 'none',
     color: '#E99E00',
@@ -257,8 +257,8 @@ function HomePage({ onAddToCart }) {
     backgroundSize: '200% 100%',
     backgroundPosition: '200% 0',
     transition: 'background-position 1.0s ease',
-    lineHeight: 1.2, // Fix clipping of descenders like "y"
-    paddingTop: '20px', // Adjust padding to move it higher
+    lineHeight: 1.2, 
+    paddingTop: '15px', 
     '&:hover': {
       backgroundPosition: '0 0',
       WebkitTextFillColor: 'transparent',

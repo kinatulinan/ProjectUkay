@@ -73,9 +73,8 @@ function App() {
 
         <Route path="/products" element={<ProductsPage onAddToCart={handleAddToCart} />} />
         <Route path="/sell" element={<SellProductPage />} />
-        <Route path="/order" element={<OrderForm />} />
+        <Route path="/order" element={<OrderPage />} />
         <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveItem={handleRemoveItem} onUpdateQuantity={handleUpdateQuantity}/>} />
-        <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/payment" element={<PaymentPage />} />

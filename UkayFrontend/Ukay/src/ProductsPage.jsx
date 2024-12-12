@@ -237,6 +237,7 @@ export default function ProductDetailsPage({ onAddToCart }) {
                         color: '#0D0F1F',
                         backgroundColor: 'white',
                         borderRadius: '30px',
+                        '&:focus': { outline: 'none' },
                         '&:hover': {
                           backgroundColor: '#0D0F1F',
                           color: '#F5F5F5',
@@ -259,6 +260,7 @@ export default function ProductDetailsPage({ onAddToCart }) {
                         color: '#0D0F1F',
                         backgroundColor: 'white',
                         borderRadius: '30px',
+                        '&:focus': { outline: 'none' },
                         '&:hover': {
                           backgroundColor: '#0D0F1F',
                           color: '#F5F5F5',
@@ -280,6 +282,7 @@ export default function ProductDetailsPage({ onAddToCart }) {
                         color: '#0D0F1F',
                         backgroundColor: 'white',
                         borderRadius: '30px',
+                        '&:focus': { outline: 'none' },
                         '&:hover': {
                           backgroundColor: '#0D0F1F',
                           color: '#F5F5F5',
@@ -298,9 +301,10 @@ export default function ProductDetailsPage({ onAddToCart }) {
 
       {/* Update Product Dialog */}
       <Dialog open={openUpdateDialog} onClose={handleUpdateDialogClose}>
-        <DialogTitle>Update Product</DialogTitle>
+        <DialogTitle 
+              sx={{ mb: 0 }}>Update Product</DialogTitle>
         <DialogContent>
-          <Stack spacing={2}>
+          <Stack spacing={1.5}>
             <TextField
               label="Product Name"
               value={updatedProduct.sellProductName || ''}
@@ -339,10 +343,32 @@ export default function ProductDetailsPage({ onAddToCart }) {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleUpdateDialogClose} color="primary">
+          <Button onClick={handleUpdateDialogClose} sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}>
             Cancel
           </Button>
-          <Button onClick={handleUpdateSave} color="secondary">
+          <Button onClick={handleUpdateSave} sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#white',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#F5F5F5',
+                backgroundColor: '#0D0F1F',
+              },
+            }}>
             Save
           </Button>
         </DialogActions>
@@ -354,10 +380,32 @@ export default function ProductDetailsPage({ onAddToCart }) {
           <Typography variant="h6">Are you sure you want to delete this product?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteDialogClose} color="primary">
+          <Button onClick={handleDeleteDialogClose} sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}>
             Cancel
           </Button>
-          <Button onClick={handleDeleteProduct} color="secondary">
+          <Button onClick={handleDeleteProduct} sx={{
+              color: '#D02A2A',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#FFFFFF',
+                backgroundColor: '#D02A2A',
+              },
+            }}>
             Delete
           </Button>
         </DialogActions>
