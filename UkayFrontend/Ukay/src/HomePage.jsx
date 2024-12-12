@@ -18,11 +18,18 @@ import Acs3 from './assets/Acs3.jpg';
 import Acs4 from './assets/Acs4.jpg';
 import Acs5 from './assets/Acs5.jpg';
 import Acs6 from './assets/Acs6.jpg';
+import Acs7 from './assets/Acs7.jpg';
+import Acs8red from './assets/Acs8red.jpg';
+import Acs9bead from './assets/Acs9bead.jpg';
 import Jacket from './assets/Jacket.png';
 import Jacket2 from './assets/Jacket2.png';
 import Jacket3 from './assets/Jacket3.png';
 import Jacket4 from './assets/Jacket4.png';
 import Jacket5 from './assets/Jacket5.png';
+import Jacket6 from './assets/Jacket6.png';
+import Jacket7 from './assets/Jacket7.png';
+import Jacket8 from './assets/Jacket8.png';
+import Jacket9 from './assets/Jacket9.png';
 import Footwear from './assets/Footwear.jpg';
 import Shoes from './assets/Shoes.jpg';
 import Shoes2 from './assets/Shoes2.jpg';
@@ -39,15 +46,15 @@ import Bag5 from './assets/Bag5.jpg';
 import Dress from './assets/Dress.jpg';
 import Dress2 from './assets/Dress2.jpg';
 import Dress3 from './assets/Dress3.jpg';
-import Dress4 from './assets/Dress3.jpg';
-import Dress5 from './assets/Dress3.jpg';
-import Dress6 from './assets/Dress3.jpg';
+import Dress4 from './assets/Dress4.jpg';
+import Dress5 from './assets/Dress5.jpg';
+import Dress6 from './assets/Dress6.jpg';
 import Jeans from './assets/Jeans.jpg';
 import Jeans2 from './assets/Jeans2.jpg';
-import Jeans4 from './assets/Jeans2.jpg';
-import Jeans3 from './assets/Jeans2.jpg';
-import Jeans5 from './assets/Jeans2.jpg';
-import Jeans6 from './assets/Jeans2.jpg';
+import Jeans4 from './assets/Jeans3.jpg';
+import Jeans3 from './assets/Jeans4.jpg';
+import Jeans5 from './assets/Jeans5.jpg';
+import Jeans6 from './assets/Jeans6.jpg';
 import Jorts from './assets/Jorts.jpg';
 import Jorts2 from './assets/Jorts2.jpg';
 import Jorts3 from './assets/Jorts3.jpg';
@@ -64,15 +71,15 @@ function HomePage({ onAddToCart }) {
     {
       label: 'Cargo Pants',
       variants: [
-        { img: Cargo1, name: 'Classic Cargo', sellProductPrice: 2995 },
-        { img: Cargo2, name: 'Animal Print Cargo', sellProductPrice: 2995 },
-        { img: Cargo3, name: 'Deni3 Cargo', sellProductPrice: 2995 },
-        { img: Cargo4, name: 'Denifd Cargo', sellProductPrice: 2995 },
-        { img: Cargo5, name: 'Deni3fd Cargo', sellProductPrice: 2995 },
-        { img: Cargo6, name: 'Denidf Cargo', sellProductPrice: 2995 },
-        { img: Cargo7, name: 'Denifd Cargo', sellProductPrice: 2995 },
-        { img: Cargo9, name: 'Denifd Cargo', sellProductPrice: 2995 },
-        { img: Cargo8, name: 'Denifd Cargo', sellProductPrice: 2995 },
+        { img: Cargo1, name: 'Cargo', sellProductPrice: 232 },
+        { img: Cargo2, name: 'Animal Print Cargo', sellProductPrice: 345 },
+        { img: Cargo3, name: 'Deni3 Cargo', sellProductPrice: 234 },
+        { img: Cargo4, name: 'Cream Cargo Shorts', sellProductPrice: 245 },
+        { img: Cargo5, name: 'Deni3fd Cargo', sellProductPrice: 244 },
+        { img: Cargo6, name: 'Denidf Cargo', sellProductPrice: 434 },
+        { img: Cargo7, name: 'Denifd Cargo', sellProductPrice: 355 },
+        { img: Cargo9, name: 'Black Cargo Shorts', sellProductPrice: 433 },
+        { img: Cargo8, name: 'Brown Cargo Shorts', sellProductPrice: 388 },
 
       ]
     },
@@ -80,23 +87,30 @@ function HomePage({ onAddToCart }) {
       label: 'Accessories',
      
       variants: [
-        { img: Acs6, name: 'Cap', sellProductPrice: 2995 },
-        { img: Acs2, name: 'Bracelet', sellProductPrice: 2995 },
-        { img: Acs3, name: 'Ring Set', sellProductPrice: 2995 },
-        { img: Acs5, name: 'Ring Set', sellProductPrice: 2995 },
-        { img: Acs4, name: 'Ring Set', sellProductPrice: 2995 },
-        { img: Acs, name: 'Ring Set', sellProductPrice: 2995 },
+        { img: Acs, name: 'Black Beannie', sellProductPrice: 299   },
+        { img: Acs6, name: 'Blue Ford Beannie', sellProductPrice: 299 },
+        { img: Acs2, name: 'Brown Cap', sellProductPrice: 299},
+        { img: Acs3, name: 'White Beannie', sellProductPrice: 299 },
+        { img: Acs5, name: 'White Ford Cap', sellProductPrice: 299 },
+        { img: Acs4, name: 'Green Ford Cap', sellProductPrice: 299 },
+        { img: Acs7, name: 'Silver Necklace', sellProductPrice: 299 },
+        { img: Acs8red, name: 'Red Gem Necklace', sellProductPrice: 259 },
+        { img: Acs9bead, name: 'Bead Necklace', sellProductPrice: 249 },
       ]
     },
     {
       label: 'Jackets',
      
       variants: [
-        { img: Jacket, name: 'Stylish Jacket', sellProductPrice: 2995 },
-        { img: Jacket2, name: 'Cozy Jacket', sellProductPrice: 2995 },
-        { img: Jacket3, name: 'Denim Jacket', sellProductPrice: 2995 },
-        { img: Jacket4, name: 'Denim Jacket', sellProductPrice: 2995 },
-        { img: Jacket5, name: 'Denim Jacket', sellProductPrice: 2995 },
+        { img: Jacket, name: 'Stylish Jacket', sellProductPrice: 399 },
+        { img: Jacket2, name: 'Cozy Jacket', sellProductPrice: 249 },
+        { img: Jacket3, name: 'Denim Jacket', sellProductPrice: 299 },
+        { img: Jacket4, name: 'Denim Jacket', sellProductPrice: 299 },
+        { img: Jacket5, name: 'Denim Jacket', sellProductPrice: 239 },
+        { img: Jacket6, name: 'Denim Jacket', sellProductPrice: 232 },
+        { img: Jacket7, name: 'Denim Jacket', sellProductPrice: 324 },
+        { img: Jacket8, name: 'Denim Jacket', sellProductPrice: 123 },
+        { img: Jacket9, name: 'Denim Jacket', sellProductPrice: 344 },
         
       ]
     },
@@ -104,13 +118,14 @@ function HomePage({ onAddToCart }) {
       label: 'Shoes',
       
       variants: [
-        { img: Shoes7, name: 'Footwear', sellProductPrice: 2995 },
-        { img: Shoes, name: 'Sneakers', sellProductPrice: 2995 },
-        { img: Shoes2, name: 'Casual Shoes', sellProductPrice: 2995 },
-        { img: Shoes6, name: 'Casual Shoes', sellProductPrice: 2995 },
-        { img: Shoes4, name: 'Casual Shoes', sellProductPrice: 2995 },
-        { img: Shoes3, name: 'Casual Shoes', sellProductPrice: 2995 },
-        { img: Shoes5, name: 'Casual Shoes', sellProductPrice: 2995 },
+        { img: Footwear, name: 'Footwear', sellProductPrice: 499 },
+        { img: Shoes7, name: 'Footwear', sellProductPrice: 499 },
+        { img: Shoes, name: 'Sneakers', sellProductPrice: 499 },
+        { img: Shoes2, name: 'Shoes', sellProductPrice: 899 },
+        { img: Shoes6, name: 'Shoes', sellProductPrice: 899 },
+        { img: Shoes4, name: ' Shoes', sellProductPrice: 899 },
+        { img: Shoes3, name: 'Shoes', sellProductPrice: 899 },
+        { img: Shoes5, name: 'Shoes', sellProductPrice: 899 },
         
       ]
     },
@@ -118,47 +133,48 @@ function HomePage({ onAddToCart }) {
       label: 'Bags',
      
       variants: [
-        { img: Bag, name: 'Shoulder Bag', sellProductPrice: 2995 },
-        { img: Bag2, name: 'Handbag', sellProductPrice: 2995 },
-        { img: Bag3, name: 'Backpack', sellProductPrice: 2995 },
-        { img: Bag4, name: 'Backpack', sellProductPrice: 2995 },
-        { img: Bag5, name: 'Backpack', sellProductPrice: 2995 },
+        
+        { img: Bag, name: 'Shoulder Bag', sellProductPrice: 234 },
+        { img: Bag2, name: 'Handbag', sellProductPrice: 234 },
+        { img: Bag3, name: 'Handbag', sellProductPrice: 566},
+        { img: Bag4, name: 'Handbag ', sellProductPrice: 499},
+        { img: Bag5, name: 'Handbag', sellProductPrice: 499 },
       ]
     },
     {
       label: 'Dresses',
       
       variants: [
-        { img: Dress, name: 'Evening Dress', sellProductPrice: 2995 },
-        { img: Dress2, name: 'Casual Dress', sellProductPrice: 2995 },
-        { img: Dress3, name: 'Party Dress', sellProductPrice: 2995 },
-        { img: Dress4, name: 'Party Dress', sellProductPrice: 2995 },
-        { img: Dress5, name: 'Party Dress', sellProductPrice: 2995 },
-        { img: Dress6, name: 'Party Dress', sellProductPrice: 2995 },
+        { img: Dress, name: 'Evening Dress', sellProductPrice: 344 },
+        { img: Dress2, name: 'Casual Dress', sellProductPrice: 245 },
+        { img: Dress3, name: ' Dress', sellProductPrice: 299 },
+        { img: Dress4, name: ' Dress', sellProductPrice: 299 },
+        { img: Dress5, name:  'Dress', sellProductPrice: 299 },
+        { img: Dress6, name: 'Dress', sellProductPrice: 299 },
       ]
     },
     {
       label: 'Jeans',
       
       variants: [
-        { img: Jeans, name: 'Skinny Jeans', sellProductPrice: 2995 },
-        { img: Jeans2, name: 'Straight Cut', sellProductPrice: 2995 },
-        { img: Jeans3, name: 'Straight Cut', sellProductPrice: 2995 },
-        { img: Jeans4, name: 'Straight Cut', sellProductPrice: 2995 },
-        { img: Jeans5, name: 'Straight Cut', sellProductPrice: 2995 },
-        { img: Jeans6, name: 'Straight Cut', sellProductPrice: 2995 },
+        { img: Jeans, name: 'Skinny Jeans', sellProductPrice: 29 },
+        { img: Jeans2, name: 'Straight Cut', sellProductPrice: 299},
+        { img: Jeans3, name: 'Straight Cut', sellProductPrice: 299 },
+        { img: Jeans4, name: 'Straight Cut', sellProductPrice: 299 },
+        { img: Jeans5, name: 'Straight Cut', sellProductPrice: 299 },
+        { img: Jeans6, name: 'Straight Cut', sellProductPrice: 299 },
       ]
     },
     {
       label: 'Jorts',
       
       variants: [
-        { img: Jorts, name: 'Denim Shorts', sellProductPrice: 2995 },
-        { img: Jorts2, name: 'Cargo Shorts', sellProductPrice: 2995 },
-        { img: Jorts3, name: 'Cargo Shorts', sellProductPrice: 2995 },
-        { img: Jorts4, name: 'Cargo Shorts', sellProductPrice: 2995 },
-        { img: Jorts5, name: 'Cargo Shorts', sellProductPrice: 2995 },
-        { img: Jorts6, name: 'Cargo Shorts', sellProductPrice: 2995 },
+        { img: Jorts, name: 'Denim Shorts', sellProductPrice: 150 },
+        { img: Jorts2, name: 'Denim Shorts', sellProductPrice: 150 },
+        { img: Jorts3, name: 'Denim Shorts', sellProductPrice: 150 },
+        { img: Jorts4, name: 'Denim Shorts', sellProductPrice: 150 },
+        { img: Jorts5, name: 'Denim Shorts', sellProductPrice: 150},
+        { img: Jorts6, name: 'Denim Shorts', sellProductPrice: 150 },
       ]
     }
   ];
@@ -283,7 +299,7 @@ function HomePage({ onAddToCart }) {
                 sx={{
                   width: '100%',
                   borderRadius: 2,
-                  height: 'auto',
+                  height: '500px',
                   mb: 1,
                   border: '1px solid #999',
                 }}
@@ -300,11 +316,26 @@ function HomePage({ onAddToCart }) {
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
         <DialogTitle>{selectedItem?.label}</DialogTitle>
         <DialogContent
-          sx={{
-            overflow: 'hidden',
-            maxHeight: '60vh',
-            overflowY: 'auto',
-          }}
+         sx={{
+          overflowY: 'auto',
+          maxHeight: '60vh',
+          // Minimalist scrollbar styling
+          '&::-webkit-scrollbar': {
+            width: '6px', // Narrow scrollbar
+            height: '6px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#f0f0f0', // Light gray background
+            borderRadius: '10px', // Rounded edges
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#bbb', // Subtle gray color for the scrollbar thumb
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: '#888', // Darker gray when hovered
+          },
+        }}
         >
           <Grid container spacing={2}>
             {selectedItem?.variants.map((variant, idx) => (
