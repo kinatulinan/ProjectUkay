@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { Box, Typography, Button, Grid, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import Cover from './assets/Cover.jpg';
+import { Snackbar, Alert } from '@mui/material';
 
 import Cargo1 from './assets/Cargo.png';
 import Cargo2 from './assets/Cargo2.png';
@@ -66,6 +67,8 @@ import Jorts6 from './assets/Jorts6.jpg';
 function HomePage({ onAddToCart }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State to control Snackbar visibility
+const [snackbarMessage, setSnackbarMessage] = useState(''); // State to hold the Snackbar message
 
   const products = [
     {
@@ -179,6 +182,23 @@ function HomePage({ onAddToCart }) {
     }
   ];
 
+  const handleAddToCart = (variant) => {
+    onAddToCart(variant);
+    setSnackbarMessage(`${variant.name} has been added to the cart!`);
+    setSnackbarOpen(true);
+
+    setTimeout(() => {
+      setSnackbarOpen(false);
+    }, 2000);
+  };
+  
+  // Function to handle Snackbar close
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleOpen = (item) => {
     setSelectedItem(item);
@@ -192,8 +212,8 @@ function HomePage({ onAddToCart }) {
 
   return (
     <Box sx={{ overflowX: 'hidden' }}>
-    {/* Hero Section */}
-    <Box 
+   {/* Hero Section */}
+   <Box 
       sx={{
         textAlign: 'center',
         backgroundImage: `url(${Cover})`,
@@ -276,7 +296,7 @@ function HomePage({ onAddToCart }) {
           From cozy layers to standout styles, discover one-of-a-kind pieces to elevate every occasion.
         </Typography>
       </Box>
-
+  
       <Grid container spacing={4} sx={{ mt: 4 }}>
         {products.map((product, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -288,7 +308,6 @@ function HomePage({ onAddToCart }) {
                 padding: 2,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                 cursor: 'pointer',
-              
               }}
               onClick={() => handleOpen(product)}
             >
@@ -300,6 +319,7 @@ function HomePage({ onAddToCart }) {
                   width: '100%',
                   borderRadius: 2,
                   height: '500px',
+                  objectFit: 'cover', // Ensures images fill the box proportionally
                   mb: 1,
                   border: '1px solid #999',
                 }}
@@ -311,31 +331,30 @@ function HomePage({ onAddToCart }) {
           </Grid>
         ))}
       </Grid>
-
+  
       {/* Dialog for product details */}
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
         <DialogTitle>{selectedItem?.label}</DialogTitle>
         <DialogContent
-         sx={{
-          overflowY: 'auto',
-          maxHeight: '60vh',
-          // Minimalist scrollbar styling
-          '&::-webkit-scrollbar': {
-            width: '6px', // Narrow scrollbar
-            height: '6px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: '#f0f0f0', // Light gray background
-            borderRadius: '10px', // Rounded edges
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: '#bbb', // Subtle gray color for the scrollbar thumb
-            borderRadius: '10px',
-          },
-          '&::-webkit-scrollbar-thumb:hover': {
-            background: '#888', // Darker gray when hovered
-          },
-        }}
+          sx={{
+            overflowY: 'auto',
+            maxHeight: '60vh',
+            '&::-webkit-scrollbar': {
+              width: '6px',
+              height: '6px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: '#f0f0f0',
+              borderRadius: '10px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#bbb',
+              borderRadius: '10px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: '#888',
+            },
+          }}
         >
           <Grid container spacing={2}>
             {selectedItem?.variants.map((variant, idx) => (
@@ -348,7 +367,6 @@ function HomePage({ onAddToCart }) {
                     borderRadius: 2,
                     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
                     cursor: 'pointer',
-                    overflow: 'hidden',
                   }}
                 >
                   <Box
@@ -384,7 +402,7 @@ function HomePage({ onAddToCart }) {
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                       },
                     }}
-                    onClick={() => onAddToCart(variant)}
+                    onClick={() => handleAddToCart(variant)}
                   >
                     Add to Cart
                   </Button>
@@ -394,6 +412,18 @@ function HomePage({ onAddToCart }) {
           </Grid>
         </DialogContent>
       </Dialog>
+  
+      {/* Snackbar for confirmation */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
