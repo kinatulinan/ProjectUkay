@@ -10,11 +10,15 @@ public class OrderEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
+
+    
     private ProductEntity product;
     private String order_date;
     private int quantity;
     private float price;
     private float total;
+
+    
 
     public OrderEntity(){super();}
 

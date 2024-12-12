@@ -7,7 +7,7 @@ import Cart from './Cart';
 import ProductsPage from './ProductsPage';
 
 const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Orders', 'Update Account'];
+const settings = ['Login', 'Register', 'Orders', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -55,14 +55,24 @@ function ResponsiveAppBar() {
     }
     handleCloseNavMenu();
   };
-
+  //UPDATE
   const handleSettingClick = (setting) => {
-    if (setting === 'Login') {
+    if (setting === 'Logout') {
+      // Retrieve username from localStorage or fallback to "User"
+      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+      const username = userDetails?.username || 'User';
+  
+      // Display logout message
+      alert(`${username} is now logged out`);
+  
+      // Clear user data and redirect to login page
+      localStorage.removeItem('userDetails');
+      localStorage.removeItem('cartItems');
+      navigate('/login');
+    } else if (setting === 'Login') {
       navigate('/login');
     } else if (setting === 'Register') {
       navigate('/register');
-    } else if (setting === 'Cart') {
-      navigate('/cart');
     } else if (setting === 'Orders') {
       navigate('/order');
     }
@@ -104,34 +114,34 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <CheckroomIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="home"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'Lobster, Sans Serif',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                position: 'relative',
-                textDecoration: 'none',
-                color: '#E99E00',
-                background: 'linear-gradient(to right, #E99E00, white)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundSize: '200% 100%',
-                backgroundPosition: '200% 0',
-                transition: 'background-position 1.0s ease',
-                '&:hover': {
-                  backgroundPosition: '0 0',
+            <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="home"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'Lobster, Sans Serif',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  position: 'relative',
+                  textDecoration: 'none',
+                  color: '#E99E00',
+                  background: 'linear-gradient(to right, #E99E00, white)',
+                  WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                },
-              }}
-            >
-              U-Kay
-          </Typography>
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '200% 0',
+                  transition: 'background-position 1.0s ease',
+                  '&:hover': {
+                    backgroundPosition: '0 0',
+                    WebkitTextFillColor: 'transparent',
+                  },
+                }}
+              >
+                U-Kay
+            </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

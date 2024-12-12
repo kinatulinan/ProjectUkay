@@ -1,198 +1,190 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'; 
 import PaymentService from '../PaymentService';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextareaAutosize,
+} from '@mui/material';
 
 const PaymentPage = () => {
-    const userid = 1; // Sample user ID
-    const [payments, setPayments] = useState([]);
-    const [searchId, setSearchId] = useState('');
+  const userid = 1; // Sample user ID
+  const [payments, setPayments] = useState([]);
+  const [searchId, setSearchId] = useState('');
 
-    const fetchPayments = async () => {
-        try {
-            const response = await PaymentService.getPaymentsByUserId(userid);
-            setPayments(response.data);
-        } catch (error) {
-            console.error('Error fetching payments:', error);
-        }
-    };
+  const fetchPayments = async () => {
+    try {
+      const response = await PaymentService.getPaymentsByUserId(userid);
+      setPayments(response.data);
+    } catch (error) {
+      console.error('Error fetching payments:', error);
+    }
+  };
 
-    useEffect(() => {
-        fetchPayments();
-    }, [userid]);
+  useEffect(() => {
+    fetchPayments();
+  }, [userid]);
 
-    const handlePaymentCreated = () => {
-        fetchPayments();
-    };
+  const handlePaymentCreated = () => {
+    fetchPayments();
+  };
 
-    return (
-        <div className="container-payment-page">
-            <h1>Payment Form</h1>
-            <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
-            {/* <div className="payment-section">
-                <h2>Recorded Payments</h2>
-                <div className="payment-search">
-                    <label>Search by Order ID:</label>
-                    <input
-                        type="text"
-                        value={searchId}
-                        onChange={(e) => setSearchId(e.target.value)}
-                        placeholder="Enter Transaction ID"
-                    />
-                </div>
-                <PaymentList payments={payments} searchId={searchId} />
-            </div> */}
-        </div>
-    );
+  return (
+    <Box sx={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: 'center',
+          fontWeight: 'bold',
+          color: '#E99E00',
+          fontFamily: 'Lobster, Sans Serif',
+          marginBottom: '1rem',
+        }}
+      >
+        Payment Form
+      </Typography>
+
+      <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
+    </Box>
+  );
 };
 
 // PaymentForm component
 const PaymentForm = ({ userid, onPaymentCreated }) => {
-    const [amount, setAmount] = useState('');
-    const [paymentDate, setPaymentDate] = useState('');
-    const [transactionId, setTransactionId] = useState('');
-    const [notes, setNotes] = useState('');
-    const [method, setMethod] = useState('');
+  const [amount, setAmount] = useState('');
+  const [paymentDate, setPaymentDate] = useState('');
+  const [notes, setNotes] = useState('');
+  const [method, setMethod] = useState('');
 
-    // Calculate today's date in the local timezone
-    const today = new Date();
-    const offset = today.getTimezoneOffset(); // Get timezone offset in minutes
-    const adjustedToday = new Date(today.getTime() - offset * 60 * 1000);
-    const todayDate = adjustedToday.toISOString().split('T')[0];
+  // Calculate today's date in the local timezone
+  const today = new Date();
+  const offset = today.getTimezoneOffset(); // Get timezone offset in minutes
+  const adjustedToday = new Date(today.getTime() - offset * 60 * 1000);
+  const todayDate = adjustedToday.toISOString().split('T')[0];
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        const paymentData = {
-            amount: parseFloat(amount),
-            paymentDate,
-            transactionId,
-            notes,
-            method
-        };
-
-        try {
-            await PaymentService.createPayment(userid, paymentData);
-            alert('Payment created successfully!');
-            onPaymentCreated();
-        } catch (error) {
-            alert('Payment Saved Successfully!');
-        }
+    const paymentData = {
+      amount: parseFloat(amount),
+      paymentDate,
+      notes,
+      method,
     };
 
-    return (
-        <form className="payment-form" onSubmit={handleSubmit}>
-            <div>
-                <label>Amount:</label>
-                <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    required
-                />
-            </div>
-            <div>
-                <label>Payment Date:</label>
-                <input
-                    type="date"
-                    value={paymentDate}
-                    onChange={(e) => setPaymentDate(e.target.value)}
-                    min={todayDate} // Restrict to today or later
-                    required
-                />
-            </div>
-            {/* <div>
-                <label>Order ID:</label>
-                <input
-                    type="text"
-                    value={transactionId}
-                    onChange={(e) => setTransactionId(e.target.value)}
-                />
-            </div> */}
-            <div>
-                <label>Notes:</label>
-                <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                />
-            </div>
-            <div>
-                <label>Payment Method:</label>
-                <select value={method} onChange={(e) => setMethod(e.target.value)} required>
-                    <option value="">Select method</option>
-                    <option value="CASH">Cash</option>
-                    <option value="CREDIT_CARD">Credit Card</option>
-                    <option value="DEBIT_CARD">Debit Card</option>
-                    <option value="PAYPAL">PayPal</option>
-                    <option value="BANK_TRANSFER">Bank Transfer</option>
-                    <option value="MOBILE_PAYMENT">Mobile Payment</option>
-                    <option value="GIFT_CARD">Gift Card</option>
-                    <option value="STORE_CREDIT">Store Credit</option>
-                    <option value="CHECK">Check</option>
-                    <option value="OTHER">Other</option>
-                </select>
-            </div>
-            <button type="submit">Place Order</button>
-        </form>
-    );
-};
+    try {
+      await PaymentService.createPayment(userid, paymentData);
+      alert('Payment created successfully!');
+      onPaymentCreated();
+    } catch (error) {
+      alert('Failed to create payment!');
+    }
+  };
 
-// PaymentList component
-const PaymentList = ({ payments, searchId }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const paymentsPerPage = 3; // Display 3 payments per page
+  return (
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.5rem',
+        backgroundColor: '#fff',
+        padding: '2rem',
+        borderRadius: '10px',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <TextField
+        label="Amount"
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
+        fullWidth
+        sx={{
+          '& label.Mui-focused': {
+            color: '#E99E00',
+          },
+          '& .MuiInput-underline:after': {
+            borderBottomColor: '#E99E00',
+          },
+        }}
+      />
 
-    // Filter payments based on search term
-    const filteredPayments = searchId
-        ? payments.filter(payment => payment.transactionId.toLowerCase().includes(searchId.toLowerCase()))
-        : payments;
+      <TextField
+        label="Payment Date"
+        type="date"
+        value={paymentDate}
+        onChange={(e) => setPaymentDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+        inputProps={{ min: todayDate }}
+        required
+        fullWidth
+        sx={{
+          '& label.Mui-focused': {
+            color: '#E99E00',
+          },
+        }}
+      />
 
-    // Calculate the number of pages
-    const totalPages = Math.ceil(filteredPayments.length / paymentsPerPage);
+      <TextareaAutosize
+        placeholder="Notes"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        minRows={4}
+        style={{
+          padding: '0.5rem',
+          fontFamily: 'Arial',
+          borderColor: '#ccc',
+          borderRadius: '4px',
+          resize: 'none',
+        }}
+      />
 
-    // Calculate payments to display for the current page
-    const startIndex = (currentPage - 1) * paymentsPerPage;
-    const currentPayments = filteredPayments.slice(startIndex, startIndex + paymentsPerPage);
+      <FormControl fullWidth required>
+        <InputLabel id="payment-method-label">Payment Method</InputLabel>
+        <Select
+          labelId="payment-method-label"
+          value={method}
+          onChange={(e) => setMethod(e.target.value)}
+        >
+          <MenuItem value="CASH">Cash</MenuItem>
+          <MenuItem value="CREDIT_CARD">Credit Card</MenuItem>
+          <MenuItem value="DEBIT_CARD">Debit Card</MenuItem>
+          <MenuItem value="PAYPAL">PayPal</MenuItem>
+          <MenuItem value="BANK_TRANSFER">Bank Transfer</MenuItem>
+          <MenuItem value="MOBILE_PAYMENT">Mobile Payment</MenuItem>
+          <MenuItem value="GIFT_CARD">Gift Card</MenuItem>
+          <MenuItem value="STORE_CREDIT">Store Credit</MenuItem>
+          <MenuItem value="CHECK">Check</MenuItem>
+          <MenuItem value="OTHER">Other</MenuItem>
+        </Select>
+      </FormControl>
 
-    // Change page
-    const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-    const goToPreviousPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-
-    // return (
-    //     <div>
-    //         <ul className="payment-list">
-    //             {currentPayments.length > 0 ? (
-    //                 currentPayments.map(payment => (
-    //                     <li key={payment.paymentid}>
-    //                         <span className="label">Amount:</span> {payment.amount}, 
-    //                         <span className="label"> Date:</span> {payment.paymentDate}, 
-    //                         <span className="label"> Method:</span> {payment.method}, 
-    //                         <span className="label"> Order ID:</span> {payment.transactionId}, 
-    //                         <span className="label"> Notes:</span> {payment.notes}
-    //                     </li>
-    //                 ))
-    //             ) : (
-    //                 <li>No payments found.</li>
-    //             )}
-    //         </ul>
-            
-    //         {/* Pagination Controls */}
-    //         <div className="pagination-controls">
-    //             <button 
-    //                 onClick={goToPreviousPage} 
-    //                 disabled={currentPage === 1}
-    //             >
-    //                 Previous
-    //             </button>
-    //             <span>Page {currentPage} of {totalPages}</span>
-    //             <button 
-    //                 onClick={goToNextPage} 
-    //                 disabled={currentPage === totalPages}
-    //             >
-    //                 Next
-    //             </button>
-    //         </div>
-    //     </div>
-    // );
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          backgroundColor: '#E99E00',
+          color: 'white',
+          textTransform: 'capitalize',
+          padding: '0.8rem',
+          '&:hover': {
+            backgroundColor: '#D68E00',
+          },
+        }}
+      >
+        Place Order
+      </Button>
+    </Box>
+  );
 };
 
 export default PaymentPage;

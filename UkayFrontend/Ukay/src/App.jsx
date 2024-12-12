@@ -17,26 +17,25 @@ function App() {
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
 
-  const [cartOpen, setCartOpen] = useState(false);
-
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const handleAddToCart = (product) => {
     setCartItems((prevItems) => {
-      const existingProduct = prevItems.find(item => item.sellId === product.sellId);
+      const existingProduct = prevItems.find(item => item.name === product.name); // Check by name
       if (existingProduct) {
         return prevItems.map(item =>
-          item.sellId === product.sellId
+          item.name === product.name
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prevItems, { ...product, quantity: 1 }];
+        return [...prevItems, { ...product, quantity: 1 }]; // Ensure name is included
       }
     });
   };
+  
 
   const handleRemoveItem = (index) => {
     setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
@@ -50,23 +49,33 @@ function App() {
     });
   };
 
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem('userDetails');
+    localStorage.removeItem('cartItems');
+    // Redirect to the login page
+    navigate('/login');
+};
+  
+
   return (
     <Router>
       <UkayAppBar
         onCartClick={() => setCartOpen(true)}
         cartItems={cartItems}
+        handleLogout={handleLogout}
         onRemoveItem={handleRemoveItem}
         onUpdateQuantity={handleUpdateQuantity}
-        cartOpen={cartOpen}
-        setCartOpen={setCartOpen}
       />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<HomePage onAddToCart={handleAddToCart} />} />
+
         <Route path="/products" element={<ProductsPage onAddToCart={handleAddToCart} />} />
         <Route path="/sell" element={<SellProductPage />} />
-        <Route path="/order" element={<OrderPage />} />
+        <Route path="/order" element={<OrderForm />} />
         <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveItem={handleRemoveItem} onUpdateQuantity={handleUpdateQuantity}/>} />
+        <Route path="/list" element={<OrderList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/payment" element={<PaymentPage />} />
