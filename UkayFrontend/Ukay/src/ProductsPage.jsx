@@ -218,13 +218,6 @@ export default function ProductDetailsPage({ onAddToCart }) {
                 >
                   {product.sellProductPrice || '6,595.00'} PHP
                 </Typography>
-
-                
-
-                
-
-              
-
                 <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
                   <Grid item xs={4} sm={3}>
                     <Button
