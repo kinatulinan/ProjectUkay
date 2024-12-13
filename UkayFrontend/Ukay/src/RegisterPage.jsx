@@ -46,27 +46,33 @@ function RegisterPage() {
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8080/api/register/save", {
-                fname: firstName,
-                mname: middleName,
-                lname: lastName,
-                birthdate,
-                address,
-                emailadd: email,
-                mobile,
-                username,
-                password,
-            });
-            alert("Account Successfully Registered");
-            navigate("/login");
-        } catch (err) {
-            if (err.response?.status === 409) {
-                alert("Username or email already exists. Please try again.");
-            } else {
-                console.error(err.response?.data || err.message);
-                alert("Registration failed: " + (err.response?.data?.message || err.message));
+                const response = await axios.post("http://localhost:8080/api/register/save", {
+                    fname: firstName,
+                    mname: middleName,
+                    lname: lastName,
+                    birthdate,
+                    address,
+                    emailadd: email,
+                    mobile,
+                    username,
+                    password,
+                });
+                alert("Account Successfully Registered");
+                navigate("/login");
+
+                localStorage.setItem("userDetails", JSON.stringify({
+                    fullName: `${firstName} ${middleName} ${lastName}`,
+                    address,
+                    mobile,
+                }));
+            } catch (err) {
+                if (err.response?.status === 409) {
+                    alert("Username or email already exists. Please try again.");
+                } else {
+                    console.error(err.response?.data || err.message);
+                    alert("Registration failed: " + (err.response?.data?.message || err.message));
+                }
             }
-        }
     }
 
     return (
