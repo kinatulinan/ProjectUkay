@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import {
   Box,
   Typography,
@@ -32,24 +32,36 @@ export default function PaymentPage() {
       return;
     }
 
+    // Fallback for missing userDetails
+    const user = userDetails || {
+      name: 'Unknown User',
+      email: 'No Email Provided',
+      address: 'No Address Provided',
+    };
+
     // Create a new transaction object
     const newTransaction = {
       date: new Date().toISOString(),
-      totalPrice: finalTotal,
+      totalPrice: finalTotal || 0,
       paymentMethod,
       notes,
-      items: selectedItems,
-      user: userDetails,
+      items: selectedItems.length > 0 ? selectedItems : [],
+      user,
     };
 
     // Save transaction to localStorage
-    const existingTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
-    const updatedTransactions = [...existingTransactions, newTransaction];
-    localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+    try {
+      const existingTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+      const updatedTransactions = [...existingTransactions, newTransaction];
+      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
 
-    // Show success alert and navigate to transactions page
-    alert('Order placed successfully!');
-    navigate('/transactions', { state: { transactions: updatedTransactions } });
+      // Show success alert and navigate to transactions page
+      alert('Order placed successfully!');
+      navigate('/transactions', { state: { transactions: updatedTransactions } });
+    } catch (error) {
+      console.error('Failed to save transaction:', error);
+      alert('An error occurred while saving the transaction.');
+    }
   };
 
   const closeEmptyFieldsDialog = () => {
@@ -57,8 +69,8 @@ export default function PaymentPage() {
   };
 
   return (
-    <Box sx={{ padding: 5, minWidth: 1000 }}>
-      <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
+    <Box sx={{ padding: 5, minWidth: 1000, backgroundColor: '#f9f9f9' }}>
+      <Typography variant="h4" component="h2" sx={{ mb: 3, color: '#333', fontWeight: 'bold' }}>
         Payment
       </Typography>
 
@@ -68,13 +80,13 @@ export default function PaymentPage() {
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          padding: 2,
-          backgroundColor: '#fff',
+          padding: 3,
+          backgroundColor: '#ffffff',
           borderRadius: '8px',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
           Order Summary
         </Typography>
         {selectedItems.length > 0 ? (
@@ -90,21 +102,21 @@ export default function PaymentPage() {
               }}
             >
               {/* Display Product Name */}
-              <Typography sx={{ flex: 3, textAlign: 'left' }}>
+              <Typography sx={{ flex: 3, textAlign: 'left', color: '#555' }}>
                 {item.name || item.productName || 'No Name Available'}
               </Typography>
               {/* Display Quantity */}
-              <Typography sx={{ flex: 1, textAlign: 'center' }}>Qty: {item.quantity || 1}</Typography>
+              <Typography sx={{ flex: 1, textAlign: 'center', color: '#555' }}>Qty: {item.quantity || 1}</Typography>
               {/* Display Price */}
-              <Typography sx={{ flex: 2, textAlign: 'right' }}>
+              <Typography sx={{ flex: 2, textAlign: 'right', color: '#555' }}>
                 ₱{(item.sellProductPrice * (item.quantity || 1)).toFixed(2)}
               </Typography>
             </Box>
           ))
         ) : (
-          <Typography>No items in the order.</Typography>
+          <Typography sx={{ color: '#999' }}>No items in the order.</Typography>
         )}
-        <Typography variant="h6" sx={{ textAlign: 'right', marginTop: 2 }}>
+        <Typography variant="h6" sx={{ textAlign: 'right', marginTop: 2, color: '#333' }}>
           Total Price: ₱{finalTotal.toFixed(2)}
         </Typography>
       </Box>
@@ -116,13 +128,13 @@ export default function PaymentPage() {
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          backgroundColor: '#fff',
-          padding: 2,
+          backgroundColor: '#ffffff',
+          padding: 3,
           borderRadius: '8px',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
           Payment Details
         </Typography>
         <Select
@@ -134,12 +146,24 @@ export default function PaymentPage() {
             '& .MuiSelect-root': {
               color: paymentMethod ? 'black' : '#9e9e9e',
             },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: '#ddd',
+              },
+              '&:hover fieldset': {
+                borderColor: '#bbb',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#E99E00',
+              },
+            },
           }}
         >
           <MenuItem value="" disabled>
             Select Payment Method
           </MenuItem>
           <MenuItem value="CASH">Cash</MenuItem>
+          <MenuItem value="GCASH">Gcash</MenuItem>
           <MenuItem value="CREDIT_CARD">Credit Card</MenuItem>
           <MenuItem value="DEBIT_CARD">Debit Card</MenuItem>
           <MenuItem value="PAYPAL">PayPal</MenuItem>
@@ -153,6 +177,17 @@ export default function PaymentPage() {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           fullWidth
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderColor: '#ddd',
+              '&:hover fieldset': {
+                borderColor: '#bbb',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#E99E00',
+              },
+            },
+          }}
         />
       </Box>
 
@@ -174,6 +209,7 @@ export default function PaymentPage() {
             '&:hover': {
               backgroundColor: '#D68E00',
             },
+            padding: '10px 20px',
           }}
         >
           Place Order
@@ -186,7 +222,9 @@ export default function PaymentPage() {
           <Typography>Please select a payment method before placing the order.</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeEmptyFieldsDialog}>Close</Button>
+          <Button onClick={closeEmptyFieldsDialog} variant="contained">
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
