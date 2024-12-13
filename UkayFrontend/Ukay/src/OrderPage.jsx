@@ -3,8 +3,8 @@ import { Box, Typography, Button, Divider, Paper, TextField, Dialog, DialogActio
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function OrderPage() {
-    const navigate = useNavigate();
     const location = useLocation();
+    const navigate = useNavigate();
     const { selectedItems, totalPrice } = location.state || { selectedItems: [], totalPrice: 0 };
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -18,12 +18,12 @@ export default function OrderPage() {
     const subtotal = selectedItems.reduce((acc, item) => acc + (item.sellProductPrice * item.quantity), 0);
 
     const shippingFees = [50, 60, 65, 70, 75, 80];
-    const shippingFee = shippingFees[Math.floor(Math.random() * shippingFees.length)];
+    const shippingFee = subtotal === 0 ? 0 : shippingFees[Math.floor(Math.random() * shippingFees.length)];
 
     const grandTotal = subtotal + shippingFee;
 
     const couponValues = [10, 15, 20, 25];
-    const selectedCoupon = couponValues[Math.floor(Math.random() * couponValues.length)];
+    const selectedCoupon = subtotal === 0 ? 0 : couponValues[Math.floor(Math.random() * couponValues.length)];
 
     const finalTotal = grandTotal - selectedCoupon;
 
@@ -51,17 +51,17 @@ export default function OrderPage() {
         setOpenDialog(false);
     };
 
-    const handlePayment = () => {
-        navigate('/payment', { state: { selectedItems, finalTotal, userDetails } });
-    };
+    const handleContinue = () => {
+        navigate('/payment');
+      };
 
     const handleSaveAddress = () => {
         const formattedAddress = `${barangay}, ${city}, ${state}, ${country}, ${postalCode}`;
         
         const updatedUserDetails = { ...userDetails, address: formattedAddress };
-    
+
         localStorage.setItem('userDetails', JSON.stringify(updatedUserDetails));
-    
+
         setOpenDialog(false);
     };
 
@@ -94,25 +94,25 @@ export default function OrderPage() {
                                         textTransform: 'capitalize',
                                         '&:focus': { outline: 'none' },
                                         '&::after': {
-                                            content: '""',
-                                            position: 'absolute',
-                                            bottom: 0,
-                                            left: '0%',
-                                            width: '100%',
-                                            height: '1.3px',
-                                            backgroundColor: '#b3b5b5',
-                                            transform: 'scaleX(0)',
-                                            transformOrigin: 'bottom right',
-                                            transition: 'transform 1s ease, background-color 0.5s ease',
+                                        content: '""',
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        left: '0%',
+                                        width: '100%',
+                                        height: '1.3px',
+                                        backgroundColor: '#b3b5b5',
+                                        transform: 'scaleX(0)',
+                                        transformOrigin: 'bottom right',
+                                        transition: 'transform 1s ease, background-color 0.5s ease',
                                         },
                                         '&:hover': {
-                                            borderRadius: '30px',
-                                            backgroundColor: 'white',
-                                            '&::after': {
-                                                backgroundColor: 'black',
-                                                transform: 'scaleX(1)',
-                                                transformOrigin: 'bottom left',
-                                            },
+                                        borderRadius: '30px',
+                                        backgroundColor: 'white',
+                                        '&::after': {
+                                            backgroundColor: 'black',
+                                            transform: 'scaleX(1)',
+                                            transformOrigin: 'bottom left',
+                                        },
                                         },
                                     }}
                                     onClick={handleEditAddressClick}
@@ -128,8 +128,9 @@ export default function OrderPage() {
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'left' }} gutterBottom>Order Details</Typography>
                     <Paper sx={{ padding: 2 }}>
                         {selectedItems.map((item, index) => (
-                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-                                <Typography variant="body1">{item.name}</Typography>
+                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1,borderBottom: '1px solid #e0e0e0', // Add this line for the horizontal line
+                                paddingBottom: 1 }}>
+                                <Typography variant="body1">{item.sellProductName || item.name}</Typography>
                                 <Typography variant="body1">₱ <strong>{(item.sellProductPrice * item.quantity).toFixed(2)}</strong></Typography>
                             </Box>
                         ))}
@@ -175,21 +176,21 @@ export default function OrderPage() {
                         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>₱{finalTotal.toFixed(2)}</Typography> 
                     </Box>
                 </Box>
-                <Button 
-                    onClick={handlePayment} 
-                    sx={{
-                        width: '100%',
-                        color: '#F5F5F5',
-                        backgroundColor: 'black',
-                        borderRadius: '30px',
-                        marginRight: '10px',
-                        textTransform: 'capitalize',
-                        '&:focus': { outline: 'none' },
-                        '&:hover': {
-                            backgroundColor: 'white',
-                            color: 'black',
-                        },
-                    }}>
+                <Button sx={{
+                    width: '100%',
+                    color: '#F5F5F5',
+                    backgroundColor: 'black',
+                    borderRadius: '30px',
+                    marginRight: '10px',
+                    textTransform: 'capitalize',
+                    '&:focus': { outline: 'none' },
+                    '&:hover': {
+                        backgroundColor: 'white',
+                        color: 'black',
+                    },
+                }}
+                onClick={handleContinue}
+                >
                     Continue
                 </Button>
                 <Divider sx={{ marginBottom: 2 }} />

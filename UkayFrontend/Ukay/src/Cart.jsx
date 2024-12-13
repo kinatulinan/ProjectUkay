@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Button,
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Checkbox,
-} from '@mui/material';
+import { Box, Typography, Button, IconButton, Dialog, DialogActions, DialogContent, Checkbox } from '@mui/material';
 import { RemoveCircle, AddCircle, Delete } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [emptyCartDialog, setEmptyCartDialog] = useState(false);
@@ -22,17 +12,38 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
 
   useEffect(() => {
     const savedCheckedItems = localStorage.getItem('checkedItems');
-    setCheckedItems(savedCheckedItems ? JSON.parse(savedCheckedItems) : []);
+    if (savedCheckedItems) {
+      setCheckedItems(JSON.parse(savedCheckedItems));
+    }
   }, []);
-  
+
   useEffect(() => {
-    localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+    if (checkedItems.length > 0) {
+      localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+    }
   }, [checkedItems]);
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
+  };
 
   const getSelectedTotalPrice = () => {
     return cartItems
       .filter((_, index) => checkedItems.includes(index))
       .reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
+  };
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0 || checkedItems.length === 0) {
+      setEmptyCartDialog(true);
+      return;
+    }
+    const selectedItems = cartItems.filter((_, index) => checkedItems.includes(index));
+    const totalPrice = getSelectedTotalPrice();
+    navigate('/order', { state: { selectedItems, totalPrice } });
+  };
+
+  const handleContinueShopping = () => {
+    navigate('/products');
   };
 
   const handleDeleteItem = (index) => {
@@ -71,22 +82,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
 
   const isAllSelected = checkedItems.length === cartItems.length;
 
-  const handleCheckout = () => {
-    if (checkedItems.length === 0) {
-      setEmptyCartDialog(true);
-      return;
-    }
-    const selectedItems = cartItems.filter((_, index) =>
-      checkedItems.includes(index)
-    );
-    const totalPrice = getSelectedTotalPrice();
-    navigate('/order', { state: { selectedItems, totalPrice } });
-  };
-
-  const handleContinueShopping = () => {
-    navigate('/products');
-  };
-
   const closeEmptyCartDialog = () => {
     setEmptyCartDialog(false);
   };
@@ -103,7 +98,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           display: { xs: 'block', md: 'block' },
           fontFamily: 'Lobster, Sans Serif',
           fontWeight: 700,
-          fontSize: { xs: '50rem', md: '20rem' }, // Adjust the font size as needed
+          fontSize: { xs: '30rem', md: '15rem' },
           letterSpacing: '.3rem',
           textDecoration: 'none',
           color: '#E99E00',
@@ -113,8 +108,8 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           backgroundSize: '200% 100%',
           backgroundPosition: '200% 0',
           transition: 'background-position 1.0s ease',
-          lineHeight: 1.2, // Fix clipping of descenders like "y"
-          paddingTop: '20px', // Adjust padding to move it higher
+          lineHeight: 1.2,
+          paddingTop: '20px',
           '&:hover': {
             backgroundPosition: '0 0',
             WebkitTextFillColor: 'transparent',
@@ -150,33 +145,34 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
         </Box>
       ) : (
         <>
-          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 400 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 400, overflowY: 'auto' }}>
             <Box
               sx={{
                 display: 'grid',
                 gridTemplateColumns: '3fr 2fr 2fr 1fr',
                 fontWeight: 'bold',
                 padding: '8px 0',
-                borderBottom: '2px solid #ccc',
+                borderBottom: '2px solid lightgray',
                 textAlign: 'center',
-                backgroundColor: '#f9f9f9',
+                alignItems: 'center',
               }}
             >
-              <Typography>Product</Typography>
-              <Typography>Quantity</Typography>
-              <Typography>Total</Typography>
+              <Typography fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Product</Typography>
+              <Typography fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Quantity</Typography>
+              <Typography fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Total</Typography>
               <Box>
+                <Typography fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Select All</Typography>
                 <Checkbox
                   checked={isAllSelected}
                   onChange={handleSelectAll}
                   sx={{
+                    marginTop: '0',
                     color: '#E99E00',
                     '&.Mui-checked': {
                       color: '#E99E00',
                     },
                   }}
                 />
-                <Typography variant="caption">Select All</Typography>
               </Box>
             </Box>
 
@@ -192,61 +188,38 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
                   textAlign: 'center',
                 }}
               >
-                <Typography sx={{ textAlign: 'left', paddingLeft: 2 }}>
-                  {item.name || 'Unnamed Product'}
-                </Typography>
+                <Typography sx={{ textAlign: 'left' }}>{item.sellProductName || item.name}</Typography>
 
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 1,
-                  }}
-                >
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
                   <IconButton
                     onClick={() => onUpdateQuantity(index, item.quantity - 1)}
+                    sx={{ p: 0, color: '#E99E00', '&:focus': { outline: 'none' }, '&:hover': { backgroundColor: '#f2f2f2' } }}
                     disabled={item.quantity === 1}
-                    sx={{
-                      color: '#E99E00',
-                      '&:hover': {
-                        backgroundColor: '#f2f2f2',
-                      },
-                    }}
                   >
                     <RemoveCircle />
                   </IconButton>
-                  <Typography>{item.quantity}</Typography>
+                  <Typography variant="body2">{item.quantity}</Typography>
                   <IconButton
                     onClick={() => onUpdateQuantity(index, item.quantity + 1)}
-                    sx={{
-                      color: '#E99E00',
-                      '&:hover': {
-                        backgroundColor: '#f2f2f2',
-                      },
-                    }}
+                    sx={{ p: 0, color: '#E99E00', '&:focus': { outline: 'none' }, '&:hover': { backgroundColor: '#f2f2f2' } }}
                   >
                     <AddCircle />
                   </IconButton>
                   <IconButton
                     onClick={() => handleDeleteItem(index)}
-                    sx={{
-                      color: 'red',
-                      '&:hover': {
-                        backgroundColor: '#f2f2f2',
-                      },
-                    }}
+                    sx={{ p: 0, color: 'red', '&:focus': { outline: 'none' }, '&:hover': { backgroundColor: '#f2f2f2' } }}
                   >
-                    <Delete />
+                    <Delete sx={{ color: 'red' }} />
                   </IconButton>
                 </Box>
-                <Typography>
-                  ₱{(item.sellProductPrice * item.quantity).toFixed(2)}
-                </Typography>
+
+                <Typography>₱{(item.sellProductPrice * item.quantity).toFixed(2)}</Typography>
+
                 <Checkbox
                   checked={checkedItems.includes(index)}
                   onChange={() => handleCheckboxChange(index)}
                   sx={{
+                    marginTop: '0',
                     color: '#E99E00',
                     '&.Mui-checked': {
                       color: '#E99E00',
@@ -258,64 +231,133 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           </Box>
 
           <Box
-            sx={{
-              marginTop: 4,
-              textAlign: 'right',
-              fontWeight: 'bold',
-              fontSize: '1.5rem',
-            }}
-          >
-            Total Price: ₱{getSelectedTotalPrice().toFixed(2)}
-          </Box>
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 4,
+          position: 'sticky',
+          bottom: 0,
+          backgroundColor: 'white',
+          padding: '10px 0',
+        }}
+      >
+        <Typography sx={{ fontSize: '16px', width: '150px', textAlign: 'left'}}>
+          Total: ₱<span style={{ fontWeight: 'bold' }}>
+                    {getSelectedTotalPrice().toFixed(2)}
+                </span></Typography>
 
-          {/* Continue Shopping and Checkout Buttons */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: 3,
-            }}
-          >
-            <Button
-              variant="text"
-              onClick={handleContinueShopping}
-              sx={{
-                color: '#E99E00',
-                textTransform: 'capitalize',
-                '&:hover': {
-                  backgroundColor: '#f2f2f2',
-                },
-              }}
-            >
-              Continue Shopping
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleCheckout}
-              sx={{
-                backgroundColor: '#E99E00',
-                color: 'white',
-                textTransform: 'capitalize',
-                '&:hover': {
-                  backgroundColor: '#D68E00',
-                },
-              }}
-            >
-              Checkout
-            </Button>
-          </Box>
+        <Button
+          variant="text"
+          sx={{
+            width: '18%',
+            backgroundColor: '#f5f5f5',
+            color: 'black',
+            borderRadius: '30px',
+            textTransform: 'capitalize',
+            position: 'relative',
+            overflow: 'hidden',
+            '&:focus': { outline: 'none' },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: '0%',
+              width: '100%',
+              height: '1.3px',
+              backgroundColor: '#b3b5b5',
+              transform: 'scaleX(0)',
+              transformOrigin: 'bottom right',
+              transition: 'transform 1s ease, background-color 0.5s ease',
+            },
+            '&:hover': {
+              borderRadius: '30px',
+              backgroundColor: 'white',
+              '&::after': {
+                backgroundColor: 'black',
+                transform: 'scaleX(1)',
+                transformOrigin: 'bottom left',
+              },
+            },
+          }}
+          onClick={handleContinueShopping}
+        >
+          Continue Shopping
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{
+            width: '15%',
+            color: '#F5F5F5',
+            backgroundColor: 'black',
+            borderRadius: '30px',
+            marginRight: '10px',
+            textTransform: 'capitalize',
+            '&:focus': { outline: 'none' },
+            '&:hover': {
+              backgroundColor: 'white',
+              color: 'black',
+            },
+          }}
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
+      </Box>
         </>
       )}
 
-      {/* Delete Confirmation Dialog */}
+      {/* Confirmation Dialog */}
       <Dialog open={openDialog} onClose={cancelDelete}>
         <DialogContent>
-          <Typography>Are you sure you want to delete this item?</Typography>
+        <Typography
+            sx={{
+              marginBottom: '10px',
+              fontSize: '1rem',
+              color: '#0D0F1F',
+            }}
+          >
+            Are you sure you want to remove this in your cart?
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelDelete}>Cancel</Button>
-          <Button onClick={confirmDelete} color="error">
-            Delete
+        <Button
+            onClick={cancelDelete}
+            color="primary"
+            sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            color="secondary"
+            sx={{
+              color: '#D02A2A',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#FFFFFF',
+                backgroundColor: '#D02A2A',
+              },
+            }}
+          >
+            Remove
           </Button>
         </DialogActions>
       </Dialog>
@@ -323,10 +365,35 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
       {/* Empty Cart Dialog */}
       <Dialog open={emptyCartDialog} onClose={closeEmptyCartDialog}>
         <DialogContent>
-          <Typography>Please select at least one item to checkout.</Typography>
+        <Typography
+            sx={{
+              marginBottom: '10px',
+              fontSize: '1rem',
+              color: '#0D0F1F',
+            }}
+          >
+            Please select at least one item to checkout.
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeEmptyCartDialog}>Close</Button>
+          <Button
+          onClick={closeEmptyCartDialog}
+          color="primary"
+          sx={{
+            color: '#0D0F1F',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '25px',
+            padding: '5px 20px',
+            textTransform: 'capitalize',
+            '&:focus': { outline: 'none' },
+            '&:hover': {
+              color: '#0D0F1F',
+              backgroundColor: '#F5F5F5',
+            },
+          }}
+        >
+          Close
+        </Button>
         </DialogActions>
       </Dialog>
     </Box>

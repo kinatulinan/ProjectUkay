@@ -17,7 +17,6 @@ export default function ProductDetailsPage({ onAddToCart }) {
   const [updatedProduct, setUpdatedProduct] = useState({});
   const galleryImages = [model1, model2, model3, model];
 
-  // To track the number of products
   const [productCount, setProductCount] = useState(0);
 
   useEffect(() => {
