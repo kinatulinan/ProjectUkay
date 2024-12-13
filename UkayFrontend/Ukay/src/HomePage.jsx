@@ -405,6 +405,7 @@ function HomePage({ onAddToCart }) {
                       padding: '10px 20px',
                       borderRadius: '30px',
                       textTransform: 'none',
+                      '&:focus': { outline: 'none' },
                       '&:hover': {
                         backgroundColor: 'grey',
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
