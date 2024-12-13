@@ -62,8 +62,10 @@ function UpdateAccount() {
     }, [firstName, lastName, birthdate, address, email, mobile, username, password]);
 
     async function handleSubmit(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent default form submission behavior
+    
         try {
+            // Send the PUT request to update user details
             const response = await axios.put("http://localhost:8080/api/user/save", {
                 fname: firstName,
                 mname: middleName,
@@ -75,24 +77,31 @@ function UpdateAccount() {
                 username,
                 password,
             });
-            // This line will now be executed for both success and failure
-            setSnackbarMessage("Account Successfully Updated"); 
-            setSnackbarOpen(true); // Open Snackbar
-            navigate("/profile"); // Redirect to the profile or another page after successful update
     
-            localStorage.setItem("userDetails", JSON.stringify({
-                fullName: `${firstName} ${middleName} ${lastName}`,
-                address,
-                mobile,
-            }));
+            // If the request is successful, show a success message and navigate to the profile page
+            setSnackbarMessage("Account Successfully Updated");
+            setSnackbarOpen(true);
+            navigate("/profile");
+    
+            // Store updated user details in localStorage
+            localStorage.setItem(
+                "userDetails",
+                JSON.stringify({
+                    fullName: `${firstName} ${middleName} ${lastName}`,
+                    address,
+                    mobile,
+                })
+            );
         } catch (err) {
+            // Log error details for debugging
             console.error(err.response?.data || err.message);
-            alert("Update failed: " + (err.response?.data?.message || err.message));
-            // This line will now be executed for both success and failure
-            setSnackbarMessage("Account Successfully Updated"); 
-            setSnackbarOpen(true); // Open Snackbar
+    
+            // Show an error message to the user
+            setSnackbarMessage("Update failed: " + (err.response?.data?.message || err.message));
+            setSnackbarOpen(true);
         }
     }
+    
     return (
         <Container
             maxWidth="lg"
