@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-    Container,
-    Stack,
-    TextField,
-    Button,
-    Typography,
-    Box,
-    IconButton,
-    InputAdornment,
-    Card,
-    CardContent,
-} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Container, Grid, TextField, Button, Typography, Box, IconButton, InputAdornment, Card, CardContent } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import gif from './assets/update2.gif'; // You can use the same GIF as in RegisterPage
+import CheckroomIcon from '@mui/icons-material/Checkroom';
 
 function UpdateAccount() {
     const navigate = useNavigate();
-    const { username } = useParams(); 
-    const [userData, setUserData] = useState({});
+
+    const [firstName, setFirstName] = useState("");
+    const [middleName, setMiddleName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [birthdate, setBirthdate] = useState("");
+    const [address, setAddress] = useState("");
+    const [email, setEmail] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
     const [isFormValid, setIsFormValid] = useState(false);
 
+    // Dummy data for demonstration purposes; replace with actual user data retrieval
     useEffect(() => {
-        // Fetch the user's current information
-        axios.get(`http://localhost:8080/api/users/${username}`)
-            .then(response => setUserData(response.data))
-            .catch(err => console.error(err));
-    }, [username]);
+        // Replace with your logic to fetch the current user's details
+        const fetchUserData = async () => {
+            const response = await axios.get("http://localhost:8080/api/user/save");
+            const userData = response.data;
+            setFirstName(userData.fname);
+            setMiddleName(userData.mname);
+            setLastName(userData.lname);
+            setBirthdate(userData.birthdate);
+            setAddress(userData.address);
+            setEmail(userData.emailadd);
+            setMobile(userData.mobile);
+            setUsername(userData.username);
+        };
+        fetchUserData();
+    }, []);
 
     const validatePassword = (password) => {
         const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
@@ -36,185 +47,263 @@ function UpdateAccount() {
     };
 
     useEffect(() => {
-        const isPasswordValid = validatePassword(userData.password || "");
+        const isPasswordValid = validatePassword(password);
         setPasswordError(isPasswordValid ? "" : "Password must be at least 8 characters long and contain at least one special character.");
         setIsFormValid(
-            userData.firstName &&
-            userData.lastName &&
-            userData.birthdate &&
-            userData.address &&
-            userData.email &&
-            userData.mobile &&
-            userData.username &&
+            firstName &&
+            lastName &&
+            birthdate &&
+            address &&
+            email &&
+            mobile &&
+            username &&
             isPasswordValid
         );
-    }, [userData]);
-
-    const handleChange = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value });
-    };
+    }, [firstName, lastName, birthdate, address, email, mobile, username, password]);
 
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            await axios.put(`http://localhost:8080/api/users/${username}`, userData);
-            alert("Account successfully updated!");
-            navigate("/profile"); // Redirect to a profile or home page
+            const response = await axios.put("http://localhost:8080/api/user/save", {
+                fname: firstName,
+                mname: middleName,
+                lname: lastName,
+                birthdate,
+                address,
+                emailadd: email,
+                mobile,
+                username,
+                password,
+            });
+            // This line will now be executed for both success and failure
+            setSnackbarMessage("Account Successfully Updated"); 
+            setSnackbarOpen(true); // Open Snackbar
+            navigate("/profile"); // Redirect to the profile or another page after successful update
+    
+            localStorage.setItem("userDetails", JSON.stringify({
+                fullName: `${firstName} ${middleName} ${lastName}`,
+                address,
+                mobile,
+            }));
         } catch (err) {
             console.error(err.response?.data || err.message);
             alert("Update failed: " + (err.response?.data?.message || err.message));
+            // This line will now be executed for both success and failure
+            setSnackbarMessage("Account Successfully Updated"); 
+            setSnackbarOpen(true); // Open Snackbar
         }
     }
-
     return (
-        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Card sx={{ width: 550 }}>
-                <CardContent>
-                    <Box component="form" onSubmit={handleSubmit}>
-                        <Typography variant="h4" align="center" gutterBottom>
-                            Update Account
-                        </Typography>
-                        <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-                            <TextField
-                                name="firstName"
-                                label="First Name"
-                                variant="outlined"
-                                color="secondary"
-                                onChange={handleChange}
-                                value={userData.firstName || ""}
-                                fullWidth
-                                required
-                            />
-                            <TextField
-                                name="middleName"
-                                label="Middle Name"
-                                variant="outlined"
-                                color="secondary"
-                                onChange={handleChange}
-                                value={userData.middleName || ""}
-                                fullWidth
-                            />
-                            <TextField
-                                name="lastName"
-                                label="Last Name"
-                                variant="outlined"
-                                color="secondary"
-                                onChange={handleChange}
-                                value={userData.lastName || ""}
-                                fullWidth
-                                required
-                            />
-                        </Stack>
-                        <TextField
-                            name="address"
-                            label="Address"
-                            variant="outlined"
-                            color="secondary"
-                            onChange={handleChange}
-                            value={userData.address || ""}
-                            fullWidth
-                            required
-                            sx={{ mb: 4 }}
-                        />
-                        <TextField
-                            name="email"
-                            label="Email"
-                            type="email"
-                            variant="outlined"
-                            color="secondary"
-                            onChange={handleChange}
-                            value={userData.email || ""}
-                            fullWidth
-                            required
-                            sx={{ mb: 4 }}
-                        />
-                        <TextField
-                            name="mobile"
-                            label="Mobile"
-                            type="text"
-                            variant="outlined"
-                            color="secondary"
-                            onChange={handleChange}
-                            value={userData.mobile || ""}
-                            fullWidth
-                            required
-                            sx={{ mb: 4 }}
-                        />
-                        <TextField
-                            name="username"
-                            label="Username"
-                            variant="outlined"
-                            color="secondary"
-                            onChange={handleChange}
-                            value={userData.username || ""}
-                            fullWidth
-                            required
-                            disabled // Username should not be editable
-                            sx={{ mb: 4 }}
-                        />
-                        <TextField
-                            name="password"
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            variant="outlined"
-                            color="secondary"
-                            onChange={handleChange}
-                            value={userData.password || ""}
-                            fullWidth
-                            required
-                            sx={{ mb: 4 }}
-                            helperText={passwordError}
-                            error={!!passwordError}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
+        <Container
+            maxWidth="lg"
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '870px',
+                width: '1200px',
+                backgroundColor: '#0D0F1F',
+                borderRadius: 3,
+                boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
+                padding: 4,
+                animation: 'gradientBackground 5s ease infinite',
+                marginTop: '40px',
+            }}
+        >
+            <Grid container spacing={4} alignItems="center">
+                {/* Left Section */}
+                <Grid item xs={12} md={6}>
+                    <Box sx={{ textAlign: 'center', padding: 2 }}>
+                        <CheckroomIcon
+                            sx={{
+                                fontSize: 70,
+                                color: '#E99E00',
+                                mb: 2,
+                                animation: 'bounce 2s infinite',
+                                marginTop: '10px',
                             }}
                         />
-                        <TextField
-                            name="birthdate"
-                            label="Date of Birth"
-                            type="text"
-                            variant="outlined"
-                            placeholder="yyyy-mm-dd"
-                            color="secondary"
-                            InputLabelProps={{ shrink: true }}
-                            onChange={handleChange}
-                            value={userData.birthdate || ""}
-                            fullWidth
-                            required
-                            sx={{ mb: 4 }}
-                        />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            fullWidth
-                            disabled={!isFormValid}
+                        <Typography
+                            variant="h3"
                             sx={{
-                                backgroundColor: 'white',
-                                color: 'black',
+                                color: 'white',
                                 fontWeight: 'bold',
-                                '&:hover': {
-                                    backgroundColor: '#0D0F1F',
-                                    color: 'white',
-                                },
-                                '&:disabled': {
-                                    backgroundColor: '#B0B3BB',
-                                },
+                                fontSize: '28px',
+                                mb: 2,
+                                fontFamily: 'Georgia, serif',
                             }}
                         >
-                            Update
-                        </Button>
+                            Update your{' '}
+                            <span style={{ color: '#E99E00' }}>account</span>!
+                        </Typography>
+                        <img
+                            src={gif}
+                            alt="Register GIF"
+                            style={{
+                                width: '100%',
+                                maxWidth: '350px',
+                                borderRadius: '12px',
+                                boxShadow: '0 4px 12px rgba(255, 255, 255, 0.2)',
+                            }}
+                        />
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                color: 'white',
+                                mt: 3,
+                                fontWeight: 400,
+                                marginBottom: '4px',
+                                fontFamily: 'Georgia, serif',
+                            }}
+                        >
+                            Update your information to continue enjoying our services.
+                        </Typography>
                     </Box>
-                </CardContent>
-            </Card>
+                </Grid>
+
+                {/* Right Section */}
+                <Grid item xs={12} md={6}>
+                    <Card sx={{ boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
+                        <CardContent>
+                            <Box component="form" onSubmit={handleSubmit}>
+                                <Typography
+                                    variant="h4"
+                                    sx={{ fontWeight: 'bold', color: 'black', mb: 2 }}
+                                >
+                                    Update your account
+                                </Typography>
+
+                                <Typography variant="body2" align="center" sx={{ fontWeight: 'bold', color: '#E99E00', mb: 4 }}>
+                                    Please enter your updated details
+                                </Typography>
+
+                                <Grid container spacing={2} sx={{ mb: 3 }}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label="First Name"
+                                            variant="outlined"
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                            value={firstName}
+                                            fullWidth
+                                            required
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label="Middle Name"
+                                            variant="outlined"
+                                            onChange={(e) => setMiddleName(e.target.value)}
+                                            value={middleName}
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label="Last Name"
+                                            variant="outlined"
+                                            onChange={(e) => setLastName(e.target.value)}
+                                            value={lastName}
+                                            fullWidth
+                                            required
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                <TextField
+                                    label="Email Address"
+                                    type="email"
+                                    variant="outlined"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    fullWidth
+                                    required
+                                    sx={{ mb: 2 }}
+                                />
+
+                                <TextField
+                                    label="Mobile Number"
+                                    type="text"
+                                    variant="outlined"
+                                    onChange={(e) => setMobile(e.target.value)}
+                                    value={mobile}
+                                    fullWidth
+                                    required
+                                    sx={{ mb: 2 }}
+                                />
+
+                                <TextField
+                                    label="Date of Birth"
+                                    type="date"
+                                    variant="outlined"
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={(e) => setBirthdate(e.target.value)}
+                                    value={birthdate}
+                                    fullWidth
+                                    required
+                                    sx={{ mb: 2 }}
+                                />
+
+                                <TextField
+                                    label="Username"
+                                    variant="outlined"
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    value={username}
+                                    fullWidth
+                                    required
+                                    sx={{ mb: 2 }}
+                                />
+
+                                <TextField
+                                    label="Password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    variant="outlined"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                    fullWidth
+                                    required
+                                    helperText={passwordError}
+                                    error={!!passwordError}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    sx={{ mb: 4 }}
+                                />
+
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: '#E99E00',
+                                        color: 'white',
+                                        '&:hover': {
+                                            backgroundColor: '#d48f00',
+                                        },
+                                    }}
+                                >
+                                    Update Account
+                                </Button>
+
+                                <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                                    Want to go back?{' '}
+                                    <Link to="/home" style={{ color: '#E99E00' }}>
+                                        View Home Page
+                                    </Link>
+                                </Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         </Container>
     );
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ public class UserController {
         return user_id;
     }
 
+ 
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginUser (@RequestBody UserDto userDto) {
         LoginResponse loginResponse = accountService.loginUser(userDto);
@@ -51,5 +53,15 @@ public class UserController {
         List<UserEntity> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<UserEntity> getUserByUsername(@PathVariable String username) {    
+    UserEntity user = userService.findByUsername(username);
+    if (user != null) {
+        return ResponseEntity.ok(user);
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
 
 }
