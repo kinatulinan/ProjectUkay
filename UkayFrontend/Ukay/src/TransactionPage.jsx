@@ -5,23 +5,24 @@ import { Box, Typography, Button, Card, CardContent, Divider, Pagination } from 
 export default function TransactionPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { transactions } = location.state || { transactions: [] };
-  const [filteredTransactions, setFilteredTransactions] = useState(transactions);
+  const { transactions: initialTransactions } = location.state || { transactions: [] };
+  const [filteredTransactions, setFilteredTransactions] = useState(initialTransactions || []);
   const [currentPage, setCurrentPage] = useState(1);
-  const [transactionsPerPage, setTransactionsPerPage] = useState(5); // Items per page
+  const transactionsPerPage = 5; // Items per page
 
   useEffect(() => {
-    if (transactions.length === 0) {
+    // Load transactions from localStorage if no transactions are passed via state
+    if (!initialTransactions || initialTransactions.length === 0) {
       const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
       setFilteredTransactions(storedTransactions);
     }
-  }, [transactions]);
+  }, [initialTransactions]);
 
   const handleBackToHome = () => navigate('/home');
 
   // Pagination logic
   const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
-  
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
@@ -58,12 +59,14 @@ export default function TransactionPage() {
         ))
       )}
       
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        sx={{ mt: 3 }}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          sx={{ mt: 3 }}
+        />
+      )}
 
       <Button
         onClick={handleBackToHome}
@@ -75,6 +78,7 @@ export default function TransactionPage() {
           '&:hover': {
             backgroundColor: '#D68E00',
           },
+          mt: 3,
         }}
       >
         Back to Home
