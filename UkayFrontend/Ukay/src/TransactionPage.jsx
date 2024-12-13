@@ -27,10 +27,6 @@ export default function TransactionPage() {
     setCurrentPage(value);
   };
 
-  const handlePageChange = (event, value) => {  
-    setCurrentPage(value);  
-  };  
-
   // Get current transactions to display based on pagination  
   const indexOfLastTransaction = currentPage * transactionsPerPage;  
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;  

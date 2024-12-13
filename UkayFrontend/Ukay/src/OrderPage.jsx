@@ -142,7 +142,7 @@ export default function OrderPage() {
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'left' }} gutterBottom>Your Shipping Option</Typography>
                     <Paper sx={{ padding: 2, textAlign: 'left' }}>
                         <Typography variant="body1">Standard Shipping</Typography>
-                        <Typography variant="body1">Arrives between {formattedStartDate} - {formattedEndDate}</Typography>
+                        <Typography variant="body1">Estimated Arrival by {formattedStartDate} - {formattedEndDate}</Typography>
                     </Paper>
                 </Box>
             </Box>
@@ -189,7 +189,7 @@ export default function OrderPage() {
                         color: 'black',
                     },
                 }} onClick={handleContinue}>
-                    Continue
+                    Continue to Payment
                 </Button>
                 <Divider sx={{ marginBottom: 2 }} />
                 <Typography variant="body2" color="textSecondary">
