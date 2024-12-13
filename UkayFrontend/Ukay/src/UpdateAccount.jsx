@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import gif from './assets/update2.gif'; // You can use the same GIF as in RegisterPage
 import CheckroomIcon from '@mui/icons-material/Checkroom';
+import './App.css';
 
 function UpdateAccount() {
     const navigate = useNavigate();

@@ -81,8 +81,9 @@ function ResponsiveAppBar() {
     } else if (setting === 'Orders') {
       navigate('/order');
     } else if (setting === 'Transactions') {
-      navigate('/transactions');
-    } 
+      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+      navigate('/transactions', { state: { transactions: storedTransactions } });
+    }
     handleCloseUserMenu();
   };
 
