@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -25,9 +25,15 @@ export default function TransactionPage() {
     if (!searchQuery) {
       setFilteredTransactions(transactions); // Reset to full list if search query is empty
     } else {
-      const filtered = transactions.filter((_, index) => {
-        const transactionId = index + 1; // Assuming transaction ID is the index + 1
-        return transactionId.toString() === searchQuery;
+      const lowerSearchQuery = searchQuery.toLowerCase();
+      const filtered = transactions.filter(transaction => {
+        const transactionIdMatches = (
+          transactions.indexOf(transaction) + 1
+        ).toString() === lowerSearchQuery;
+        const itemMatches = transaction.items.some(item =>
+          item.name.toLowerCase().includes(lowerSearchQuery)
+        );
+        return transactionIdMatches || itemMatches;
       });
       setFilteredTransactions(filtered);
     }
@@ -49,7 +55,7 @@ export default function TransactionPage() {
         }}
       >
         <TextField
-          label="Search Transaction ID"
+          label="Search Transaction ID or Item Name"
           variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
