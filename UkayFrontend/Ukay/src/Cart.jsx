@@ -74,9 +74,9 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setCheckedItems(cartItems.map((_, index) => index)); // Select all
+      setCheckedItems(cartItems.map((_, index) => index));
     } else {
-      setCheckedItems([]); // Deselect all
+      setCheckedItems([]); 
     }
   };
 
