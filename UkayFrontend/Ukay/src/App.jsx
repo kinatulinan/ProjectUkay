@@ -25,18 +25,28 @@ function App() {
 
   const handleAddToCart = (product) => {
     setCartItems((prevItems) => {
-      const existingProduct = prevItems.find(item => item.name === product.name); // Check by name
+      const existingProduct = prevItems.find(item => {
+        if (product.sellId) {
+          return item.sellId === product.sellId;
+        } else if (product.name) {
+          return item.name === product.name;
+        }
+        return false;
+      });
+  
       if (existingProduct) {
         return prevItems.map(item =>
-          item.name === product.name
+          (product.sellId && item.sellId === product.sellId) ||
+          (product.name && item.name === product.name)
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prevItems, { ...product, quantity: 1 }]; // Ensure name is included
+        return [...prevItems, { ...product, quantity: 1 }];
       }
     });
   };
+  
   
 
   const handleRemoveItem = (index) => {
