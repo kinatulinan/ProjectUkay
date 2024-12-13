@@ -51,18 +51,17 @@ export default function OrderPage() {
         setOpenDialog(false);
     };
 
-    const handleContinue = () => {
-        navigate('/payment');
-      };
-
     const handleSaveAddress = () => {
-        const formattedAddress = `${barangay}, ${city}, ${state}, ${country}, ${postalCode}`;
+        const formattedAddress = `${barangay}, ${city}, ${state}, ${country}, ${postalCode};`;
         
         const updatedUserDetails = { ...userDetails, address: formattedAddress };
-
         localStorage.setItem('userDetails', JSON.stringify(updatedUserDetails));
 
         setOpenDialog(false);
+    };
+
+    const handleContinue = () => {
+        navigate('/payment', { state: { selectedItems, totalPrice: grandTotal } });
     };
 
     return (
@@ -76,10 +75,10 @@ export default function OrderPage() {
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                             <Box sx={{ textAlign: 'left', display: 'flex', flexDirection: 'column', width: '80%' }}>
                                 <Typography variant="body1"><b>{userDetails?.fullName}</b></Typography>
-                                <Typography variant="body1" sx={{fontSize: '14px'}}>{userDetails?.mobile}</Typography>
+                                <Typography variant="body1" sx={{ fontSize: '14px' }}>{userDetails?.mobile}</Typography>
                                 <Typography variant="body1">{userDetails?.address}</Typography>
                                 {additionalNote && (
-                                    <Typography variant="body2" sx={{fontStyle: 'italic' }}>
+                                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                                         {additionalNote}
                                     </Typography>
                                 )}
@@ -94,25 +93,25 @@ export default function OrderPage() {
                                         textTransform: 'capitalize',
                                         '&:focus': { outline: 'none' },
                                         '&::after': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        bottom: 0,
-                                        left: '0%',
-                                        width: '100%',
-                                        height: '1.3px',
-                                        backgroundColor: '#b3b5b5',
-                                        transform: 'scaleX(0)',
-                                        transformOrigin: 'bottom right',
-                                        transition: 'transform 1s ease, background-color 0.5s ease',
+                                            content: '""',
+                                            position: 'absolute',
+                                            bottom: 0,
+                                            left: '0%',
+                                            width: '100%',
+                                            height: '1.3px',
+                                            backgroundColor: '#b3b5b5',
+                                            transform: 'scaleX(0)',
+                                            transformOrigin: 'bottom right',
+                                            transition: 'transform 1s ease, background-color 0.5s ease',
                                         },
                                         '&:hover': {
-                                        borderRadius: '30px',
-                                        backgroundColor: 'white',
-                                        '&::after': {
-                                            backgroundColor: 'black',
-                                            transform: 'scaleX(1)',
-                                            transformOrigin: 'bottom left',
-                                        },
+                                            borderRadius: '30px',
+                                            backgroundColor: 'white',
+                                            '&::after': {
+                                                backgroundColor: 'black',
+                                                transform: 'scaleX(1)',
+                                                transformOrigin: 'bottom left',
+                                            },
                                         },
                                     }}
                                     onClick={handleEditAddressClick}
@@ -128,8 +127,7 @@ export default function OrderPage() {
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'left' }} gutterBottom>Order Details</Typography>
                     <Paper sx={{ padding: 2 }}>
                         {selectedItems.map((item, index) => (
-                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1,borderBottom: '1px solid #e0e0e0', // Add this line for the horizontal line
-                                paddingBottom: 1 }}>
+                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1, borderBottom: '1px solid #e0e0e0', paddingBottom: 1 }}>
                                 <Typography variant="body1">{item.sellProductName || item.name}</Typography>
                                 <Typography variant="body1">₱ <strong>{(item.sellProductPrice * item.quantity).toFixed(2)}</strong></Typography>
                             </Box>
@@ -155,17 +153,17 @@ export default function OrderPage() {
                     {/* Subtotal */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                         <Typography variant="body1">Subtotal:</Typography>
-                        <Typography variant="body1">₱{subtotal.toFixed(2)}</Typography> 
+                        <Typography variant="body1">₱{subtotal.toFixed(2)}</Typography>
                     </Box>
                     {/* Shipping Fee */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                         <Typography variant="body1">Shipping Fee:</Typography>
-                        <Typography variant="body1">₱{shippingFee}</Typography> 
+                        <Typography variant="body1">₱{shippingFee}</Typography>
                     </Box>
                     {/* Seller Coupon */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                         <Typography variant="body1">Seller Coupon:</Typography>
-                        <Typography variant="body1"sx={{color: '#D02A2A'}}>- ₱{selectedCoupon}</Typography>
+                        <Typography variant="body1" sx={{ color: '#D02A2A' }}>- ₱{selectedCoupon}</Typography>
                     </Box>
                 </Box>
                 <Divider sx={{ marginBottom: 2 }} />
@@ -173,7 +171,7 @@ export default function OrderPage() {
                     {/* Grand Total */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Grand Total:</Typography>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>₱{finalTotal.toFixed(2)}</Typography> 
+                        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>₱{finalTotal.toFixed(2)}</Typography>
                     </Box>
                 </Box>
                 <Button sx={{
@@ -188,9 +186,7 @@ export default function OrderPage() {
                         backgroundColor: 'white',
                         color: 'black',
                     },
-                }}
-                onClick={handleContinue}
-                >
+                }} onClick={handleContinue}>
                     Continue
                 </Button>
                 <Divider sx={{ marginBottom: 2 }} />
@@ -203,77 +199,41 @@ export default function OrderPage() {
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Edit Shipping Address</DialogTitle>
                 <DialogContent>
-                    <TextField
-                        label="Country"
-                        fullWidth
-                        margin="normal"
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                    />
-                    <TextField
-                        label="State/Province"
-                        fullWidth
-                        margin="normal"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                    />
-                    <TextField
-                        label="City/Municipality"
-                        fullWidth
-                        margin="normal"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                    />
-                    <TextField
-                        label="Barangay"
-                        fullWidth
-                        margin="normal"
-                        value={barangay}
-                        onChange={(e) => setBarangay(e.target.value)}
-                    />
-                    <TextField
-                        label="Postal Code"
-                        fullWidth
-                        margin="normal"
-                        value={postalCode}
-                        onChange={(e) => setPostalCode(e.target.value)}
-                    />
-                    <TextField
-                        label="Additional Note"
-                        fullWidth
-                        margin="normal"
-                        value={additionalNote}
-                        onChange={(e) => setAdditionalNote(e.target.value)}
-                    />
+                    <TextField label="Country" fullWidth margin="normal" value={country} onChange={(e) => setCountry(e.target.value)} />
+                    <TextField label="State/Province" fullWidth margin="normal" value={state} onChange={(e) => setState(e.target.value)} />
+                    <TextField label="City/Municipality" fullWidth margin="normal" value={city} onChange={(e) => setCity(e.target.value)} />
+                    <TextField label="Barangay" fullWidth margin="normal" value={barangay} onChange={(e) => setBarangay(e.target.value)} />
+                    <TextField label="Postal Code" fullWidth margin="normal" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
+                    <TextField label="Additional Note" fullWidth margin="normal" value={additionalNote} onChange={(e) => setAdditionalNote(e.target.value)} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} 
-                    sx={{
-                        color: '#0D0F1F',
-                        backgroundColor: '#FFFFFF',
-                        borderRadius: '25px',
-                        padding: '5px 20px',
-                        textTransform: 'capitalize',
-                        '&:focus': { outline: 'none' },
-                        '&:hover': {
-                          color: '#0D0F1F',
-                          backgroundColor: '#F5F5F5',
-                        },
-                      }}
+                    <Button onClick={handleCloseDialog}
+                        sx={{
+                            color: '#0D0F1F',
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: '25px',
+                            padding: '5px 20px',
+                            textTransform: 'capitalize',
+                            '&:focus': { outline: 'none' },
+                            '&:hover': {
+                                color: '#0D0F1F',
+                                backgroundColor: '#F5F5F5',
+                            },
+                        }}
                     >Cancel</Button>
-                    <Button onClick={handleSaveAddress} 
-                    sx={{
-                        color: '#0D0F1F',
-                        backgroundColor: '#F5F5F5',
-                        borderRadius: '25px',
-                        padding: '5px 20px',
-                        textTransform: 'capitalize',
-                        '&:focus': { outline: 'none' },
-                        '&:hover': {
-                          color: '#FFFFFF',
-                          backgroundColor: '#0D0F1F',
-                        },
-                      }}
+                    <Button onClick={handleSaveAddress}
+                        sx={{
+                            color: '#0D0F1F',
+                            backgroundColor: '#F5F5F5',
+                            borderRadius: '25px',
+                            padding: '5px 20px',
+                            textTransform: 'capitalize',
+                            '&:focus': { outline: 'none' },
+                            '&:hover': {
+                                color: '#FFFFFF',
+                                backgroundColor: '#0D0F1F',
+                            },
+                        }}
                     >Save</Button>
                 </DialogActions>
             </Dialog>

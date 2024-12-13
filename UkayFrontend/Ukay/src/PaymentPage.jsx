@@ -17,8 +17,7 @@ export default function PaymentPage() {
   const location = useLocation();
 
   // Retrieve the passed state from OrderPage
-  const { selectedItems = [], finalTotal = 0, userDetails = {} } = location.state || {};
-
+  const { selectedItems, totalPrice } = location.state || { selectedItems: [], totalPrice: 0 }; 
   // Debugging: Ensure selectedItems is populated correctly
   console.log('Selected Items:', selectedItems);
 
@@ -116,9 +115,8 @@ export default function PaymentPage() {
         ) : (
           <Typography sx={{ color: '#999' }}>No items in the order.</Typography>
         )}
-        <Typography variant="h6" sx={{ textAlign: 'right', marginTop: 2, color: '#333' }}>
-          Total Price: ₱{finalTotal.toFixed(2)}
-        </Typography>
+         <Typography variant="body1"  sx={{ textAlign: 'right' }}>Total:</Typography> 
+         <Typography variant="body1" sx={{ textAlign: 'right' }}>₱{totalPrice.toFixed(2)}</Typography> 
       </Box>
 
       {/* Payment Details */}
