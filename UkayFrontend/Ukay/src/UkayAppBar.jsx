@@ -5,9 +5,10 @@ import { Menu as MenuIcon, Checkroom as CheckroomIcon, AccountCircle as AccountC
 import TextField from '@mui/material/TextField';
 import Cart from './Cart';
 import ProductsPage from './ProductsPage';
+import TransactionPage from './TransactionPage';
 
 const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Orders', 'Logout'];
+const settings = ['Login', 'Register', 'Orders', 'Transactions', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function ResponsiveAppBar() {
       navigate('/products');
     } else if (page === 'Cart') {
       navigate('/cart');
-    }
+    } 
     handleCloseNavMenu();
   };
   //UPDATE
@@ -75,6 +76,8 @@ function ResponsiveAppBar() {
       navigate('/register');
     } else if (setting === 'Orders') {
       navigate('/order');
+    } else if (setting === 'Transactions') {
+      navigate('/transactions');
     }
     handleCloseUserMenu();
   };
@@ -108,6 +111,7 @@ function ResponsiveAppBar() {
   const handleCartClick = () => {
     navigate('/cart');
   };
+
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#0D0F1F' }}>

@@ -1,190 +1,194 @@
-import React, { useState, useEffect } from 'react';
-import './App.css'; 
-import PaymentService from '../PaymentService';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  TextField,
   Button,
+  TextField,
   Select,
   MenuItem,
-  FormControl,
-  InputLabel,
-  TextareaAutosize,
+  Dialog,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const PaymentPage = () => {
-  const userid = 1; // Sample user ID
-  const [payments, setPayments] = useState([]);
-  const [searchId, setSearchId] = useState('');
+export default function PaymentPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const fetchPayments = async () => {
-    try {
-      const response = await PaymentService.getPaymentsByUserId(userid);
-      setPayments(response.data);
-    } catch (error) {
-      console.error('Error fetching payments:', error);
-    }
-  };
+  // Retrieve the passed state from OrderPage
+  const { selectedItems = [], finalTotal = 0, userDetails = {} } = location.state || {};
 
-  useEffect(() => {
-    fetchPayments();
-  }, [userid]);
+  // Debugging: Ensure selectedItems is populated correctly
+  console.log('Selected Items:', selectedItems);
 
-  const handlePaymentCreated = () => {
-    fetchPayments();
-  };
-
-  return (
-    <Box sx={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-      <Typography
-        variant="h4"
-        sx={{
-          textAlign: 'center',
-          fontWeight: 'bold',
-          color: '#E99E00',
-          fontFamily: 'Lobster, Sans Serif',
-          marginBottom: '1rem',
-        }}
-      >
-        Payment Form
-      </Typography>
-
-      <PaymentForm userid={userid} onPaymentCreated={handlePaymentCreated} />
-    </Box>
-  );
-};
-
-// PaymentForm component
-const PaymentForm = ({ userid, onPaymentCreated }) => {
-  const [amount, setAmount] = useState('');
-  const [paymentDate, setPaymentDate] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [notes, setNotes] = useState('');
-  const [method, setMethod] = useState('');
+  const [emptyFieldsDialog, setEmptyFieldsDialog] = useState(false);
 
-  // Calculate today's date in the local timezone
-  const today = new Date();
-  const offset = today.getTimezoneOffset(); // Get timezone offset in minutes
-  const adjustedToday = new Date(today.getTime() - offset * 60 * 1000);
-  const todayDate = adjustedToday.toISOString().split('T')[0];
+  const handlePlaceOrder = () => {
+    if (!paymentMethod) {
+      setEmptyFieldsDialog(true);
+      return;
+    }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const paymentData = {
-      amount: parseFloat(amount),
-      paymentDate,
+    // Create a new transaction object
+    const newTransaction = {
+      date: new Date().toISOString(),
+      totalPrice: finalTotal,
+      paymentMethod,
       notes,
-      method,
+      items: selectedItems,
+      user: userDetails,
     };
 
-    try {
-      await PaymentService.createPayment(userid, paymentData);
-      alert('Payment created successfully!');
-      onPaymentCreated();
-    } catch (error) {
-      alert('Failed to create payment!');
-    }
+    // Save transaction to localStorage
+    const existingTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    const updatedTransactions = [...existingTransactions, newTransaction];
+    localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+
+    // Show success alert and navigate to transactions page
+    alert('Order placed successfully!');
+    navigate('/transactions', { state: { transactions: updatedTransactions } });
+  };
+
+  const closeEmptyFieldsDialog = () => {
+    setEmptyFieldsDialog(false);
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.5rem',
-        backgroundColor: '#fff',
-        padding: '2rem',
-        borderRadius: '10px',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-      }}
-    >
-      <TextField
-        label="Amount"
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        required
-        fullWidth
+    <Box sx={{ padding: 5, minWidth: 1000 }}>
+      <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
+        Payment
+      </Typography>
+
+      {/* Order Summary */}
+      <Box
         sx={{
-          '& label.Mui-focused': {
-            color: '#E99E00',
-          },
-          '& .MuiInput-underline:after': {
-            borderBottomColor: '#E99E00',
-          },
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          padding: 2,
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         }}
-      />
+      >
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          Order Summary
+        </Typography>
+        {selectedItems.length > 0 ? (
+          selectedItems.map((item, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '8px 0',
+                borderBottom: '1px solid #e0e0e0',
+              }}
+            >
+              {/* Display Product Name */}
+              <Typography sx={{ flex: 3, textAlign: 'left' }}>
+                {item.name || item.productName || 'No Name Available'}
+              </Typography>
+              {/* Display Quantity */}
+              <Typography sx={{ flex: 1, textAlign: 'center' }}>Qty: {item.quantity || 1}</Typography>
+              {/* Display Price */}
+              <Typography sx={{ flex: 2, textAlign: 'right' }}>
+                ₱{(item.sellProductPrice * (item.quantity || 1)).toFixed(2)}
+              </Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography>No items in the order.</Typography>
+        )}
+        <Typography variant="h6" sx={{ textAlign: 'right', marginTop: 2 }}>
+          Total Price: ₱{finalTotal.toFixed(2)}
+        </Typography>
+      </Box>
 
-      <TextField
-        label="Payment Date"
-        type="date"
-        value={paymentDate}
-        onChange={(e) => setPaymentDate(e.target.value)}
-        InputLabelProps={{ shrink: true }}
-        inputProps={{ min: todayDate }}
-        required
-        fullWidth
+      {/* Payment Details */}
+      <Box
         sx={{
-          '& label.Mui-focused': {
-            color: '#E99E00',
-          },
+          marginTop: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          backgroundColor: '#fff',
+          padding: 2,
+          borderRadius: '8px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         }}
-      />
-
-      <TextareaAutosize
-        placeholder="Notes"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        minRows={4}
-        style={{
-          padding: '0.5rem',
-          fontFamily: 'Arial',
-          borderColor: '#ccc',
-          borderRadius: '4px',
-          resize: 'none',
-        }}
-      />
-
-      <FormControl fullWidth required>
-        <InputLabel id="payment-method-label">Payment Method</InputLabel>
+      >
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          Payment Details
+        </Typography>
         <Select
-          labelId="payment-method-label"
-          value={method}
-          onChange={(e) => setMethod(e.target.value)}
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+          displayEmpty
+          fullWidth
+          sx={{
+            '& .MuiSelect-root': {
+              color: paymentMethod ? 'black' : '#9e9e9e',
+            },
+          }}
         >
+          <MenuItem value="" disabled>
+            Select Payment Method
+          </MenuItem>
           <MenuItem value="CASH">Cash</MenuItem>
           <MenuItem value="CREDIT_CARD">Credit Card</MenuItem>
           <MenuItem value="DEBIT_CARD">Debit Card</MenuItem>
           <MenuItem value="PAYPAL">PayPal</MenuItem>
           <MenuItem value="BANK_TRANSFER">Bank Transfer</MenuItem>
-          <MenuItem value="MOBILE_PAYMENT">Mobile Payment</MenuItem>
-          <MenuItem value="GIFT_CARD">Gift Card</MenuItem>
-          <MenuItem value="STORE_CREDIT">Store Credit</MenuItem>
-          <MenuItem value="CHECK">Check</MenuItem>
-          <MenuItem value="OTHER">Other</MenuItem>
         </Select>
-      </FormControl>
 
-      <Button
-        type="submit"
-        variant="contained"
+        <TextField
+          label="Additional Notes (Optional)"
+          multiline
+          rows={3}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          fullWidth
+        />
+      </Box>
+
+      {/* Place Order Button */}
+      <Box
         sx={{
-          backgroundColor: '#E99E00',
-          color: 'white',
-          textTransform: 'capitalize',
-          padding: '0.8rem',
-          '&:hover': {
-            backgroundColor: '#D68E00',
-          },
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: 3,
         }}
       >
-        Place Order
-      </Button>
+        <Button
+          variant="contained"
+          onClick={handlePlaceOrder}
+          sx={{
+            backgroundColor: '#E99E00',
+            color: 'white',
+            textTransform: 'capitalize',
+            '&:hover': {
+              backgroundColor: '#D68E00',
+            },
+          }}
+        >
+          Place Order
+        </Button>
+      </Box>
+
+      {/* Empty Fields Dialog */}
+      <Dialog open={emptyFieldsDialog} onClose={closeEmptyFieldsDialog}>
+        <DialogContent>
+          <Typography>Please select a payment method before placing the order.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeEmptyFieldsDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
-};
-
-export default PaymentPage;
+}
