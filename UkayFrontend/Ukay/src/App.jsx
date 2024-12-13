@@ -11,6 +11,7 @@ import RegisterPage from './RegisterPage';
 import PaymentPage from './PaymentPage';
 import Cart from './Cart';
 import TransactionPage from './TransactionPage';
+import UpdateAccount from './UpdateAccount';
 
 function App() {
   const [cartItems, setCartItems] = useState(() => {
@@ -80,6 +81,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/transactions" element={<TransactionPage />} />
+        <Route path="/update" element={<UpdateAccount />} />
 
       </Routes>
     </Router>

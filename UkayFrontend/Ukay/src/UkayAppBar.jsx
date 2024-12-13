@@ -6,9 +6,10 @@ import TextField from '@mui/material/TextField';
 import Cart from './Cart';
 import ProductsPage from './ProductsPage';
 import TransactionPage from './TransactionPage';
+import UpdateAccount from './UpdateAccount';
 
 const pages = ['Product Listing', 'Sell A Product'];
-const settings = ['Login', 'Register', 'Orders', 'Transactions', 'Logout'];
+const settings = ['Login', 'Register', 'Orders', 'Transactions', 'Update Account', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -53,6 +54,8 @@ function ResponsiveAppBar() {
       navigate('/products');
     } else if (page === 'Cart') {
       navigate('/cart');
+    }   else if (page === 'Update Account') {
+      navigate('/update');
     } 
     handleCloseNavMenu();
   };
