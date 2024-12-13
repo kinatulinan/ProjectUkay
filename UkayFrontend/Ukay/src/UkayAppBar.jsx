@@ -59,6 +59,7 @@ function ResponsiveAppBar() {
     } 
     handleCloseNavMenu();
   };
+  
   //UPDATE
   const handleSettingClick = (setting) => {
     if (setting === 'Logout') {
@@ -81,7 +82,7 @@ function ResponsiveAppBar() {
       navigate('/order');
     } else if (setting === 'Transactions') {
       navigate('/transactions');
-    }
+    } 
     handleCloseUserMenu();
   };
 

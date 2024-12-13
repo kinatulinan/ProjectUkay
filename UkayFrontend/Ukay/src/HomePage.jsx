@@ -400,13 +400,13 @@ function HomePage({ onAddToCart }) {
                       mt: 2,
                       backgroundColor: '#E99E00',
                       color: '#fff',
-                      fontFamily: 'Lobster, Sans Serif',
+                      fontFamily: 'Sans Serif',
                       fontSize: '1.2rem',
                       padding: '10px 20px',
                       borderRadius: '30px',
                       textTransform: 'none',
                       '&:hover': {
-                        backgroundColor: '#D68E00',
+                        backgroundColor: 'grey',
                         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                       },
                     }}
