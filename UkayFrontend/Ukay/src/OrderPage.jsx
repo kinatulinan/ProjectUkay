@@ -52,7 +52,7 @@ export default function OrderPage() {
     };
 
     const handleSaveAddress = () => {
-        const formattedAddress = `${barangay}, ${city}, ${state}, ${country}, ${postalCode};`;
+        const formattedAddress = `${barangay}, ${city}, ${state}, ${country}, ${postalCode} ${additionalNote}`;
         
         const updatedUserDetails = { ...userDetails, address: formattedAddress };
         localStorage.setItem('userDetails', JSON.stringify(updatedUserDetails));
@@ -73,15 +73,17 @@ export default function OrderPage() {
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'left' }} gutterBottom>Shipping Address</Typography>
                     <Paper sx={{ padding: 2 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                            <Box sx={{ textAlign: 'left', display: 'flex', flexDirection: 'column', width: '80%' }}>
-                                <Typography variant="body1"><b>{userDetails?.fullName}</b></Typography>
-                                <Typography variant="body1" sx={{ fontSize: '14px' }}>{userDetails?.mobile}</Typography>
-                                <Typography variant="body1">{userDetails?.address}</Typography>
-                                {additionalNote && (
-                                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                                        {additionalNote}
-                                    </Typography>
-                                )}
+                            <Box sx={{ textAlign: 'left', display: 'flex', flexDirection: 'column', width: '50%' }}>
+                            <Typography variant="body1"><b>{userDetails?.fullName}</b></Typography>
+
+                            <Typography variant="body1" sx={{ fontSize: '14px' }}>{userDetails?.mobile}</Typography>
+
+                            <Typography variant="body1">{userDetails?.address}</Typography>
+
+                            <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
+                                {userDetails?.additionalNote}
+                            </Typography>
+
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Button
@@ -116,7 +118,7 @@ export default function OrderPage() {
                                     }}
                                     onClick={handleEditAddressClick}
                                 >
-                                    Edit Address
+                                    Update Address
                                 </Button>
                             </Box>
                         </Box>
