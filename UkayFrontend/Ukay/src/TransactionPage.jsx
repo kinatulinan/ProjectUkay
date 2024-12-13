@@ -2,25 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';  
 import { Box, Typography, Button, Card, CardContent, Divider, Pagination } from '@mui/material';  
 
-export default function TransactionPage() {  
-  const navigate = useNavigate();  
-  const location = useLocation();  
-  const { transactions } = location.state || { transactions: [] };  
-  const [filteredTransactions, setFilteredTransactions] = useState(transactions);  
-  const [currentPage, setCurrentPage] = useState(1);  
-  const [transactionsPerPage, setTransactionsPerPage] = useState(5); // Items per page  
+export default function TransactionPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { transactions: initialTransactions } = location.state || { transactions: [] };
+  const [filteredTransactions, setFilteredTransactions] = useState(initialTransactions || []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const transactionsPerPage = 5; // Items per page
 
-  useEffect(() => {  
-    if (transactions.length === 0) {  
-      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];  
-      setFilteredTransactions(storedTransactions);  
-    }  
-  }, [transactions]);  
+  useEffect(() => {
+    // Load transactions from localStorage if no transactions are passed via state
+    if (!initialTransactions || initialTransactions.length === 0) {
+      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+      setFilteredTransactions(storedTransactions);
+    }
+  }, [initialTransactions]);
 
   const handleBackToHome = () => navigate('/home');  
 
-  // Pagination logic  
-  const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);  
+  // Pagination logic
+  const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   const handlePageChange = (event, value) => {  
     setCurrentPage(value);  

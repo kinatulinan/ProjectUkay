@@ -164,7 +164,7 @@ export default function PaymentPage() {
           color: 'black',
           },
           }} onClick={handlePayment}>
-          Continue
+          Place Order
           </Button>
       </Box>  
 

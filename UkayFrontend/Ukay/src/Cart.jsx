@@ -137,7 +137,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
             color="textSecondary"
             sx={{
               fontFamily: 'Georgia, serif',
-              fontStyle: 'italic',
             }}
           >
             Your cart is empty.
