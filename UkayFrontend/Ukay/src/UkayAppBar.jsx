@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip, Menu, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { Menu as MenuIcon, Checkroom as CheckroomIcon, AccountCircle as AccountCircleIcon, ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import Cart from './Cart';
@@ -16,6 +17,8 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [logoutDialogOpen, setLogoutDialogOpen] = React.useState(false);
+  const [username, setUsername] = React.useState('User');
   const [cartItems, setCartItems] = React.useState([]);
 
   const handleAddToCart = (product) => {
@@ -59,32 +62,41 @@ function ResponsiveAppBar() {
     } 
     handleCloseNavMenu();
   };
-  
-  //UPDATE
+
   const handleSettingClick = (setting) => {
     if (setting === 'Logout') {
-      // Retrieve username from localStorage or fallback to "User"
-      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-      const username = userDetails?.username || 'User';
-  
-      // Display logout message
-      alert(`${username} is now logged out`);
-  
-      // Clear user data and redirect to login page
-      localStorage.removeItem('userDetails');
-      localStorage.removeItem('cartItems');
-      navigate('/login');
-    } else if (setting === 'Login') {
-      navigate('/login');
-    } else if (setting === 'Register') {
-      navigate('/register');
-    } else if (setting === 'Orders') {
-      navigate('/order');
-    } else if (setting === 'Transactions') {
-      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
-      navigate('/transactions', { state: { transactions: storedTransactions } });
+      openLogoutDialog();
+    } else {
+      const paths = {
+        'Login': '/login',
+        'Register': '/register',
+        'Orders': '/order',
+        'Transactions': '/transactions',
+        'Update Account': '/update',
+      };
+      navigate(paths[setting] || '/');
     }
     handleCloseUserMenu();
+  };
+  
+  //UPDATE
+  const openLogoutDialog = () => {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    setUsername(userDetails?.username || 'User');
+    setLogoutDialogOpen(true);
+  };
+
+  // Close dialog
+  const closeLogoutDialog = () => {
+    setLogoutDialogOpen(false);
+  };
+
+  // Handle logout logic
+  const handleLogout = () => {
+    localStorage.removeItem('userDetails');
+    localStorage.removeItem('cartItems');
+    navigate('/login');
+    closeLogoutDialog();
   };
 
   const handleSearchChange = (event) => {
@@ -277,6 +289,42 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
+
+      <Dialog open={logoutDialogOpen} onClose={closeLogoutDialog}>
+        <DialogContent>
+          <DialogContentText>{`${username}, are you sure you want to logout?`}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeLogoutDialog} 
+          sx={{
+            color: '#0D0F1F',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '25px',
+            padding: '5px 20px',
+            textTransform: 'capitalize',
+            '&:focus': { outline: 'none' },
+            '&:hover': {
+              color: '#0D0F1F',
+              backgroundColor: '#F5F5F5',
+            },
+          }}
+          >Cancel</Button>
+          <Button onClick={handleLogout} 
+          sx={{
+            color: '#D02A2A',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '25px',
+            padding: '5px 20px',
+            textTransform: 'capitalize',
+            '&:focus': { outline: 'none' },
+            '&:hover': {
+              color: '#FFFFFF',
+              backgroundColor: '#D02A2A',
+            },
+          }}
+          >Logout</Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 }
