@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Divider, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -15,16 +15,23 @@ export default function OrderPage() {
     const [postalCode, setPostalCode] = useState('');
     const [additionalNote, setAdditionalNote] = useState('');
 
+    const [shippingFee, setShippingFee] = useState(0);
+    const [selectedCoupon, setSelectedCoupon] = useState(0);
+
     const subtotal = selectedItems.reduce((acc, item) => acc + (item.sellProductPrice * item.quantity), 0);
 
-    const shippingFees = [50, 60, 65, 70, 75, 80];
-    const shippingFee = subtotal === 0 ? 0 : shippingFees[Math.floor(Math.random() * shippingFees.length)];
+    useEffect(() => {
+        if (subtotal > 0) {
+            const shippingFees = [50, 60, 65, 70, 75, 80];
+            const couponValues = [10, 15, 20, 25];
+
+            // Randomly select shipping fee and coupon value
+            setShippingFee(shippingFees[Math.floor(Math.random() * shippingFees.length)]);
+            setSelectedCoupon(couponValues[Math.floor(Math.random() * couponValues.length)]);
+        }
+    }, [subtotal]);
 
     const grandTotal = subtotal + shippingFee;
-
-    const couponValues = [10, 15, 20, 25];
-    const selectedCoupon = subtotal === 0 ? 0 : couponValues[Math.floor(Math.random() * couponValues.length)];
-
     const finalTotal = grandTotal - selectedCoupon;
 
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
@@ -129,7 +136,7 @@ export default function OrderPage() {
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'left' }} gutterBottom>Order Details</Typography>
                     <Paper sx={{ padding: 2 }}>
                         {selectedItems.map((item, index) => (
-                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1, borderBottom: '1px solid #e0e0e0', paddingBottom: 1 }}>
+                            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 0.5, borderBottom: '0.5px solid #e0e0e0', paddingBottom: 1 }}>
                                 <Typography variant="body1">{item.sellProductName || item.name}</Typography>
                                 <Typography variant="body1">₱ <strong>{(item.sellProductPrice * item.quantity).toFixed(2)}</strong></Typography>
                             </Box>

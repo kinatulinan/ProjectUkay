@@ -9,6 +9,8 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [emptyCartDialog, setEmptyCartDialog] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
+  const [setCartItems] = useState([]);
+  const [clearCartDialog, setClearCartDialog] = useState(false);
 
   useEffect(() => {
     const savedCheckedItems = localStorage.getItem('checkedItems');
@@ -22,9 +24,6 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
       localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
     }
   }, [checkedItems]);
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.sellProductPrice * item.quantity, 0);
-  };
 
   const getSelectedTotalPrice = () => {
     return cartItems
@@ -84,6 +83,22 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
 
   const closeEmptyCartDialog = () => {
     setEmptyCartDialog(false);
+  };
+  
+  const handleClearCart = () => {
+    setClearCartDialog(true);
+  };
+
+  const confirmClearCart = () => {
+    cartItems.forEach((_, index) => {
+      onRemoveItem(index);
+    });
+    localStorage.removeItem('cartItems');
+    setClearCartDialog(false);
+  };
+
+  const cancelClearCart = () => {
+    setClearCartDialog(false);
   };
 
   return (
@@ -247,6 +262,44 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
                 </span></Typography>
 
         <Button
+          onClick={handleClearCart}
+          variant="text"
+          sx={{
+            width: '18%',
+            backgroundColor: '#f5f5f5',
+            color: 'black',
+            borderRadius: '30px',
+            textTransform: 'capitalize',
+            position: 'relative',
+            overflow: 'hidden',
+            '&:focus': { outline: 'none' },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: '0%',
+              width: '100%',
+              height: '1.3px',
+              backgroundColor: '#b3b5b5',
+              transform: 'scaleX(0)',
+              transformOrigin: 'bottom right',
+              transition: 'transform 1s ease, background-color 0.5s ease',
+            },
+            '&:hover': {
+              borderRadius: '30px',
+              backgroundColor: 'white',
+              '&::after': {
+                backgroundColor: 'black',
+                transform: 'scaleX(1)',
+                transformOrigin: 'bottom left',
+              },
+            },
+          }}
+        >
+          Clear Cart
+        </Button>
+
+        <Button
           variant="text"
           sx={{
             width: '18%',
@@ -376,8 +429,39 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
         </DialogContent>
         <DialogActions>
           <Button
-          onClick={closeEmptyCartDialog}
-          color="primary"
+            onClick={closeEmptyCartDialog}
+            color="primary"
+            sx={{
+              color: '#0D0F1F',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#0D0F1F',
+                backgroundColor: '#F5F5F5',
+              },
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={clearCartDialog}
+        onClose={cancelClearCart}
+        aria-labelledby="clear-cart-dialog-title"
+        aria-describedby="clear-cart-dialog-description"
+      >
+        <DialogContent>
+          <Typography id="clear-cart-dialog-description">
+            Are you sure you want to clear the cart? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelClearCart} 
           sx={{
             color: '#0D0F1F',
             backgroundColor: '#FFFFFF',
@@ -390,9 +474,28 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
               backgroundColor: '#F5F5F5',
             },
           }}
-        >
-          Close
-        </Button>
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmClearCart}
+            color="secondary"
+            autoFocus
+            sx={{
+              color: '#D02A2A',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '25px',
+              padding: '5px 20px',
+              textTransform: 'capitalize',
+              '&:focus': { outline: 'none' },
+              '&:hover': {
+                color: '#FFFFFF',
+                backgroundColor: '#D02A2A',
+              },
+            }}
+          >
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
