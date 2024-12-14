@@ -397,18 +397,16 @@ function HomePage({ onAddToCart }) {
                   <Button
                     variant="contained"
                     sx={{
-                      mt: 2,
+                      width: '50%',
+                      color: '#F5F5F5',
                       backgroundColor: '#E99E00',
-                      color: '#fff',
-                      fontFamily: 'Sans Serif',
-                      fontSize: '1.2rem',
-                      padding: '10px 20px',
                       borderRadius: '30px',
-                      textTransform: 'none',
+                      marginRight: '10px',
+                      textTransform: 'capitalize',
                       '&:focus': { outline: 'none' },
                       '&:hover': {
-                        backgroundColor: 'grey',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: 'white',
+                        color: 'black',
                       },
                     }}
                     onClick={() => handleAddToCart(variant)}

@@ -355,7 +355,7 @@ export default function Cart({ cartItems, onRemoveItem, onUpdateQuantity }) {
           }}
           onClick={handleCheckout}
         >
-          Checkout
+          Check Out
         </Button>
       </Box>
         </>
