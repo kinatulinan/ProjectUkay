@@ -237,36 +237,36 @@ function HomePage({ onAddToCart }) {
         justifyContent: 'center'
       }}
     >
-  <Typography
-  variant="h1"
-  noWrap
-  component="a"
-  href="home"
-  sx={{
-    mr: 2,
-    display: { xs: 'block', md: 'block' },
-    fontFamily: 'Lobster, Sans Serif',
-    fontWeight: 700,
-    fontSize: { xs: '55rem', md: '25rem' },
-    letterSpacing: '.3rem',
-    textDecoration: 'none',
-    color: '#E99E00',
-    background: 'linear-gradient(to right, #E99E00, white)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundSize: '200% 100%',
-    backgroundPosition: '200% 0',
-    transition: 'background-position 1.0s ease',
-    lineHeight: 1.2, 
-    paddingTop: '15px', 
-    '&:hover': {
-      backgroundPosition: '0 0',
-      WebkitTextFillColor: 'transparent',
-    },
-  }}
->
-  U-Kay
-</Typography>
+        <Typography
+        variant="h1"
+        noWrap
+        component="a"
+        href="home"
+        sx={{
+          mr: 2,
+          display: { xs: 'block', md: 'block' },
+          fontFamily: 'Lobster, Sans Serif',
+          fontWeight: 700,
+          fontSize: { xs: '55rem', md: '25rem' },
+          letterSpacing: '.3rem',
+          textDecoration: 'none',
+          color: '#E99E00',
+          background: 'linear-gradient(to right, #E99E00, white)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundSize: '200% 100%',
+          backgroundPosition: '200% 0',
+          transition: 'background-position 1.0s ease',
+          lineHeight: 1.2, 
+          paddingTop: '15px', 
+          '&:hover': {
+            backgroundPosition: '0 0',
+            WebkitTextFillColor: 'transparent',
+          },
+        }}
+      >
+        U-Kay
+      </Typography>
 
 
       <Box sx={{ mt: { xs: 2, md: 4 } }}>
